@@ -1,0 +1,9 @@
+.nav_link {
+    color: white;
+    text-decoration: none;
+    margin-right: 1rem;
+}
+
+.nav_link:hover{
+    color: #EAD637;
+}
