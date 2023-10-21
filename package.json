@@ -2,7 +2,7 @@
   "name": "foto-fleet-frontend",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,6 +17,7 @@
     "@mui/material": "^5.14.14",
     "@mui/x-date-pickers": "^6.16.3",
     "dayjs": "^1.11.10",
+    "json-server": "^0.17.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.17.0",

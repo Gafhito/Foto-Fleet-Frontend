@@ -73,7 +73,7 @@ export const AdminPanel = () => {
         method: 'DELETE',
       })
         .then((response) => {
-          if (response.status === 200) {
+          if (response.status === 204) {
             // -- No Content -
   
             // Actualizamos lista
