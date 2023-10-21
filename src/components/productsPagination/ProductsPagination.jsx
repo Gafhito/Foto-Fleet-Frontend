@@ -8,6 +8,8 @@ import {
   CardContent
 } from '@mui/material';
 
+import { Link } from 'react-router-dom';
+
 import { Button } from '../common/button/Button';
 import { getProductList } from '../../utils/getProductList';
 import { colors } from '../../utils/constants';
@@ -84,6 +86,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                 <Typography variant="body2" color="textSecondary">
                   {camera.description}
                 </Typography>
+                <Link to={`/${camera.id}`} target='_blank'>Ver Detalles</Link>
               </CardContent>
             </Card>
           </Grid>
