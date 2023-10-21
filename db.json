@@ -4,19 +4,19 @@
       "id": 4,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide4.jpg",
+      "image": "./src/assets/img/slide1.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -24,19 +24,19 @@
       "id": 5,
       "title": "Cámara DSLR Canon EOS 5D Mark IV",
       "description": "Una cámara DSLR de alta calidad con resolución 30.4MP y capacidad para grabar video 4K.",
-      "image": "./src/assets/slide5.jpg",
+      "image": "./src/assets/img/slide5.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -44,19 +44,19 @@
       "id": 7,
       "title": "Cámara DSLR Canon EOS 5D Mark IV",
       "description": "Una cámara DSLR de alta calidad con resolución 30.4MP y capacidad para grabar video 4K.",
-      "image": "./src/assets/slide7.jpg",
+      "image": "./src/assets/img/slide7.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -64,19 +64,19 @@
       "id": 10,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide3.jpg",
+      "image": "./src/assets/img/slide3.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -84,19 +84,19 @@
       "id": 11,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide4.jpg",
+      "image": "./src/assets/img/slide4.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -104,19 +104,19 @@
       "id": 13,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -124,19 +124,19 @@
       "id": 14,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -144,19 +144,19 @@
       "id": 15,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -164,19 +164,19 @@
       "id": 16,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -184,19 +184,19 @@
       "id": 17,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -204,19 +204,19 @@
       "id": 18,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -224,19 +224,19 @@
       "id": 19,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -244,19 +244,19 @@
       "id": 20,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -264,19 +264,19 @@
       "id": 21,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -284,19 +284,19 @@
       "id": 22,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -304,19 +304,19 @@
       "id": 23,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -324,19 +324,19 @@
       "id": 24,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide6.jpg",
+      "image": "./src/assets/img/slide6.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -344,19 +344,19 @@
       "id": 25,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide2.jpg",
+      "image": "./src/assets/img/slide2.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -364,19 +364,19 @@
       "id": 26,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide3.jpg",
+      "image": "./src/assets/img/slide3.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -384,19 +384,19 @@
       "id": 27,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/slide4.jpg",
+      "image": "./src/assets/img/slide4.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -404,19 +404,19 @@
       "id": 28,
       "title": "Cámara DSLR Canon EOS 5D Mark IV",
       "description": "Una cámara DSLR de alta calidad con resolución 30.4MP y capacidad para grabar video 4K.",
-      "image": "./src/assets/slide5.jpg",
+      "image": "./src/assets/img/slide5.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     },
@@ -424,19 +424,19 @@
       "id": 29,
       "title": "Cámara DSLR Canon EOS 5D Mark IV",
       "description": "Una cámara DSLR de alta calidad con resolución 30.4MP y capacidad para grabar video 4K.",
-      "image": "./src/assets/slide7.jpg",
+      "image": "./src/assets/img/slide7.jpg",
       "images": [
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/slide2.jpg"
+          "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
     }
