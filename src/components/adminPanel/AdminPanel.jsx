@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useMediaQuery, Box, Typography, Modal, Button as MuiButton, createTheme, ThemeProvider } from '@mui/material';
 
+import { useProductContext } from '../../utils/productContext';
+
 import { colors } from '../../utils/constants';
 import { Button } from '../common/button/Button';
 import { ConfirmationModal } from '../common/confirmationModal/confirmationModal';
@@ -25,16 +27,18 @@ const customModalTheme = createTheme({
 
 export const AdminPanel = () => {
 
+  const productsContext = useProductContext();
+
 
   const isMobile = useMediaQuery('(max-width:600px');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(productsContext);
   const [productToDelete, setProductToDelete] = useState(null);
 
   // Nuevo estado para el modal de confirmación
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     // Simula una solicitud GET a la API para obtener los productos
     fetch('http://localhost:3001/cameras')
       .then((response) => response.json())
@@ -44,7 +48,7 @@ export const AdminPanel = () => {
       .catch((error) => {
         console.error('Error al cargar los productos:', error);
       });
-  }, []);
+  }, []);*/
 
   const openModal = (productId) => {
     if(productId == null) {
