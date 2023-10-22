@@ -34,8 +34,6 @@ export const AdminPanel = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [products, setProducts] = useState(productsContext);
   const [productToDelete, setProductToDelete] = useState(null);
-
-  // Nuevo estado para el modal de confirmación
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
   /*useEffect(() => {
@@ -66,13 +64,12 @@ export const AdminPanel = () => {
   };
 
   const closeConfirmationModal = () => {
-    // Cierra el modal de confirmación
+
     setConfirmationModalOpen(false);
   };
 
   const handleDeleteProduct = (productId) => {
     if (productToDelete !== null) {
-      // Simulamos solicitud a API
       fetch(`http://localhost:3001/cameras/${productId}`, {
         method: 'DELETE',
       })
@@ -181,7 +178,7 @@ export const AdminPanel = () => {
         </Modal>
       </ThemeProvider>
       <ConfirmationModal
-            open={confirmationModalOpen} // Usar el nuevo estado para el modal de confirmación
+            open={confirmationModalOpen}
             onClose={closeConfirmationModal}
             onConfirm={() => handleDeleteProduct(productToDelete)}
         />
