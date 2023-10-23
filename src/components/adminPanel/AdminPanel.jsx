@@ -6,6 +6,7 @@ import { useProductContext } from '../../utils/productContext';
 import { colors } from '../../utils/constants';
 import { Button } from '../common/button/Button';
 import { ConfirmationModal } from '../common/confirmationModal/confirmationModal';
+import { ProductForm } from '../productForm/ProductForm';
 
 import './adminPanel.css';
 
@@ -28,13 +29,13 @@ const customModalTheme = createTheme({
 export const AdminPanel = () => {
 
   const productsContext = useProductContext();
-
-
   const isMobile = useMediaQuery('(max-width:600px');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false); // Estado para el modal de registro de productos
+  const [isListModalOpen, setIsListModalOpen] = useState(false); // Estado para el modal de listado de productos
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); // Estado para confirmación de DELETE
   const [products, setProducts] = useState(productsContext);
   const [productToDelete, setProductToDelete] = useState(null);
-  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+
 
   /*useEffect(() => {
     // Simula una solicitud GET a la API para obtener los productos
@@ -49,22 +50,23 @@ export const AdminPanel = () => {
   }, []);*/
 
   const openModal = (productId) => {
-    if(productId == null) {
-      setIsModalOpen(true);
+    if (productId == null) {
+      setIsRegisterModalOpen(true);
+      setIsListModalOpen(false);
       setConfirmationModalOpen(false);
-    }else {
+    } else {
       setProductToDelete(productId);
       setConfirmationModalOpen(true);
     }
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsRegisterModalOpen(false);
+    setIsListModalOpen(false);
     setProductToDelete(null);
   };
 
   const closeConfirmationModal = () => {
-
     setConfirmationModalOpen(false);
   };
 
@@ -94,6 +96,27 @@ export const AdminPanel = () => {
     }
   };
 
+
+  const handleProductSubmit = (newProduct) => {
+    // Envía la solicitud POST para crear un nuevo producto
+    fetch('http://localhost:3001/cameras', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newProduct),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Actualiza la lista de productos con el nuevo producto
+        setProducts([...products, data]);
+        setIsRegisterModalOpen(false); // Cierra el modal de registro de productos
+      })
+      .catch((error) => {
+        console.error('Error al crear el producto:', error);
+      });
+  };
+
   return (
     <div>
       {isMobile ? (
@@ -115,13 +138,13 @@ export const AdminPanel = () => {
         >
           <Box>
             <Typography variant="h5" sx={{ marginBottom: '3rem' }}>Panel de Administración</Typography>
-            <Button label={'Registrar Producto'} backgroundColor={colors.terciaryColor} backgroundColorHover={colors.secondaryColor} />
-            <Button label={'Listar Producto'} mt={'1rem'} backgroundColor={colors.terciaryColor} backgroundColorHover={colors.secondaryColor} onClick={ () => openModal(null)} />
+            <Button onClick={() => setIsRegisterModalOpen(true)} label={'Registrar Producto'} backgroundColor={colors.terciaryColor} backgroundColorHover={colors.secondaryColor} />
+            <Button label={'Listar Producto'} mt={'1rem'} backgroundColor={colors.terciaryColor} backgroundColorHover={colors.secondaryColor} onClick={() => setIsListModalOpen(true)} />
           </Box>
         </div>
       )}
       <ThemeProvider theme={customModalTheme}>
-        <Modal open={isModalOpen} onClose={closeModal}>
+        <Modal open={isListModalOpen} onClose={closeModal}>
           <Box sx={{
             position: 'absolute',
             top: '50%',
@@ -163,7 +186,7 @@ export const AdminPanel = () => {
                 {products.map(product => (
                   <tr key={product.id}>
                     <td>{product.id}</td>
-                    <td>{product.name}</td>
+                    <td>{product.title}</td>
                     <td>{product.action}</td>
                     <td>
                       <MuiButton variant="outlined" color="error" size="small" onClick={() => openModal(product.id)}>
@@ -177,6 +200,41 @@ export const AdminPanel = () => {
           </Box>
         </Modal>
       </ThemeProvider>
+      {/* Modal para registrar productos */}
+      <Modal open={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)}>
+        <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '40%',
+            maxHeight: '70vh',
+            overflowY: 'scroll',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            padding: '2rem',
+            boxShadow: '0 0 20px rgba(0, 0, 0, 0.15)',
+            '&::-webkit-scrollbar': {
+              width: '12px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: `${colors.terciaryColor}`,
+              borderRadius: '6px',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              background: `${colors.secondaryColor}`,
+            },
+            '&::-webkit-scrollbar-track': {
+              background: '#f1f1f1',
+              borderRadius: '8px'
+            },
+          }}>
+            <Typography variant="h5" sx={{ marginBottom: '1rem', textAlign: 'center' }}>
+              Registrar Producto
+            </Typography>
+            <ProductForm onSubmit={handleProductSubmit} />
+        </Box>
+      </Modal>
       <ConfirmationModal
             open={confirmationModalOpen}
             onClose={closeConfirmationModal}

@@ -121,26 +121,6 @@
       ]
     },
     {
-      "id": 14,
-      "title": "Cámara Mirrorless Sony Alpha A7 III",
-      "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/img/slide6.jpg",
-      "images": [
-        {
-          "img_url": "./src/assets/img/slide2.jpg"
-        },
-        {
-          "img_url": "./src/assets/img/slide2.jpg"
-        },
-        {
-          "img_url": "./src/assets/img/slide2.jpg"
-        },
-        {
-          "img_url": "./src/assets/img/slide2.jpg"
-        }
-      ]
-    },
-    {
       "id": 15,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
@@ -439,6 +419,101 @@
           "img_url": "./src/assets/img/slide2.jpg"
         }
       ]
+    },
+    {
+      "title": "Testeando Camara 2",
+      "description": "Testeando Registro 2",
+      "images": [
+        {
+          "img_url": "blob:http://localhost:5173/2c2525a5-ca6b-4d1d-95b9-0a328d9bae10"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/bf9445bb-9ccd-46c4-9d56-f8ec6b29a633"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/75d94359-b84a-4618-b556-368ff0bff225"
+        }
+      ],
+      "id": 31
+    },
+    {
+      "title": "Camara 3",
+      "description": "Testeando registro de camara 3",
+      "mainImage": {
+        "img_url": "blob:http://localhost:5173/86269d5c-51f9-4be3-b092-a676d678e823"
+      },
+      "images": [
+        {
+          "img_url": "blob:http://localhost:5173/2840a4d6-ffda-42d1-8c79-38402193087b"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/54397864-9017-4deb-8df4-a672c9f54bdf"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/28fb1c0d-31b6-442e-87fb-1720232aa38a"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/a7306ab5-0378-4cfe-8054-6b9aeb4d3ce5"
+        }
+      ],
+      "id": 32
+    },
+    {
+      "title": "TEST C4",
+      "description": "PROBANDO CON IMG CARGADAS",
+      "mainImage": {
+        "img_url": "blob:http://localhost:5173/a6988fb9-6a66-455f-89e7-064a1f1d3bcc"
+      },
+      "images": [
+        {
+          "img_url": "blob:http://localhost:5173/6864e571-3249-4d68-963e-49875ae39657"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/100db2ba-66d1-4ae2-a500-375554cc1828"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/c5e59761-4d51-4603-a43c-f2eedbc95a8d"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/ee7436dc-4c42-4893-a493-1b4be05618b5"
+        }
+      ],
+      "id": 33
+    },
+    {
+      "title": "Camara 5 TEST",
+      "description": "Testeando",
+      "mainImage": {
+        "img_url": "blob:http://localhost:5173/91f01b3e-2504-4b86-afcc-d97abb8db81f"
+      },
+      "images": [
+        {
+          "img_url": "blob:http://localhost:5173/a9c37952-1f11-48e9-8a75-4f85d754ad94"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/0996e979-88cf-49a9-a976-6b34c00d6adf"
+        }
+      ],
+      "id": 34
+    },
+    {
+      "title": "Camara 6",
+      "description": "Testestest",
+      "image": {
+        "img_url": "blob:http://localhost:5173/3ed032f3-37be-4e97-a30b-5c16a1930efa"
+      },
+      "images": [
+        {
+          "img_url": "blob:http://localhost:5173/a48b771c-33c7-460f-9f3b-bfda12941575"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/dee04da5-308a-4aae-8716-d5cefc1a0910"
+        },
+        {
+          "img_url": "blob:http://localhost:5173/6ef100f9-cad6-4db5-ae8b-7b4d9454ef31"
+        }
+      ],
+      "id": 35
     }
   ]
 }

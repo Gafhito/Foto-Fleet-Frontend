@@ -30,8 +30,29 @@ server.delete('/cameras/:id', (req, res) => {
   }
 });
 
+
+// crear un nuevo producto
+server.post('/cameras', (req, res) => {
+  const db = router.db;
+  const newCamera = req.body;
+
+  // nuevo ID único para producto
+  newCamera.id = generateUniqueId(db, 'cameras');
+
+  // guardar nuevo producto a la bd
+  db.get('cameras').push(newCamera).write();
+
+  res.status(201).json(newCamera);
+});
+
 server.use(router);
 
 server.listen(PORT, () => {
   console.log(`JSON Server is running on http://localhost:${PORT}`);
 });
+
+
+function generateUniqueId(db, collection) {
+  const maxId = db.get(collection).maxBy('id').value();
+  return maxId ? maxId.id + 1 : 1;
+};
