@@ -12,8 +12,11 @@ const customTheme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
+          '&.MuiOutlinedInput-root': {
+            borderRadius: '8px'
+          },
           '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: colors.terciaryColor,
+            borderColor: colors.textColor,
           },
         },
       },
@@ -21,11 +24,11 @@ const customTheme = createTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: `${colors.terciaryColor}`,
+          color: `${colors.textColor}`,
           '&[data-shrink="false"]' : {
           },
           '&[data-shrink="true"]': {
-            color: `${colors.terciaryColor}`,
+            color: `${colors.textColor}`,
           },
         },
       },
@@ -34,7 +37,9 @@ const customTheme = createTheme({
 });
 
 const StyledDatePicker = styled(DatePicker)({
-    //Estilos extras
+    backgroundColor: colors.backgroundColor,
+    borderColor: colors.backgroundColor,
+    borderRadius: '8px'
 });
 
 export const Calendar = ({label}) => {

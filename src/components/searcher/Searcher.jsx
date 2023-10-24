@@ -13,7 +13,7 @@ const customTheme = createTheme({
           root: {
             '&.Mui-focused' : {
               '&::after': {
-                borderBottom: `2px solid ${colors.terciaryColor}`,
+                borderBottom: `2px solid ${colors.textColor}`,
               },
             },
           },
@@ -22,12 +22,12 @@ const customTheme = createTheme({
       MuiInputLabel: {
         styleOverrides: {
           root: {
-            color: `${colors.terciaryColor}`,
+            color: `${colors.textColor}`,
             '&[data-shrink="false"]' : {
               transform: 'translate(10px, 36px) scale(1)',
             },
             '&[data-shrink="true"]': {
-              color: `${colors.terciaryColor}`,
+              color: `${colors.textColor}`,
               transform: 'translate(6px, 17px) scale(0.75)',
             },
           },
@@ -80,7 +80,7 @@ const customTheme = createTheme({
             </Box>
   
             <Box display="flex" justifyContent="flex-end">
-                <Button label={'Buscar'} backgroundColor={colors.terciaryColor} backgroundColorHover={colors.secondaryColor}/>
+                <Button label={'Buscar'} backgroundColor={colors.backgroundColor} backgroundColorHover={colors.secondaryColor} color={colors.textColor}/>
             </Box>
   
           </Box>

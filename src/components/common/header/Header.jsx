@@ -85,8 +85,8 @@ export const Header = () => {
                 </Link>
               </Box>
               <Box sx={{display: 'flex'}}>
-                  <Button label={'Iniciar Sesion'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.secondaryColor}/>
-                  <Button label={'Crear Cuenta'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.secondaryColor}/>
+                  <Button label={'Iniciar Sesion'} backgroundColor={colors.backgroundColor} backgroundColorHover={colors.secondaryColor} color={colors.textColor}/>
+                  <Button label={'Crear Cuenta'} backgroundColor={colors.backgroundColor} backgroundColorHover={colors.secondaryColor} color={colors.textColor}/>
               </Box>
             </Box>
           </Toolbar>

@@ -1,7 +1,7 @@
 export const colors = {
-    primaryColor: '#EAD637',
-    secondaryColor: '#CBA328',
-    terciaryColor: '#230C0F',
-    backgroundColor: '#D6F49D',
-    textColor: '#0A0903',
+    primaryColor: '#758B9D',
+    secondaryColor: '#E6AE6D',
+    terciaryColor: '#828E98',
+    backgroundColor: '#D0CAC2',
+    textColor: '#282A23',
 };

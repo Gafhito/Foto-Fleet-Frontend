@@ -7,12 +7,14 @@ import { HomePage } from './pages/HomePage';
 import { AdminPage } from './pages/AdminPage';
 import { ProductPage } from './pages/ProductPage';
 
+import { colors } from './utils/constants';
+
 import './App.css'
 
 export const App = () => {
   return (
     <Router>
-      <div className="App">
+      <div className="App" style={{backgroundColor:colors.backgroundColor}}>
         <ProductProvider>
           <Routes>
             <Route path="/" element={<Layout />}>
