@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useMediaQuery, Box, Typography, Modal, Button as MuiButton, createTheme, ThemeProvider } from '@mui/material';
+import { useMediaQuery, Box, Typography, Modal, Button as MuiButton, createTheme, ThemeProvider, Snackbar, Alert } from '@mui/material';
 
 import { useProductContext } from '../../utils/productContext';
 
@@ -35,6 +35,8 @@ export const AdminPanel = () => {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); // Estado para confirmación de DELETE
   const [products, setProducts] = useState(productsContext);
   const [productToDelete, setProductToDelete] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
 
   /*useEffect(() => {
@@ -98,23 +100,32 @@ export const AdminPanel = () => {
 
 
   const handleProductSubmit = (newProduct) => {
-    // Envía la solicitud POST para crear un nuevo producto
-    fetch('http://localhost:3001/cameras', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newProduct),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Actualiza la lista de productos con el nuevo producto
-        setProducts([...products, data]);
-        setIsRegisterModalOpen(false); // Cierra el modal de registro de productos
+    // corroboramos que el nombre no exista con la funcion some - si un elemento del array cumple con la condicion devuelve true
+
+    const productExists = products.some((product) => product.title === newProduct.title);
+  
+    if (productExists) {
+      // seteamos error
+      setErrorMessage('El nombre del producto ya se encuentra en uso. Por favor elige otro.');
+      setSnackbarOpen(true);
+    } else {
+      fetch('http://localhost:3001/cameras', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newProduct),
       })
-      .catch((error) => {
-        console.error('Error al crear el producto:', error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          // Actualizamos la lista de productos con el nuevo producto
+          setProducts([...products, data]);
+          setIsRegisterModalOpen(false); // Cerramos el modal de registro de productos
+        })
+        .catch((error) => {
+          console.error('Error al crear el producto:', error);
+        });
+    }
   };
 
   return (
@@ -240,6 +251,12 @@ export const AdminPanel = () => {
             onClose={closeConfirmationModal}
             onConfirm={() => handleDeleteProduct(productToDelete)}
         />
+
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+        <Alert severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
