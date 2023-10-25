@@ -83,12 +83,12 @@ export const ProductDetails = ({ product }) => {
               <Card>
                 <CardMedia component="img" height="300px" image={product.images[selectedImageIndex].img_url} alt={product.title} />
               </Card>
-              <Grid item xs={12} sm={6} sx={{display: {xs: 'none', md:'block'}, width:'30rem'}}>
+              <Grid item xs={12} sm={6} sx={{display: {xs: 'none', md:'block'}, maxWidth:'90%'}} className='detail_description_container'>
                 <Box sx={
-                    {marginTop: '2rem'}
+                    {marginTop: '2rem', width:'100%'}
                 }>
                   <Typography variant="h6" textAlign={'left'}>Descripcion</Typography>
-                  <Typography variant="body2" color="textSecondary" textAlign={'left'} sx={{width:'100%'}}>
+                  <Typography variant="body2" color="textSecondary" textAlign={'left'}>
                     {product.description}
                   </Typography>
                   <Typography variant="h6" textAlign={'left'}>Caracteristicas</Typography>
@@ -98,50 +98,28 @@ export const ProductDetails = ({ product }) => {
               </Grid>
             </Grid>
           </Grid>
-        <Grid item xs={12} sm={6} sx={{maxWidth:'40%', marginTop: '-28.5rem', marginLeft:'50rem'}}>
-            {
-            isSmallScreen ? (
-              <>
-                <Slider {...settings}>
-                  {product.images.map((image, index) => (
-                    <Card key={index} onClick={() => handleImageClick(index)} className='additional_img_carr_container'> 
-                      <CardMedia component="img" height='75' image={image.img_url} alt={`Additional Image ${index + 1}`}/>
-                    </Card>
-                  ))}
-                </Slider>
-                <Box sx={
-                  {marginTop: '2rem'}
-                }>
-                  <Typography variant="h6">Descripcion</Typography>
-                  <Typography variant="body2" color="textSecondary" textAlign={'left'} sx={{width:'100%'}}>
-                    {product.description}
-                  </Typography>
-                  <Typography variant="h6">Caracteristicas</Typography>
-                  <Typography variant="body2" color="textSecondary">
-                  </Typography>
-                </Box>
-              </>
-            ) : (
-              <Grid container spacing={1}>
-                {product.images.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
-                  <Grid item xs={5} key={index} className='additional_img_container'>
-                    <Card sx={{ marginLeft: '2rem', width: '75%' }} onClick={() => handleImageClick(index)}>
-                      <CardMedia component="img" height="150" image={image.img_url} alt={`Additional Image ${index + 1}`} />
-                    </Card>
-                  </Grid>
-                ))}
+        <Grid item xs={12} sm={6} sx={{maxWidth:'40%', marginTop: {md: '-29.5rem', lg:'-28.5rem'}, marginLeft: {md: '55vw' ,lg:'50vw'}}}>
+          <Grid container spacing={1}>
+            {product.images.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
+              <Grid item xs={5} key={index} className='additional_img_container'>
+                <Card sx={{ marginLeft: '2rem', width: '75%' }} onClick={() => handleImageClick(index)}>
+                  <CardMedia component="img" height="150" image={image.img_url} alt={`Additional Image ${index + 1}`} />
+                </Card>
               </Grid>
-            )}
-            {product.images.length > 4 && (
-              <ListItem sx={{display: {xs: 'none', md: 'block'}}}>
-                <Button onClick={toggleShowAllImages}>
-                  {showAllImages ? 'Ver menos' : 'Ver más'}
-                </Button>
-              </ListItem>
-            )}
+            ))}
           </Grid>
-        </>) : (
-          <Box sx={{}}>
+          {product.images.length > 4 && (
+            <ListItem sx={{display: {xs: 'none', md: 'block'}}}>
+              <Button onClick={toggleShowAllImages}>
+                {showAllImages ? 'Ver menos' : 'Ver más'}
+              </Button>
+            </ListItem>
+          )}
+        </Grid>
+      </>
+      ) : 
+      (
+          <Box sx={{marginTop:'5rem'}}>
             <Grid container spacing={2} sx={{display:'flex', justifyContent:'center'}}>
               <Grid item xs={12} sm={6}>
                 <Card>
@@ -150,7 +128,7 @@ export const ProductDetails = ({ product }) => {
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Slider {...settings} className='slider_custom'>
+              <Slider {...settings} className='slider_custom' style={{margin: '2rem auto', width: '50%'}}>
                 {product.images.map((image, index) => (
                   <Card key={index} onClick={() => handleImageClick(index)} className='img_slider_container'> 
                     <CardMedia component="img" height='75' image={image.img_url} alt={`Additional Image ${index + 1}`} sx={{width:'100px'}}/>
@@ -158,7 +136,7 @@ export const ProductDetails = ({ product }) => {
                 ))}
               </Slider>
               <Box sx={
-                {marginTop: '2rem'}
+                {margin: '2rem auto', display:'flex', flexDirection:'column', alignItems:'start', width:'60%'}
                   }>
                 <Typography variant="h6">Descripcion</Typography>
                 <Typography variant="body2" color="textSecondary" textAlign={'left'} sx={{width:'100%'}}>
