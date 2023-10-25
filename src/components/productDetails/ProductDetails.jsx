@@ -23,7 +23,8 @@ export const ProductDetails = ({ product }) => {
     <Box sx={{minHeight: '100vh',display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'}}>
+    alignItems: 'center', 
+    marginTop: '5rem'}}>
       {/* Sub header */}
       <Paper
         elevation={0}
