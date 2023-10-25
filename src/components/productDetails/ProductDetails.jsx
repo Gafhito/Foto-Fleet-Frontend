@@ -48,21 +48,12 @@ export const ProductDetails = ({ product }) => {
   };
 
   return (
-<<<<<<< HEAD
-    <Box sx={{minHeight: '100vh',display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center', 
-    marginTop: '5rem'}}>
-=======
-    <Box
-      sx={{
-        width: '100%',
-        margin: '7.5rem 0 0 0',
-        height: 'auto',
+  <Box sx={{
+      width: '100%',
+      margin: '7.5rem 0 0 0',
+      height: 'auto',
       }}
     >
->>>>>>> FL-17_visualizar_galeria
       {/* Sub header */}
       <Paper
         elevation={0}
