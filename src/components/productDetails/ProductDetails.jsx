@@ -9,12 +9,17 @@ import {
   CardContent,
   List,
   ListItem,
-  ListItemText,
   Button,
 } from '@mui/material';
+
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/system';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { colors } from '../../utils/constants';
+import Slider from 'react-slick'; // Importar el componente Slider
+import 'slick-carousel/slick/slick.css'; // Importar estilos del carrusel
+import 'slick-carousel/slick/slick-theme.css'; // Importar estilos del carrusel
 
 import './productDetails.css';
 
@@ -28,6 +33,18 @@ export const ProductDetails = ({ product }) => {
 
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
+  };
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+  // Configuración del carrusel
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 2,
   };
 
   return (
@@ -58,49 +75,108 @@ export const ProductDetails = ({ product }) => {
         </Typography>
       </Paper>
 
-      {/* Contenido Principal */}
-      <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Grid item xs={12} sm={6} className='main_content_container'>
-          {/* Imagen Principal */}
-          <Card sx={{ marginLeft: '2rem' }}>
-            <CardMedia component="img" height="300px" image={product.images[selectedImageIndex].img_url} alt={product.title} />
-          </Card>
-          <Grid item xs={12} sm={6}>
-            {/* Descripcion */}
-            <Box sx={
-              {marginTop: '2rem'}
-            }>
-              <Typography variant="h6">Descripcion</Typography>
-              <Typography variant="body2" color="textSecondary" textAlign={'left'} sx={{width:'100%'}}>
-                {product.description}
-              </Typography>
-              <Typography variant="h6">Caracteristicas</Typography>
-              <Typography variant="body2" color="textSecondary">
-                {/* características */}
-              </Typography>
-            </Box>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          {/* img adicionales */}
-            <Grid container spacing={1}>
-              {product.images.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
-                <Grid item xs={5} key={index} className='additional_img_container'>
-                  <Card sx={{ marginLeft: '2rem', width: '75%'}} onClick={() => handleImageClick(index)}>
-                    <CardMedia component="img" height="150" image={image.img_url} alt={`Additional Image ${index + 1}`}/>
-                  </Card>
-                </Grid>
-              ))}
+      
+      {!isSmallScreen ? (
+        <>
+          <Grid container spacing={2} className='main_content_grid_container' sx={{marginLeft: '3rem',justifyContent:'start', alignItems:'center', height:'30rem'}}>
+            <Grid item xs={12} sm={6} className='main_content_container'>
+              <Card>
+                <CardMedia component="img" height="300px" image={product.images[selectedImageIndex].img_url} alt={product.title} />
+              </Card>
+              <Grid item xs={12} sm={6} sx={{display: {xs: 'none', md:'block'}, width:'30rem'}}>
+                <Box sx={
+                    {marginTop: '2rem'}
+                }>
+                  <Typography variant="h6" textAlign={'left'}>Descripcion</Typography>
+                  <Typography variant="body2" color="textSecondary" textAlign={'left'} sx={{width:'100%'}}>
+                    {product.description}
+                  </Typography>
+                  <Typography variant="h6" textAlign={'left'}>Caracteristicas</Typography>
+                  <Typography variant="body2" textAlign={'left'} color="textSecondary">
+                  </Typography>
+                </Box>
+              </Grid>
             </Grid>
-          {product.images.length > 4 && (
-            <ListItem>
-              <Button onClick={toggleShowAllImages}>
-                {showAllImages ? 'Ver menos' : 'Ver más'}
-              </Button>
-            </ListItem>
-          )}
-        </Grid>
-      </Grid>
+          </Grid>
+        <Grid item xs={12} sm={6} sx={{maxWidth:'40%', marginTop: '-28.5rem', marginLeft:'50rem'}}>
+            {
+            isSmallScreen ? (
+              <>
+                <Slider {...settings}>
+                  {product.images.map((image, index) => (
+                    <Card key={index} onClick={() => handleImageClick(index)} className='additional_img_carr_container'> 
+                      <CardMedia component="img" height='75' image={image.img_url} alt={`Additional Image ${index + 1}`}/>
+                    </Card>
+                  ))}
+                </Slider>
+                <Box sx={
+                  {marginTop: '2rem'}
+                }>
+                  <Typography variant="h6">Descripcion</Typography>
+                  <Typography variant="body2" color="textSecondary" textAlign={'left'} sx={{width:'100%'}}>
+                    {product.description}
+                  </Typography>
+                  <Typography variant="h6">Caracteristicas</Typography>
+                  <Typography variant="body2" color="textSecondary">
+                  </Typography>
+                </Box>
+              </>
+            ) : (
+              <Grid container spacing={1}>
+                {product.images.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
+                  <Grid item xs={5} key={index} className='additional_img_container'>
+                    <Card sx={{ marginLeft: '2rem', width: '75%' }} onClick={() => handleImageClick(index)}>
+                      <CardMedia component="img" height="150" image={image.img_url} alt={`Additional Image ${index + 1}`} />
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            )}
+            {product.images.length > 4 && (
+              <ListItem sx={{display: {xs: 'none', md: 'block'}}}>
+                <Button onClick={toggleShowAllImages}>
+                  {showAllImages ? 'Ver menos' : 'Ver más'}
+                </Button>
+              </ListItem>
+            )}
+          </Grid>
+        </>) : (
+          <Box sx={{}}>
+            <Grid container spacing={2} sx={{display:'flex', justifyContent:'center'}}>
+              <Grid item xs={12} sm={6}>
+                <Card>
+                  <CardMedia component="img" height="300px" image={product.images[selectedImageIndex].img_url} alt={product.title} />
+                </Card>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Slider {...settings} className='slider_custom'>
+                {product.images.map((image, index) => (
+                  <Card key={index} onClick={() => handleImageClick(index)} className='img_slider_container'> 
+                    <CardMedia component="img" height='75' image={image.img_url} alt={`Additional Image ${index + 1}`} sx={{width:'100px'}}/>
+                  </Card>
+                ))}
+              </Slider>
+              <Box sx={
+                {marginTop: '2rem'}
+                  }>
+                <Typography variant="h6">Descripcion</Typography>
+                <Typography variant="body2" color="textSecondary" textAlign={'left'} sx={{width:'100%'}}>
+                  {product.description}
+                </Typography>
+                <Typography variant="h6">Caracteristicas</Typography>
+                <Typography variant="body2" color="textSecondary"></Typography>
+              </Box>
+              {product.images.length > 4 && (
+                <ListItem sx={{display: {xs: 'none', md: 'block'}}}>
+                  <Button onClick={toggleShowAllImages}>
+                    {showAllImages ? 'Ver menos' : 'Ver más'}
+                  </Button>
+               </ListItem>
+             )}
+           </Grid>
+         </Box>
+        )}
     </Box>
   );
 };
