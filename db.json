@@ -402,7 +402,7 @@
     },
     {
       "id": 29,
-      "title": "Cámara DSLR Canon EOS 5D Mark IV",
+      "title": "Cámara 6IMG",
       "description": "Una cámara DSLR de alta calidad con resolución 30.4MP y capacidad para grabar video 4K.",
       "image": "./src/assets/img/slide7.jpg",
       "images": [
@@ -410,43 +410,21 @@
           "img_url": "./src/assets/img/slide2.jpg"
         },
         {
-          "img_url": "./src/assets/img/slide2.jpg"
+          "img_url": "./src/assets/img/slide1.jpg"
         },
         {
           "img_url": "./src/assets/img/slide2.jpg"
         },
         {
+          "img_url": "./src/assets/img/slide5.jpg"
+        },
+        {
           "img_url": "./src/assets/img/slide2.jpg"
+        },
+        {
+          "img_url": "./src/assets/img/slide6.jpg"
         }
       ]
-    },
-    {
-      "title": "Camara 6",
-      "description": "Testeando registro con mismo nombre",
-      "image": {
-        "img_url": "blob:http://localhost:5173/66503a71-b45d-46ca-aa92-ecb785f46e7d"
-      },
-      "images": [
-        {
-          "img_url": "blob:http://localhost:5173/90195241-0901-46f5-ae44-5631160ae5d5"
-        },
-        {
-          "img_url": "blob:http://localhost:5173/e2ec2862-3a31-43b5-810f-4979c1226aa6"
-        },
-        {
-          "img_url": "blob:http://localhost:5173/c100c674-b2ff-4eed-b099-6efd6f1ce3d1"
-        },
-        {
-          "img_url": "blob:http://localhost:5173/7e2507a9-b810-44bd-bd35-8fbbe8105c23"
-        },
-        {
-          "img_url": "blob:http://localhost:5173/b417adb6-e93b-414e-8da8-7bb3462f66ea"
-        },
-        {
-          "img_url": "blob:http://localhost:5173/d70fcc8f-3f81-4b06-9554-f0b17fb59803"
-        }
-      ],
-      "id": 30
     }
   ]
 }

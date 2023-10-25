@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Modal,
   Backdrop,
@@ -9,11 +10,19 @@ import {
   Box,
   Grid,
   IconButton,
+  Button,
 } from '@mui/material';
 
 import CloseIcon from '@mui/icons-material/Close';
 
 export const ProductModal = ({ open, onClose, product }) => {
+  const [showAllImages, setShowAllImages] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const handleImageClick = (index) => {
+    setSelectedImageIndex(index);
+  };
+
   return (
     <Modal
       open={open}
@@ -62,9 +71,10 @@ export const ProductModal = ({ open, onClose, product }) => {
                 <CardMedia
                   component="img"
                   height="280px"
-                  image={product.image}
+                  image={product.images[selectedImageIndex].img_url}
                   title={product.title}
                   sx={{ width: '100%' }}
+                  onClick={() => handleImageClick((selectedImageIndex + 1) % product.images.length)}
                 />
                 <CardContent sx={{ height: '8rem' }}>
                   <Typography variant="body2" color="textSecondary">
@@ -82,18 +92,26 @@ export const ProductModal = ({ open, onClose, product }) => {
                   gap: '8px',
                 }}
               >
-                {product.images.map((image, index) => (
+                {product.images.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
                   <Card key={index}>
                     <CardMedia
                       component="img"
                       height="150px"
                       image={image.img_url}
                       title={`Imagen ${index + 1}`}
-                      sx={{ width: '100%' }}
+                      sx={{ width: '100%', cursor: 'pointer' }}
+                      onClick={() => handleImageClick(index)}
                     />
                   </Card>
                 ))}
               </Box>
+              {product.images.length > 4 && (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button onClick={() => setShowAllImages(!showAllImages)}>
+                    {showAllImages ? 'Ver menos' : 'Ver más'}
+                  </Button>
+                </div>
+              )}
             </Grid>
           </Grid>
         </Box>

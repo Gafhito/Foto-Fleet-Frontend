@@ -1,7 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { ProductDetails } from '../components/productDetails/ProductDetails';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import { useProductContext } from "../utils/ProductContext";
+
+
+const theme = createTheme();
 
 export const ProductPage = () => {
   const { productId } = useParams(); // Obtén el ID del producto de los parámetros de la URL
@@ -15,8 +19,10 @@ export const ProductPage = () => {
   }
 
   return (
-    <div>
-      <ProductDetails product={product} /> {/* Pasa el producto como una prop a ProductDetails */}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div style={{minHeight:'100vh'}}>
+        <ProductDetails product={product} /> {/* Pasa el producto como una prop a ProductDetails */}
+      </div>
+    </ThemeProvider>
   );
 };
