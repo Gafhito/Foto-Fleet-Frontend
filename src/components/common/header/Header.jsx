@@ -51,21 +51,14 @@ export const Header = () => {
                 <MenuIcon />
               </IconButton>
             </Box>
-            <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', marginLeft: { xs: '1.5rem' }}}>
-              <Link to='/'>
-                <img src={logo} alt="Logo" style={{ width: '7rem' }} />
+              <Link to='/' style={{textDecoration: 'none'}}>
+                  <Box sx={{display:'flex'}}>
+                    <img src={logo} alt="Logo" style={{ width: '7rem' }} />
+                    <Typography variant="h6" sx={{ display: { xs: 'flex', sm: 'none', md: 'flex'}, alignItems: 'center', marginLeft: { xs: '1.5rem', sm: '1rem' }, letterSpacing: '.8rem', color: '#fff', textDecoration: 'none'}}>
+                      Captura el momento
+                    </Typography>
+                  </Box>
               </Link>
-              <Box sx={{
-                marginLeft: {
-                  xs: '2rem',
-                  sm: '1rem',
-                },
-                letterSpacing: '.8rem',
-                display: {xs: 'flex', sm: 'none', md: 'flex'},
-              }}>
-                Captura el momento
-              </Box>
-            </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: {sm: 'space-between', md:'space-around'}, alignItems: {sm:'center'}, width: { lg: '65%', sm:'85%'} }}>
               <Box>
                 <Link to="/" className='nav_link'>

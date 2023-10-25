@@ -60,7 +60,7 @@ export const ProductForm = ({ onSubmit }) => {
       <form>
         <div>
           <TextField
-            label="Título"
+            label="Nombre del Producto"
             name="title"
             value={newProduct.title}
             onChange={handleInputChange}
