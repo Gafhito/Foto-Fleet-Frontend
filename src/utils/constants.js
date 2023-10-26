@@ -5,3 +5,4 @@ export const colors = {
     backgroundColor: '#D0CAC2',
     textColor: '#282A23',
 };
+

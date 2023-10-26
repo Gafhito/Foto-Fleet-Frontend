@@ -101,26 +101,6 @@
       ]
     },
     {
-      "id": 13,
-      "title": "Cámara Mirrorless Sony Alpha A7 III",
-      "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",
-      "image": "./src/assets/img/slide6.jpg",
-      "images": [
-        {
-          "img_url": "./src/assets/img/slide2.jpg"
-        },
-        {
-          "img_url": "./src/assets/img/slide2.jpg"
-        },
-        {
-          "img_url": "./src/assets/img/slide2.jpg"
-        },
-        {
-          "img_url": "./src/assets/img/slide2.jpg"
-        }
-      ]
-    },
-    {
       "id": 15,
       "title": "Cámara Mirrorless Sony Alpha A7 III",
       "description": "Una cámara mirrorless con sensor full-frame de 24.2MP y grabación de video 4K.",

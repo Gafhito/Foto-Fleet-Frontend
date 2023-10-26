@@ -43,8 +43,8 @@ export const ProductDetails = ({ product }) => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 2,
+    slidesToShow: 3,
+    slidesToScroll: 1,
   };
 
   return (
@@ -144,13 +144,6 @@ export const ProductDetails = ({ product }) => {
                 <Typography variant="h6">Caracteristicas</Typography>
                 <Typography variant="body2" color="textSecondary"></Typography>
               </Box>
-              {product.images.length > 4 && (
-                <ListItem sx={{display: {xs: 'none', md: 'block'}}}>
-                  <Button onClick={toggleShowAllImages}>
-                    {showAllImages ? 'Ver menos' : 'Ver más'}
-                  </Button>
-               </ListItem>
-             )}
            </Grid>
          </Box>
         )}

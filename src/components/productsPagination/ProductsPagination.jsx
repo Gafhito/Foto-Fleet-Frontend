@@ -81,7 +81,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                 title={camera.title}
                 onClick={() => handleOpenModal(camera)}
               />
-              <CardContent sx={{maxHeight: '8rem', overflowY:'scroll'}}>
+              <CardContent sx={{maxHeight: '8rem'}}>
                 <Typography variant="h6">{camera.title}</Typography>
                 <Typography variant="body2" color="textSecondary">
                   {camera.description}
