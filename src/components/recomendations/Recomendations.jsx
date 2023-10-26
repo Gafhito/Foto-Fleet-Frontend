@@ -57,10 +57,10 @@ const SampleNextArrow = (props) => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem' }}
+        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem', right: '-50px' }}
         onClick={onClick}
       >
-        <ArrowForward sx={{color:'black', width: '2rem', height:'2rem', transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.5)' } }}/>
+        <ArrowForward sx={{color:'black', width: '2rem', height:'2rem', transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.5)' }}}/>
       </div>
     );
   }
@@ -70,7 +70,7 @@ const SamplePrevArrow = (props)  => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem' }}
+        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem', left: '-50px' }}
         onClick={onClick}
       >
         <ArrowBack sx={{color:'black', width: '2rem', height:'2rem', transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.5)' } }}/>
@@ -83,8 +83,8 @@ export const Recomendations = () => {
     const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: 4,
+    slidesToScroll: 1,
     dots: true,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />
@@ -96,7 +96,7 @@ export const Recomendations = () => {
     <Slider {...settings} className='recomendaciones_container'>
         {products.map((product, index) => (
             <div key={index} className='recomendaciones_inner_container'>
-            <Card sx={{width: '20rem', height: '20rem'}}>
+            <Card sx={{width: '17rem', height: '17rem'}}>
                 <img className='recomendacion_img' src={product.image} alt={product.title}/>
                 <CardContent>
                     <Typography variant="h6">{product.title}</Typography>

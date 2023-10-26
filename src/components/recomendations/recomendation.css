@@ -3,7 +3,7 @@
   }
   
   .recomendaciones_container {
-    width: 85vw;
+    width: 60vw;
     margin: 3rem auto;
     display: flex;
     justify-content: center;
@@ -14,7 +14,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding: 0 1rem;
+    margin-left: 10rem !important;
   }
   
   .slick-arrow.slick-next:before {
