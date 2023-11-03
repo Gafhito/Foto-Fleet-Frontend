@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Link as MuiLink, Box, Drawer } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Login } from '../../login/Login';
+import { useLoginForm } from '../../../utils/LoginFormContext';
+import { useAuth } from '../../../utils/AuthContext';
 
 import { Link } from "react-router-dom";
 
@@ -13,23 +16,34 @@ import './header.css';
 
 
 export const Header = () => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [isSticky, setIsSticky] = useState(false);
+
+  const { openLoginForm } = useLoginForm(); // obtenemos la función openLoginForm desde el contexto
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+  const { user, login, logout } = useAuth(); // Accedemos al usuario autenticado desde el contexto
   
   
-    const toggleDrawer = (event) => {
-      setAnchorEl(event.currentTarget);
-      setDrawerOpen(!drawerOpen);
+  const toggleDrawer = (event) => {
+    setAnchorEl(event.currentTarget);
+    setDrawerOpen(!drawerOpen);
     };
   
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    };
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setIsSticky(true);
+    } else {
+      setIsSticky(false);
+    }
+  };
+
+const handleOpenLoginForm = () => {
+  openLoginForm(); // Utiliza la función openLoginForm del contexto
+};
+
+const handleCloseLoginForm = () => {
+  closeLoginForm();
+};
   
     useEffect(() => {
       window.addEventListener('scroll', handleScroll);
@@ -78,8 +92,18 @@ export const Header = () => {
                 </Link>
               </Box>
               <Box sx={{display: 'flex'}}>
-                  <Button label={'Iniciar Sesion'} backgroundColor={colors.backgroundColor} backgroundColorHover={colors.secondaryColor} color={colors.textColor}/>
-                  <Button label={'Crear Cuenta'} backgroundColor={colors.backgroundColor} backgroundColorHover={colors.secondaryColor} color={colors.textColor}/>
+                {user ? ( // Verifica si el usuario está autenticado
+                  <div className="avatar">
+                    {user.rol.charAt(0).toUpperCase()}
+                  </div>
+                ) : (
+                  <>
+                    <Link to="/auth/login">
+                      <Button label={'Iniciar Sesión'} backgroundColor={colors.backgroundColor} backgroundColorHover={colors.secondaryColor} color={colors.textColor} onClick={handleOpenLoginForm} />
+                    </Link>
+                    <Button label={'Crear Cuenta'} backgroundColor={colors.backgroundColor} backgroundColorHover={colors.secondaryColor} color={colors.textColor} onClick={handleOpenLoginForm} />
+                  </>
+                )}
               </Box>
             </Box>
           </Toolbar>

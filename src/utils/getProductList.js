@@ -1,18 +1,27 @@
 
 import { useEffect, useState } from 'react';
 
-export function getProductList() {
-
+export function useProductList() {
   const [shuffledCameras, setShuffledCameras] = useState([]);
 
   useEffect(() => {
     const fetchAndShuffleCameras = async () => {
       try {
-        const response = await fetch('http://localhost:3001/cameras');
+        const token = localStorage.getItem('token'); // Obtén el token del localStorage
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        const response = await fetch('http://ec2-35-173-183-241.compute-1.amazonaws.com/api/products?page=0', {
+          headers,
+        });
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+
         const data = await response.json();
+        console.log(data);
         // Mezclar aleatoriamente los productos
         const shuffled = shuffleArray(data);
         setShuffledCameras(shuffled);

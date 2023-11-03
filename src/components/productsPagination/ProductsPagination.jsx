@@ -11,13 +11,13 @@ import {
 import { Link } from 'react-router-dom';
 
 import { Button } from '../common/button/Button';
-import { getProductList } from '../../utils/getProductList';
+import { useProductList } from '../../utils/getProductList';
 import { colors } from '../../utils/constants';
 import { ProductModal } from '../common/productModal/ProductModal';
 
 export const ProductsPagination = ({ itemsPerPage }) => {
 
-  const shuffledCameras = getProductList();
+  const shuffledCameras = useProductList();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
