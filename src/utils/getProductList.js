@@ -5,7 +5,7 @@ export function useProductList() {
   const [shuffledCameras, setShuffledCameras] = useState([]);
 
   useEffect(() => {
-    const fetchAndShuffleCameras = async () => {
+    /*onst fetchAndShuffleCameras = async () => {
       try {
         const token = localStorage.getItem('token'); // Obtén el token del localStorage
         const headers = {
@@ -29,7 +29,7 @@ export function useProductList() {
       }
     };
 
-    fetchAndShuffleCameras();
+    fetchAndShuffleCameras();*/
   }, []);
 
   // La función para mezclar el array de productos

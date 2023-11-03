@@ -8,7 +8,7 @@ import { useProductContext } from "../utils/ProductContext";
 const theme = createTheme();
 
 export const ProductPage = () => {
-  const { productId } = useParams(); // Obtén el ID del producto de los parámetros de la URL
+  /*const { productId } = useParams(); // Obtén el ID del producto de los parámetros de la URL
   const products = useProductContext(); // Accede a la lista de productos desde el contexto
 
   // Busca el producto correspondiente en la lista de productos
@@ -21,8 +21,8 @@ export const ProductPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <div style={{minHeight:'100vh'}}>
-        <ProductDetails product={product} /> {/* Pasa el producto como una prop a ProductDetails */}
+        <ProductDetails product={product} />
       </div>
     </ThemeProvider>
-  );
-};
+  );*/
+}

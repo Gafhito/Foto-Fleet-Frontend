@@ -194,7 +194,7 @@ export const AdminPanel = () => {
                 </tr>
               </thead>
               <tbody>
-                {products.map(product => (
+                {/*products.map(product => (
                   <tr key={product.id}>
                     <td>{product.id}</td>
                     <td>{product.title}</td>
@@ -205,7 +205,7 @@ export const AdminPanel = () => {
                       </MuiButton>
                     </td>
                   </tr>
-                ))}
+                ))*/}
               </tbody>
             </table>
           </Box>

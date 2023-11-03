@@ -220,9 +220,6 @@ export const Login = () => {
                 >
                     <TwitterIcon/> Iniciar Sesion con Twitter
                 </Button>
-
-
-
             </form>
         </Paper>}
     </div>
