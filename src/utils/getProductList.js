@@ -21,10 +21,9 @@ export function useProductList() {
         }
 
         const data = await response.json();
-        console.log(data);
         // Mezclar aleatoriamente los productos
-        const shuffled = shuffleArray(data);
-        setShuffledCameras(shuffled);
+        //const shuffled = shuffleArray(data);
+        //setShuffledCameras(shuffled);
       } catch (error) {
         console.error('Error al obtener datos', error);
       }
