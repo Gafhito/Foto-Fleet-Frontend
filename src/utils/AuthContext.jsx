@@ -28,13 +28,15 @@ export function AuthProvider({ children }) {
     })
       .then((response) => response.json())
       .then((data) => {
+        const usuarioData = data.json();
+        console.log('antes del if: ' + usuarioData)
         if (data.accessToken) {
           // Almacena el token en localStorage
           localStorage.setItem('token', data.accessToken);
           // Establece al usuario como autenticado
-          setUser(data);
-          console.log('Este es el user: '+data.user)
+          console.log('Este es el token: '+ data.accessToken)
           setUser({ token: data.accessToken });
+          console.log('Este es el user: ' )
         } else {
           console.error('Error al iniciar sesión:', data.error);
         }
