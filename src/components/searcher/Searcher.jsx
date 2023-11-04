@@ -49,22 +49,15 @@ const customTheme = createTheme({
   
     const handleSearch = () => {
       // Falta desarrollar logica de busqueda por fecha
-      console.log('Búsqueda realizada:');
-      console.log('Búsqueda:', searchQuery);
-      console.log('Fecha seleccionada:', selectedDate);
     };
   
     return (
       <ThemeProvider theme={customTheme}>
-  
         <Grid sx={{margin: '9rem auto', backgroundColor: colors.primaryColor, display: 'flex', flexDirection:'column', justifyContent: 'space-around', alignItems:'center', height:'15rem', width: '90vw', borderRadius: '1rem'}}>
-  
           <Typography variant='h3' sx={{fontWeight:'bolder', color:'White'}} >
               Hacé tu reserva!
           </Typography>
-  
           <Box sx={{display:'flex', justifyContent:'space-between', alignItems:'center', width:'80%'}}>
-  
             <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '40%' }}>
                 <StyledTextField
                   id="filled-basic"
@@ -73,22 +66,16 @@ const customTheme = createTheme({
                   sx={{ width: '100%' }}
                 />
             </Box>
-  
             <Box sx={{display: 'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <Calendar label={'Fecha Desde'}/>
                 <Calendar label={'Fecha Hasta'}/>
             </Box>
-  
             <Box display="flex" justifyContent="flex-end">
                 <Button label={'Buscar'} backgroundColor={colors.backgroundColor} backgroundColorHover={colors.secondaryColor} color={colors.textColor}/>
             </Box>
-  
           </Box>
-  
         </Grid>
-  
-      </ThemeProvider>
-      
+      </ThemeProvider>     
     );
   };
   

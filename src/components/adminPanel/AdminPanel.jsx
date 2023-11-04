@@ -1,30 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useMediaQuery, Box, Typography, Modal, Button as MuiButton, createTheme, ThemeProvider, Snackbar, Alert } from '@mui/material';
+import { useMediaQuery, Box, Typography, Snackbar, Alert } from '@mui/material';
 
-import { useProductContext } from '../../utils/productContext';
-
-import { colors } from '../../utils/constants';
 import { Button } from '../common/button/Button';
 import { ConfirmationModal } from '../common/confirmationModal/confirmationModal';
 import { ProductForm } from '../productForm/ProductForm';
+import { ProductListModal } from './ProductListModal';
+import { RegisterProductModal } from './RegisterProductModal';
+
+import { useProductContext } from '../../utils/productContext';
+import { colors } from '../../utils/constants';
 
 import './adminPanel.css';
 
 
-const customModalTheme = createTheme({
-  components: {
-    MuiModal: {
-      styleOverrides: {
-        root: {
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        },
-      },
-    },
-  },
-});
 
 export const AdminPanel = () => {
 
@@ -72,62 +60,6 @@ export const AdminPanel = () => {
     setConfirmationModalOpen(false);
   };
 
-  const handleDeleteProduct = (productId) => {
-    if (productToDelete !== null) {
-      fetch(`http://localhost:3001/cameras/${productId}`, {
-        method: 'DELETE',
-      })
-        .then((response) => {
-          if (response.status === 204) {
-            // -- No Content -
-  
-            // Actualizamos lista
-            const updatedProducts = products.filter((product) => product.id !== productId);
-            setProducts(updatedProducts);
-  
-            closeConfirmationModal();
-          } else if (response.status === 404) {
-            console.error('La cámara no se encontró en la base de datos');
-          } else {
-            console.error('Error al eliminar la cámara:', response.status, response.statusText);
-          }
-        })
-        .catch((error) => {
-          console.error('Error al eliminar la cámara:', error);
-        });
-    }
-  };
-
-
-  const handleProductSubmit = (newProduct) => {
-    // corroboramos que el nombre no exista con la funcion some - si un elemento del array cumple con la condicion devuelve true
-
-    const productExists = products.some((product) => product.title === newProduct.title);
-  
-    if (productExists) {
-      // seteamos error
-      setErrorMessage('El nombre del producto ya se encuentra en uso. Por favor elige otro.');
-      setSnackbarOpen(true);
-    } else {
-      fetch('http://localhost:3001/cameras', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newProduct),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Actualizamos la lista de productos con el nuevo producto
-          setProducts([...products, data]);
-          setIsRegisterModalOpen(false); // Cerramos el modal de registro de productos
-        })
-        .catch((error) => {
-          console.error('Error al crear el producto:', error);
-        });
-    }
-  };
-
   return (
     <div>
       {isMobile ? (
@@ -149,112 +81,18 @@ export const AdminPanel = () => {
         >
           <Box>
             <Typography variant="h5" sx={{ marginBottom: '3rem' }}>Panel de Administración</Typography>
-            <Button onClick={() => setIsRegisterModalOpen(true)} label={'Registrar Producto'} backgroundColor={colors.terciaryColor} backgroundColorHover={colors.secondaryColor} />
-            <Button label={'Listar Producto'} mt={'1rem'} backgroundColor={colors.terciaryColor} backgroundColorHover={colors.secondaryColor} onClick={() => setIsListModalOpen(true)} />
+            <Button onClick={ () => setIsRegisterModalOpen( true ) } label={ 'Registrar Producto' } backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor } />
+            <Button label={ 'Listar Producto' } mt={'1rem'} backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor } onClick={ () => setIsListModalOpen( true ) } />
           </Box>
         </div>
       )}
-      <ThemeProvider theme={customModalTheme}>
-        <Modal open={isListModalOpen} onClose={closeModal}>
-          <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '40%',
-            maxHeight: '70vh',
-            overflowY: 'scroll',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '2rem',
-            boxShadow: '0 0 20px rgba(0, 0, 0, 0.15)',
-            '&::-webkit-scrollbar': {
-              width: '12px',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              background: `${colors.terciaryColor}`,
-              borderRadius: '6px',
-            },
-            '&::-webkit-scrollbar-thumb:hover': {
-              background: `${colors.secondaryColor}`,
-            },
-            '&::-webkit-scrollbar-track': {
-              background: '#f1f1f1',
-              borderRadius: '8px'
-            },
-          }}>
-            <Typography variant="h5" sx={{ marginBottom: '1rem', textAlign: 'center' }}>Lista de Productos</Typography>
-            <table className='styled_table'>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Acciones</th>
-                  <th>Eliminar Producto</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/*products.map(product => (
-                  <tr key={product.id}>
-                    <td>{product.id}</td>
-                    <td>{product.title}</td>
-                    <td>{product.action}</td>
-                    <td>
-                      <MuiButton variant="outlined" color="error" size="small" onClick={() => openModal(product.id)}>
-                        Eliminar
-                      </MuiButton>
-                    </td>
-                  </tr>
-                ))*/}
-              </tbody>
-            </table>
-          </Box>
-        </Modal>
-      </ThemeProvider>
-      {/* Modal para registrar productos */}
-      <Modal open={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)}>
-        <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '40%',
-            maxHeight: '70vh',
-            overflowY: 'scroll',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '2rem',
-            boxShadow: '0 0 20px rgba(0, 0, 0, 0.15)',
-            '&::-webkit-scrollbar': {
-              width: '12px',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              background: `${colors.terciaryColor}`,
-              borderRadius: '6px',
-            },
-            '&::-webkit-scrollbar-thumb:hover': {
-              background: `${colors.secondaryColor}`,
-            },
-            '&::-webkit-scrollbar-track': {
-              background: '#f1f1f1',
-              borderRadius: '8px'
-            },
-          }}>
-            <Typography variant="h5" sx={{ marginBottom: '1rem', textAlign: 'center' }}>
-              Registrar Producto
-            </Typography>
-            <ProductForm onSubmit={handleProductSubmit} />
-        </Box>
-      </Modal>
-      <ConfirmationModal
-            open={confirmationModalOpen}
-            onClose={closeConfirmationModal}
-            onConfirm={() => handleDeleteProduct(productToDelete)}
-        />
 
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+      <ProductListModal open={ isListModalOpen } onClose={ closeModal }/>
+      <RegisterProductModal open={isRegisterModalOpen} onClose={ () => setIsRegisterModalOpen( false ) }/>
+      <ConfirmationModal open={ confirmationModalOpen } onClose={ closeConfirmationModal } onConfirm={ () => handleDeleteProduct( productToDelete ) } />
+      <Snackbar open={ snackbarOpen } autoHideDuration={ 6000 } onClose={ () => setSnackbarOpen( false ) }>
         <Alert severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
+          { errorMessage }
         </Alert>
       </Snackbar>
     </div>

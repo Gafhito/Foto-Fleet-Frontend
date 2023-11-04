@@ -28,7 +28,6 @@ export const Categories = () => {
   return (
 
     <>
-
       <Typography variant='h3' sx={{marginTop:'3rem'}}>Nuestras Categorias</Typography>
       <Container sx={{mt:'2rem'}}>
         <Grid container spacing={3}>
