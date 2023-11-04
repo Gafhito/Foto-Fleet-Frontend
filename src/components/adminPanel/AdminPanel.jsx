@@ -81,8 +81,8 @@ export const AdminPanel = () => {
         >
           <Box>
             <Typography variant="h5" sx={{ marginBottom: '3rem' }}>Panel de Administración</Typography>
-            <Button onClick={ () => setIsRegisterModalOpen( true ) } label={ 'Registrar Producto' } backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor } />
-            <Button label={ 'Listar Producto' } mt={'1rem'} backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor } onClick={ () => setIsListModalOpen( true ) } />
+            <Button label={ 'Registrar Producto' } onClick={ () => setIsRegisterModalOpen( true ) } backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
+            <Button label={ 'Listar Producto' } onClick={ () => setIsListModalOpen( true ) } mt={'1rem'} backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
           </Box>
         </div>
       )}
