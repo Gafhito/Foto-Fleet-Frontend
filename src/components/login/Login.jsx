@@ -46,8 +46,8 @@ export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(false);
-    const { login } = useAuth();
+
+    const { login, setIsLoggedIn, isLoggedIn } = useAuth();
 
 
     const handleChange = (event) => {
@@ -63,17 +63,27 @@ export const Login = () => {
           email,
           password,
         };
-    
+      
         try {
           const response = await login(userData);
-          setLoggedIn(true);
+          console.log('Respuesta del inicio de sesión:', response);
+      
+          if (response && response.accessToken) {
+            console.log('isLoggedIn es: ' + isLoggedIn)
+            setIsLoggedIn(true);
+            console.log('isLoggedIn establecido en true');
+          } else {
+            setError('Inicio de sesión fallido. Verifica tus credenciales.');
+          }
         } catch (error) {
           console.error('Error al iniciar sesión:', error);
           setError('Inicio de sesión fallido. Verifica tus credenciales.');
         }
       };
+
+      console.log('isLoggedIn al entrar al componente Login:', isLoggedIn);
     
-      if (loggedIn) {
+      if (isLoggedIn) {
         return <Navigate to="/" />;
       }
 

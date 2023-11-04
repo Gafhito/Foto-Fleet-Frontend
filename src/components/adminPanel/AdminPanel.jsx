@@ -11,6 +11,7 @@ import { useProductContext } from '../../utils/productContext';
 import { colors } from '../../utils/constants';
 
 import './adminPanel.css';
+import { RegisterCategory } from '../RegisterCategory/RegisterCategory';
 
 
 
@@ -18,13 +19,16 @@ export const AdminPanel = () => {
 
   const productsContext = useProductContext();
   const isMobile = useMediaQuery('(max-width:600px');
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false); // Estado para el modal de registro de productos
-  const [isListModalOpen, setIsListModalOpen] = useState(false); // Estado para el modal de listado de productos
-  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); // Estado para confirmación de DELETE
   const [products, setProducts] = useState(productsContext);
   const [productToDelete, setProductToDelete] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  // Abrir modales
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false); // Estado para el modal de registro de productos
+  const [isListModalOpen, setIsListModalOpen] = useState(false); // Estado para el modal de listado de productos
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); // Estado para confirmación de DELETE
 
 
   /*useEffect(() => {
@@ -60,6 +64,20 @@ export const AdminPanel = () => {
     setConfirmationModalOpen(false);
   };
 
+
+  const openCategoryModal = () => {
+    setIsCategoryModalOpen(true);
+  };
+
+  const closeCategoryModal = () => {
+    setIsCategoryModalOpen(false);
+  };
+
+  const handleCategorySubmit = (categoryData) => {
+    // Manejar el envío de la categoría -- enviar los datos al servidor.
+    console.log(categoryData);
+  };
+
   return (
     <div>
       {isMobile ? (
@@ -83,12 +101,14 @@ export const AdminPanel = () => {
             <Typography variant="h5" sx={{ marginBottom: '3rem' }}>Panel de Administración</Typography>
             <Button label={ 'Registrar Producto' } onClick={ () => setIsRegisterModalOpen( true ) } backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
             <Button label={ 'Listar Producto' } onClick={ () => setIsListModalOpen( true ) } mt={'1rem'} backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
+            <Button label={'Agregar Categoría'} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} onClick={openCategoryModal} />
           </Box>
         </div>
       )}
 
       <ProductListModal open={ isListModalOpen } onClose={ closeModal }/>
       <RegisterProductModal open={isRegisterModalOpen} onClose={ () => setIsRegisterModalOpen( false ) }/>
+      <RegisterCategory open={isCategoryModalOpen} onClose={closeCategoryModal} onCategorySubmit={handleCategorySubmit} />
       <ConfirmationModal open={ confirmationModalOpen } onClose={ closeConfirmationModal } onConfirm={ () => handleDeleteProduct( productToDelete ) } />
       <Snackbar open={ snackbarOpen } autoHideDuration={ 6000 } onClose={ () => setSnackbarOpen( false ) }>
         <Alert severity="error" sx={{ width: '100%' }}>

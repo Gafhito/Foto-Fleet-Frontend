@@ -8,6 +8,7 @@ import './navLinks.css';
 export const NavLinks = () => {
 
     const { user } = useAuth();
+
   return (
     <Box>
         <Link to="/" className='nav_link'>
@@ -22,7 +23,7 @@ export const NavLinks = () => {
         <Link to="/sobre-nosotros" className='nav_link'>
             Sobre Nosotros
         </Link>
-        {user && user.rol === 'Admin' && <Link to="/administracion" className='nav_link'>
+        {user && user.role === 'Admin' && <Link to="/administracion" className='nav_link'>
             Administracion
         </Link>}
     </Box>

@@ -8,29 +8,21 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  /*useEffect(() => {
+  // Initialize user and isLoggedIn from local storage if available
+  useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
-    if (storedToken) {
-      setUser((prevUser) => ({
-        role: storedUser
-      }));
-      console.log('en el primer UE');
-      console.log('storedToken: ' + storedToken);
-      console.log('storedUser: ' + storedUser);
-      console.log('User: ' + user)
-    }
-    setLoading(false);
-  }, []);*/
 
-  useEffect(() => {
-    console.log('User al inicio de sesión:', user);
-    console.log(localStorage.getItem('token'));
-  }, [user]);
+    if (storedToken && storedUser) {
+      setUser({ role: storedUser });
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const login = (userData) => {
-    fetch('http://ec2-35-173-183-241.compute-1.amazonaws.com/api/auth/login', {
+    return fetch('http://ec2-35-173-183-241.compute-1.amazonaws.com/api/auth/login', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
@@ -40,27 +32,31 @@ export function AuthProvider({ children }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.accessToken) {
-          setUser(data);
-          console.log('User Data: ' + data)
+          setUser({ role: data.rol }); // Correctly set the user role
           localStorage.setItem('token', data.accessToken);
-          localStorage.setItem('user', data.rol)
+          localStorage.setItem('user', data.rol);
+          setIsLoggedIn(true);
+          return data; // Return the response from the API
         } else {
           console.error('Error al iniciar sesión:', data.error);
+          throw new Error('Inicio de sesión fallido. Verifica tus credenciales.');
         }
       })
       .catch((error) => {
         console.error('Error al iniciar sesión:', error);
+        throw error;
       });
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
+    setIsLoggedIn(false);
   };
 
-
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, isLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );

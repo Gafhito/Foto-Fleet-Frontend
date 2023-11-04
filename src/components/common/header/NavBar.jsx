@@ -11,6 +11,8 @@ export const NavBar = () => {
     const { user } = useAuth();
     const [anchorEl, setAnchorEl] = useState(null);
 
+    console.log('user del Navbar: ' + user)
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
