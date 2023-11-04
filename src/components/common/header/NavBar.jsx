@@ -1,24 +1,37 @@
-import { Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Menu, MenuItem } from '@mui/material';
 import { NavLinks } from './NavLinks';
 import { HeaderButtons } from './HeaderButtons';
-
 import { useAuth } from '../../../utils/AuthContext';
 
-export const NavBar = () => {
+import { Avatar } from '../../UserInfo/Avatar';
+import { UserMenu } from '../../UserInfo/UserMenu';
 
-    const { user } = useAuth(); // Accedemos al usuario autenticado desde el contexto
+export const NavBar = () => {
+    const { user } = useAuth();
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     return (
-        <Box sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: {sm: 'space-between', md:'space-around'}, alignItems: {sm:'center'}, width: { lg: '65%', sm:'85%'} }}>
+        <Box sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: { sm: 'space-between', md: 'space-around' }, alignItems: { sm: 'center' }, width: { lg: '65%', sm: '85%' } }}>
             <NavLinks />
-            <Box sx={{display: 'flex'}}>
-                {user ? ( // Verifica si el usuario está autenticado
-                    <div className="avatar">
-                        {user.rol.charAt(0).toUpperCase()}
+            <Box sx={{ display: 'flex' }}>
+                {user ? (
+                    <div>
+                        <Avatar onClick={handleClick} />
+                        <UserMenu anchorEl={anchorEl} onClose={handleClose}/>
                     </div>
                 ) : (
                     <HeaderButtons />
                 )}
             </Box>
         </Box>
-    )
-}
+    );
+};
