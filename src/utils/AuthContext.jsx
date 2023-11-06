@@ -10,7 +10,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Initialize user and isLoggedIn from local storage if available
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
@@ -32,11 +31,11 @@ export function AuthProvider({ children }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.accessToken) {
-          setUser({ role: data.rol }); // Correctly set the user role
+          setUser({ role: data.rol }); // seteamos rol 
           localStorage.setItem('token', data.accessToken);
           localStorage.setItem('user', data.rol);
           setIsLoggedIn(true);
-          return data; // Return the response from the API
+          return data; // Tenemos que retornar el objeto user
         } else {
           console.error('Error al iniciar sesión:', data.error);
           throw new Error('Inicio de sesión fallido. Verifica tus credenciales.');
