@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 
 import { useLoginForm } from '../../../utils/LoginFormContext';
-import { colors } from '../../../utils/constants';
+import { colorsHeader} from '../../../utils/constants';
 
 export const HeaderButtons = () => {
   const { openLoginForm } = useLoginForm();
@@ -14,25 +14,27 @@ export const HeaderButtons = () => {
 
   const buttonStyles = {
     variant: "contained",
-    color: "primary",
+    color: "primary", // You can change this to "default" or remove it since "default" is the default color.
     sx: {
-      backgroundColor: colors.secondaryColor,
-      color: colors.textColor,
-      padding: '8px 16px', // Ajusta el espaciado interno y reduce el tamaño
+      backgroundColor: colorsHeader.secondaryColor,
+      color: colorsHeader.textColor, // Set the text color explicitly
+      padding: '8px 16px',
       '&:hover': {
-        backgroundColor: colors.secondaryColorHover,
+        backgroundColor: colorsHeader.secondaryColorHover,
+        color: colorsHeader.textColor, // Set the hover text color explicitly
       },
-      whiteSpace: 'nowrap', // Evita que el texto se divida en múltiples líneas
+      whiteSpace: 'nowrap',
     },
   };
+  
 
   const buttonStylesCreateAccount = {
     ...buttonStyles,
     sx: {
       ...buttonStyles.sx,
-      backgroundColor: colors.primaryColor,
+      backgroundColor: colorsHeader.primaryColor,
       '&:hover': {
-        backgroundColor: colors.primaryColorHover,
+        backgroundColor: colorsHeader.primaryColorHover,
       },
     },
   };

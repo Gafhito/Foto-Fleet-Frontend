@@ -8,11 +8,11 @@ export const colors = {
 };
 
 export const colorsHeader= {
-    primaryColor: '#007BFF',
+    primaryColor: '#548bbc',
     secondaryColor: '#6C757D',
     tertiaryColor: '#343A40',
     textColor: '#333333',
-    primaryColorHover: '#0056b3',
+    primaryColorHover: '#51789a',
     secondaryColorHover: '#545b62',
   };
 
