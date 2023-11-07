@@ -18,7 +18,7 @@ import { RegisterCategory } from '../RegisterCategory/RegisterCategory';
 export const AdminPanel = () => {
 
   const productsContext = useProductContext();
-  const isMobile = useMediaQuery('(max-width:600px');
+  const isMobile = useMediaQuery('(max-width:850px)');
   const [products, setProducts] = useState(productsContext);
   const [productToDelete, setProductToDelete] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
@@ -99,20 +99,20 @@ export const AdminPanel = () => {
         >
           <Box>
             <Typography variant="h5" sx={{ marginBottom: '3rem' }}>Panel de Administración</Typography>
-            <Button label={ 'Registrar Producto' } onClick={ () => setIsRegisterModalOpen( true ) } backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
-            <Button label={ 'Listar Producto' } onClick={ () => setIsListModalOpen( true ) } mt={'1rem'} backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
+            <Button label={'Registrar Producto'} onClick={() => setIsRegisterModalOpen(true)} backgroundColor={colors.terciaryColor} backgroundColorHover={colors.secondaryColor} />
+            <Button label={'Listar Producto'} onClick={() => setIsListModalOpen(true)} mt={'1rem'} backgroundColor={colors.terciaryColor} backgroundColorHover={colors.secondaryColor} />
             <Button label={'Agregar Categoría'} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} onClick={openCategoryModal} />
           </Box>
         </div>
       )}
 
-      <ProductListModal open={ isListModalOpen } onClose={ closeModal }/>
-      <RegisterProductModal open={isRegisterModalOpen} onClose={ () => setIsRegisterModalOpen( false ) }/>
+      <ProductListModal open={isListModalOpen} onClose={closeModal} />
+      <RegisterProductModal open={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} />
       <RegisterCategory open={isCategoryModalOpen} onClose={closeCategoryModal} onCategorySubmit={handleCategorySubmit} />
-      <ConfirmationModal open={ confirmationModalOpen } onClose={ closeConfirmationModal } onConfirm={ () => handleDeleteProduct( productToDelete ) } />
-      <Snackbar open={ snackbarOpen } autoHideDuration={ 6000 } onClose={ () => setSnackbarOpen( false ) }>
+      <ConfirmationModal open={confirmationModalOpen} onClose={closeConfirmationModal} onConfirm={() => handleDeleteProduct(productToDelete)} />
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
         <Alert severity="error" sx={{ width: '100%' }}>
-          { errorMessage }
+          {errorMessage}
         </Alert>
       </Snackbar>
     </div>

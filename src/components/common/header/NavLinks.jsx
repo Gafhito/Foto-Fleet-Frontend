@@ -1,32 +1,31 @@
 import { Box } from '@mui/material';
 import { Link } from "react-router-dom";
-
 import { useAuth } from '../../../utils/AuthContext';
-
+import { routes } from '../../../utils/constants';
 import './navLinks.css';
 
 export const NavLinks = () => {
-
     const { user } = useAuth();
 
-  return (
-    <Box>
-        <Link to="/" className='nav_link'>
-             Home
-        </Link>
-        <Link to="/productos" className='nav_link'>
-            Productos
-        </Link>
-        <Link to="/contacto" className='nav_link'>
-            Contacto
-        </Link>
-        <Link to="/sobre-nosotros" className='nav_link'>
-            Sobre Nosotros
-        </Link>
-        {user && user.role === 'Admin' && <Link to="/administracion" className='nav_link'>
-            Administracion
-        </Link>}
-    </Box>
-  )
+    return (
+        <Box>
+            <Link to={routes.home} className='nav_link'>
+                <span className="desktop-link">Home</span>
+            </Link>
+            <Link to={routes.products} className='nav_link'>
+                <span className="desktop-link">Productos</span>
+            </Link>
+            <Link to={routes.contact} className='nav_link'>
+                <span className="desktop-link">Contacto</span>
+            </Link>
+            <Link to={routes.about} className='nav_link'>
+                <span className="desktop-link">Sobre Nosotros</span>
+            </Link>
+            {user && user.role === 'Admin' && (
+                <Link to={routes.administration} className='nav_link'>
+                    <span className="desktop-link">Administración</span>
+                </Link>
+            )}
+        </Box>
+    );
 }
-

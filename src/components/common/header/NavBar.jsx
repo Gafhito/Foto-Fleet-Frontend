@@ -22,7 +22,7 @@ export const NavBar = () => {
     };
 
     return (
-        <Box sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: { sm: 'space-between', md: 'space-around' }, alignItems: { sm: 'center' }, width: { lg: '65%', sm: '85%' } }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: { sm: 'space-between', md: 'space-around' }, width: { lg: '65%', sm: '85%' } }}>
             <NavLinks />
             <Box sx={{ display: 'flex' }}>
                 {user ? (
