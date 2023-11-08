@@ -17,7 +17,7 @@ export function ProductProvider({ children }) {
           Authorization: `Bearer ${token}`,
         };
 
-        const response = await fetch('http://ec2-35-173-183-241.compute-1.amazonaws.com/api/products?page=0', {
+        const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products?page=0', {
           headers,
         });
 
@@ -26,6 +26,7 @@ export function ProductProvider({ children }) {
         }
         const data = await response.json();
         setProducts(data);
+        console.log('esta es la data: ', data)
       } catch (error) {
         console.error('Error al obtener datos', error);
       }

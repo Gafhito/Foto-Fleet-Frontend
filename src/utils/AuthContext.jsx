@@ -14,14 +14,14 @@ export function AuthProvider({ children }) {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
 
-    if (storedToken && storedUser) {
-      setUser({ role: storedUser });
+    if (storedToken) {
+      setUser({ role: storedUser, token: storedToken });
       setIsLoggedIn(true);
     }
   }, []);
 
   const login = (userData) => {
-    return fetch('http://ec2-35-173-183-241.compute-1.amazonaws.com/api/auth/login', {
+    return fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/auth/login', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.accessToken) {
-          setUser({ role: data.rol }); // seteamos rol 
+          setUser({ role: data.rol, token: data.accessToken }); // Agregamos el campo 'token' al objeto user
           localStorage.setItem('token', data.accessToken);
           localStorage.setItem('user', data.rol);
           setIsLoggedIn(true);
@@ -54,8 +54,39 @@ export function AuthProvider({ children }) {
     setIsLoggedIn(false);
   };
 
+
+  const getCategories = async () => {
+    const token = user ? user.token : null;
+
+    if (!token) {
+      console.log('no hay token')
+      return [];
+    }
+
+    try {
+      const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/categories', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const categories = await response.json();
+        console.log('categories del Auth: ', categories)
+        return categories;
+      } else {
+        console.error('Error al obtener las categorías:', response.status, response.statusText);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error al obtener las categorías:', error);
+      return [];
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoggedIn }}>
+    <AuthContext.Provider value={{ user, login, logout, isLoggedIn, getCategories }}>
       {children}
     </AuthContext.Provider>
   );
