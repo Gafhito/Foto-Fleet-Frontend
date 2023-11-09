@@ -15,32 +15,6 @@ import { createProduct } from '../../utils/ProductService';
 import { useAuth } from '../../utils/AuthContext';
 
 
-const handleImageChange = (event, imageType, setNewProduct) => {
-  const files = event.target.files;
-
-  setNewProduct((prevProduct) => {
-    if (imageType === 'primaryImage') {
-      {console.log('imageType: ' + imageType)}
-      return {
-        ...prevProduct,
-        images: [files[0], ...prevProduct.images.slice(1)],
-        primaryImage: files[0],
-      };
-    } else if (imageType === 'secondaryImages') {
-      {console.log('imageType: ' + imageType)}
-      return {
-        ...prevProduct,
-        images: [...prevProduct.images, ...files],
-        secondaryImages: files,
-      };
-    }
-
-    console.log('prevProdcut: ', prevProduct)
-    return prevProduct;
-  });
-};
-
-
 
 export const ProductForm = ({ onSubmit, categories }) => {
   const [newProduct, setNewProduct] = useState({
@@ -51,6 +25,8 @@ export const ProductForm = ({ onSubmit, categories }) => {
     stock: '',
     status: 'Disponible',
     images: [],
+    primaryImage: null,
+    secondaryImages: [],
   });
 
   const [categoriesList, setCategoriesList] = useState([]);
@@ -103,6 +79,30 @@ const mapCategoryToID = (categoryName) => {
     default:
       return 0;
   }
+};
+
+
+
+const handleImageChange = (event, imageType, setNewProduct) => {
+  const files = event.target.files;
+
+  setNewProduct((prevProduct) => {
+    if (imageType === 'primaryImage') {
+      return {
+        ...prevProduct,
+        images: [files[0], ...prevProduct.images.slice(1)],
+        primaryImage: files[0],
+      };
+    } else if (imageType === 'secondaryImages') {
+      return {
+        ...prevProduct,
+        images: [...prevProduct.images, ...files],
+        secondaryImages: [...prevProduct.secondaryImages, ...files], // Append files to secondaryImages array
+      };
+    }
+
+    return prevProduct;
+  });
 };
 
 const handleInputChange = (event) => {
