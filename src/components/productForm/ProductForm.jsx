@@ -11,36 +11,78 @@ import {
   MenuItem,
 } from '@mui/material';
 
+import { createProduct } from '../../utils/ProductService';
+import { useAuth } from '../../utils/AuthContext';
+
+
+const handleImageChange = (event, imageType, setNewProduct) => {
+  const files = event.target.files;
+
+  setNewProduct((prevProduct) => {
+    if (imageType === 'primaryImage') {
+      {console.log('imageType: ' + imageType)}
+      return {
+        ...prevProduct,
+        images: [files[0], ...prevProduct.images.slice(1)],
+        primaryImage: files[0],
+      };
+    } else if (imageType === 'secondaryImages') {
+      {console.log('imageType: ' + imageType)}
+      return {
+        ...prevProduct,
+        images: [...prevProduct.images, ...files],
+        secondaryImages: files,
+      };
+    }
+
+    console.log('prevProdcut: ', prevProduct)
+    return prevProduct;
+  });
+};
+
+
+
 export const ProductForm = ({ onSubmit, categories }) => {
   const [newProduct, setNewProduct] = useState({
-    title: '',
+    name: '',
     description: '',
-    category: '',
+    categoryId: '',
     rentalPrice: '',
     stock: '',
     status: 'Disponible',
-    imageUrl: '',
-    additionalImages: [],
+    images: [],
   });
 
-  const [categoriesList, setCategoriesList] = useState(categories);
+  const [categoriesList, setCategoriesList] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(1); // estado para trackear el ID de la categoria
+  const [mainImage, setMainImage] = useState(null);
+  const { getCategories, user } = useAuth();
 
   console.log('Estado categoriesList: ', categoriesList)
   console.log('Estado selectedCategoryID:' + selectedCategoryId)
 
   // Inicializamos el valor de categoria para el primer valor
   useEffect(() => {
-    if (categories.length > 0) {
-      setNewProduct((prevProduct) => ({
-        ...prevProduct,
-        category: categories[0].name, // Set the default category value
-      }));
-      console.log('categories.lenght: ' + categories.length)
-      console.log('categories[0].name: ' + categories[0].name)
-      console.log('newProduct.category: ' + newProduct.category)
-    }
-  }, [categories]);
+    const fetchCategories = async () => {
+      try {
+        const fetchedCategories = await getCategories();
+        setCategoriesList(fetchedCategories);
+
+        if (fetchedCategories.length > 0) {
+          setNewProduct((prevProduct) => ({
+            ...prevProduct,
+            category: fetchedCategories[0].name,
+          }));
+          const categoryID = mapCategoryToID(fetchedCategories[0].name);
+          setSelectedCategoryId(categoryID);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, [getCategories]);
 
 
   // mapping para setear el ID de las categorias basado en su nombre
@@ -63,88 +105,85 @@ const mapCategoryToID = (categoryName) => {
   }
 };
 
-  const handleInputChange = (event) => {
-    const { value, name } = event.target;
-    console.log('Selected value: ' + value)
-    console.log('Selected name: ' + name)
+const handleInputChange = (event) => {
+  const { value, name } = event.target;
 
-    if (name === 'category') {
-      // Buscamos la categoria que matchee con el valor seleccionado
-      const selectedCategory = categories.find((category) => category.name === value);
+  if (name === 'categoryId') {
+    setNewProduct((prevProduct) => ({
+      ...prevProduct,
+      categoryId: value,
+    }));
+    setSelectedCategoryId(value);
+  } else {
+    setNewProduct((prevProduct) => ({
+      ...prevProduct,
+      [name]: value,
+    }));
+  }
+};
 
-      console.log('categories del prop: ', categories)
-      console.log('selectedCategory: ' , selectedCategory)
-      console.log('selectedCategory name del prop: ', selectedCategory.name)
-      console.log('value: ' + value)
-      
-      if (selectedCategory) {
 
-        const categoryID = mapCategoryToID(selectedCategory.name);
-        console.log('categoryID de la categoria seleccionada es: ' + categoryID)
-        // Set the category to the ID of the selected category
-        setNewProduct((prevProduct) => ({
-          ...prevProduct,
-          category: selectedCategory.name,
-        }));
-        setSelectedCategoryId(categoryID);
+useEffect(() => {
+  const imageUploadRequest = new FormData();
 
-        console.log('newProduct en handleInoutChange: ' , newProduct)
-      } else {
-        console.error('La categoria no se encontro:', value);
-      }
-    } else {
-      setNewProduct((prevProduct) => ({
-        ...prevProduct,
-        [name]: value,
-      }));
+  // Append primaryImage
+  if (newProduct.primaryImage) {
+    imageUploadRequest.append('primaryImage', newProduct.primaryImage);
+  }
+
+  // Append secondaryImages
+  if (newProduct.secondaryImages) {
+    newProduct.secondaryImages.forEach((image, index) => {
+      imageUploadRequest.append(`secondaryImages[${index}]`, image);
+    });
+  }
+
+  console.log('imageUploadRequest: ', imageUploadRequest);
+}, [newProduct.primaryImage, newProduct.secondaryImages]);
+
+
+const handleSubmit = async () => {
+  try {
+    // se crea el producto y devuelve ID
+    const productId = await createProduct(newProduct, user.token);
+
+    console.log('newProduct handleSubmit: ', newProduct);
+    console.log('Subiendo IMG productID: ' + productId);
+
+    // creamos FormData
+    const imageUploadRequest = new FormData();
+
+    console.log(`antes del for: \n length: ${newProduct.images.length} \n`, newProduct.images)
+
+    for (let index = 0; index < newProduct.images.length; index++) {
+      imageUploadRequest.append('images[]', newProduct.images[index]);
+      console.log(`dentro del for: \n index: ${index} \n ${newProduct.images[index]}`)
     }
-  };
 
-  const handleMainImageChange = (event) => {
-    const file = event.target.files[0];
-    const imageUrl = URL.createObjectURL(file);
+    console.log('imageUploadRequest: ', imageUploadRequest);
 
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      imageUrl,
-    }));
-  };
+    const imageUploadResponse = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/images?productId=${productId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${user.token}`,
+      },
+      body: imageUploadRequest,
+    });
 
-  const handleImageChange = (event) => {
-    const files = event.target.files;
-    const additionalImages = Array.from(files).map((file) => URL.createObjectURL(file));
+    console.log('body IMG request: ', imageUploadRequest);
 
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      additionalImages,
-    }));
-  };
-
-  const handleSubmit = () => {
-    // Agregar validación del formulario aquí
-
-    // Construir el objeto requestBody
-    const requestBody = {
-      name: newProduct.title,
-      description: newProduct.description,
-      categoryId: mapCategoryToID(newProduct.category),
-      rentalPrice: parseFloat(newProduct.rentalPrice), // Convertir a número si es necesario
-      stock: parseInt(newProduct.stock, 10), // Convertir a número si es necesario
-      status: newProduct.status,
-      images: [
-        {
-          url: newProduct.imageUrl,
-          primary: true,
-        }
-      ]
-    };
+    if (imageUploadResponse.status === 201) {
+      console.log('Product and images created successfully!');
+    } else {
+      console.error(`Error uploading images: ${imageUploadResponse.status} - ${imageUploadResponse.statusText}`);
+    }
+  } catch (error) {
+    console.error('Error creating product:', error);
+  }
+};
 
 
-    console.log('handleSubmit requestBody: ', requestBody)
-
-    onSubmit(requestBody);
-  };
-
+  
   return (
     <Container>
       <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
@@ -154,8 +193,8 @@ const mapCategoryToID = (categoryName) => {
         <div>
           <TextField
             label="Nombre del Producto"
-            name="title"
-            value={newProduct.title}
+            name="name"
+            value={newProduct.name}
             onChange={handleInputChange}
             fullWidth
             required // Agregar validación de requerido
@@ -177,16 +216,16 @@ const mapCategoryToID = (categoryName) => {
         <FormControl fullWidth>
           <InputLabel>Categoría</InputLabel>
           <Select
-            name="category"
-            value={newProduct.category || ''}
-            onChange={(event) => handleInputChange(event, 'category')} // Pass 'category' as the name
+            name="categoryId"
+            value={newProduct.categoryId || ''}
+            onChange={(event) => handleInputChange(event, 'categoryId')} // 'categoryId' como name
             required
           >
             <MenuItem value="">
               <em>Seleccionar categoría</em>
             </MenuItem>
-            {categories.map((category, index) => (
-              <MenuItem key={index} value={category.name}>
+            {categoriesList.map((category) => (
+              <MenuItem key={category.categoryId} value={category.categoryId}>
                 {category.name}
               </MenuItem>
             ))}
@@ -201,7 +240,7 @@ const mapCategoryToID = (categoryName) => {
             value={newProduct.rentalPrice}
             onChange={handleInputChange}
             fullWidth
-            required // Agregar validación de requerido
+            required 
           />
         </div>
         <div>
@@ -212,7 +251,7 @@ const mapCategoryToID = (categoryName) => {
             value={newProduct.stock}
             onChange={handleInputChange}
             fullWidth
-            required // Agregar validación de requerido
+            required 
           />
         </div>
         <div>
@@ -225,32 +264,28 @@ const mapCategoryToID = (categoryName) => {
           />
         </div>
         <div>
+          {/* primaryImage */}
           <input
             accept="image/*"
             id="main-image-file"
             type="file"
             style={{ display: 'none' }}
-            onChange={handleMainImageChange}
+            onChange={(event) => handleImageChange(event, 'primaryImage', setNewProduct)}
           />
           <label htmlFor="main-image-file">
             <Button variant="contained" component="span">
               Subir Imagen Principal
             </Button>
           </label>
-        </div>
-        {newProduct.imageUrl && (
-          <div>
-            <Typography>{newProduct.imageUrl}</Typography>
-          </div>
-        )}
-        <div>
+
+          {/* secondaryImages */}
           <input
             accept="image/*"
             id="additional-images-file"
             type="file"
             multiple
             style={{ display: 'none' }}
-            onChange={handleImageChange}
+            onChange={(event) => handleImageChange(event, 'secondaryImages', setNewProduct)}
           />
           <label htmlFor="additional-images-file">
             <Button variant="contained" component="span">
@@ -258,11 +293,6 @@ const mapCategoryToID = (categoryName) => {
             </Button>
           </label>
         </div>
-        {newProduct.additionalImages.map((image, index) => (
-          <div key={index}>
-            <Typography>{image}</Typography>
-          </div>
-        ))}
         <div>
           <Button variant="contained" onClick={handleSubmit}>
             Registrar

@@ -6,12 +6,7 @@ export const createProduct = async (newProduct, token) => {
       rentalPrice: newProduct.rentalPrice,
       stock: newProduct.stock,
       status: newProduct.status,
-      images: [
-        {
-          url: newProduct.imageUrl,
-          primary: true,
-        }
-      ]
+      images: newProduct.images,
     };
 
 
@@ -28,7 +23,10 @@ export const createProduct = async (newProduct, token) => {
   
     if (response.status === 201) {
       const data = await response.json();
-      return data;
+
+      console.log("ProductService DATA: " , data)
+      console.log("ProductService DATA.ID: " , data.productId)
+      return data.productId;
     } else {
       throw new Error(`Error al crear el producto: ${response.status} - ${response.statusText}`);
     }

@@ -12,7 +12,7 @@ export function ProductProvider({ children }) {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const token = localStorage.getItem('token'); // Obtén el token del localStorage
+        const token = localStorage.getItem('token'); // token del localStorage
         const headers = {
           Authorization: `Bearer ${token}`,
         };
