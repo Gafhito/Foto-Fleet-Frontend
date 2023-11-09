@@ -129,12 +129,14 @@ useEffect(() => {
   // Append primaryImage
   if (newProduct.primaryImage) {
     imageUploadRequest.append('primaryImage', newProduct.primaryImage);
+    console.log('UE primaryImage: ', newProduct.primaryImage)
   }
 
   // Append secondaryImages
   if (newProduct.secondaryImages) {
     newProduct.secondaryImages.forEach((image, index) => {
       imageUploadRequest.append(`secondaryImages[${index}]`, image);
+      console.log('UE secondaryImages: ', newProduct.secondaryImages)
     });
   }
 
