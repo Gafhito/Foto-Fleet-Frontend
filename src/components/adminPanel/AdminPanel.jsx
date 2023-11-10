@@ -6,25 +6,31 @@ import { ConfirmationModal } from '../common/confirmationModal/confirmationModal
 import { ProductForm } from '../productForm/ProductForm';
 import { ProductListModal } from './ProductListModal';
 import { RegisterProductModal } from './RegisterProductModal';
+import { ManageCharacteristicsModal } from '../manageCharacteristicsModal/ManageCharacteristicsModal';
 
 import { useProductContext } from '../../utils/productContext';
 import { colors } from '../../utils/constants';
 
 import './adminPanel.css';
+import { RegisterCategory } from '../RegisterCategory/RegisterCategory';
 
 
 
 export const AdminPanel = () => {
 
   const productsContext = useProductContext();
-  const isMobile = useMediaQuery('(max-width:600px');
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false); // Estado para el modal de registro de productos
-  const [isListModalOpen, setIsListModalOpen] = useState(false); // Estado para el modal de listado de productos
-  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); // Estado para confirmación de DELETE
+  const isMobile = useMediaQuery('(max-width:850px)');
   const [products, setProducts] = useState(productsContext);
   const [productToDelete, setProductToDelete] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  // Abrir modales
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false); // Estado para el modal de registro de productos
+  const [isListModalOpen, setIsListModalOpen] = useState(false); // Estado para el modal de listado de productos
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); // Estado para confirmación de DELETE
+  const [isCharacteristicsModalOpen, setCharacteristicsModalOpen] = useState(false);
 
 
   /*useEffect(() => {
@@ -60,6 +66,28 @@ export const AdminPanel = () => {
     setConfirmationModalOpen(false);
   };
 
+
+  const openCategoryModal = () => {
+    setIsCategoryModalOpen(true);
+  };
+
+  const closeCategoryModal = () => {
+    setIsCategoryModalOpen(false);
+  };
+
+  const openCharacteristicsModal = () => {
+    setCharacteristicsModalOpen(true);
+  };
+
+  const closeCharacteristicsModal = () => {
+    setCharacteristicsModalOpen(false);
+  };
+
+  const handleCategorySubmit = (categoryData) => {
+    // Manejar el envío de la categoría -- enviar los datos al servidor.
+    console.log(categoryData);
+  };
+
   return (
     <div>
       {isMobile ? (
@@ -83,16 +111,20 @@ export const AdminPanel = () => {
             <Typography variant="h5" sx={{ marginBottom: '3rem' }}>Panel de Administración</Typography>
             <Button label={ 'Registrar Producto' } onClick={ () => setIsRegisterModalOpen( true ) } backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
             <Button label={ 'Listar Producto' } onClick={ () => setIsListModalOpen( true ) } mt={'1rem'} backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
+            <Button label={'Agregar Categoría'} onClick={openCategoryModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
+            <Button label={'Administrar Caracteristicas'} onClick={openCharacteristicsModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
           </Box>
         </div>
       )}
 
-      <ProductListModal open={ isListModalOpen } onClose={ closeModal }/>
-      <RegisterProductModal open={isRegisterModalOpen} onClose={ () => setIsRegisterModalOpen( false ) }/>
+      <ProductListModal open={isListModalOpen} onClose={closeModal} />
+      <RegisterProductModal open={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} />
+      <RegisterCategory open={isCategoryModalOpen} onClose={closeCategoryModal} onCategorySubmit={handleCategorySubmit} />
+      <ManageCharacteristicsModal open={isCharacteristicsModalOpen} onClose={closeCharacteristicsModal} />
       <ConfirmationModal open={ confirmationModalOpen } onClose={ closeConfirmationModal } onConfirm={ () => handleDeleteProduct( productToDelete ) } />
       <Snackbar open={ snackbarOpen } autoHideDuration={ 6000 } onClose={ () => setSnackbarOpen( false ) }>
         <Alert severity="error" sx={{ width: '100%' }}>
-          { errorMessage }
+          {errorMessage}
         </Alert>
       </Snackbar>
     </div>

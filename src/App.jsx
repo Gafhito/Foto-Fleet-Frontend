@@ -9,8 +9,11 @@ import { colors } from './utils/constants';
 import './App.css';
 import { LoginPage } from './pages/LoginPage';
 
+import { useAuth } from './utils/AuthContext';
+
 export const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Agrega un estado para rastrear el inicio de sesión
+
+  const { isLoggedIn } = useAuth();
 
   return (
     <Router>
@@ -18,9 +21,11 @@ export const App = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="/administracion" element={<AdminPage />}/>
+            {/* Protegemos ruta /administracion */}
+            <Route path="/administracion" element={ isLoggedIn ? <AdminPage /> : <Navigate to="/" />}
+            />
             <Route path="/:productId" element={<ProductPage />} />
-            <Route path="/auth/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/auth/login" element={<LoginPage />} />
           </Route>
         </Routes>
       </div>

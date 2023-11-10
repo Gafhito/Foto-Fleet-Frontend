@@ -7,3 +7,29 @@ export const colors = {
     textColor: '#282A23',
 };
 
+export const colorsHeader= {
+    primaryColor: '#548bbc',
+    secondaryColor: '#6C757D',
+    tertiaryColor: '#343A40',
+    textColor: '#333333',
+    primaryColorHover: '#51789a',
+    secondaryColorHover: '#545b62',
+  };
+
+export const breakpoints = {
+    xs: '0px',
+    sm: '600px',
+    md: '850px',
+    lg: '1200px',
+  };
+  
+  export const routes = {
+    home: '/',
+    products: '/productos',
+    contact: '/contacto',
+    about: '/sobre-nosotros',
+    administration: '/administracion',
+  };
+  
+ 
+  

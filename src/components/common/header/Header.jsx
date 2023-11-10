@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AppBar, Toolbar } from '@mui/material';
-
+import { AppBar, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 // componentes locales.
 import { HeaderDrawer } from './HeaderDrawer';
 import { NavLinks } from './NavLinks';
@@ -9,9 +8,11 @@ import { MobileMenuIcon } from './MobileMenuIcon';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
 
-import { colors } from '../../../utils/constants';
+import { colors , breakpoints} from '../../../utils/constants';
 
 export const Header = () => {
+  const theme = useTheme();
+  const isSmScreen = useMediaQuery(`(max-width: ${breakpoints.sm})`);
 
   const [anchorEl, setAnchorEl] = useState(null); // Almacena el ancla para el menú desplegable.
   const [drawerOpen, setDrawerOpen] = useState(false); // Indica si el drawer está abierto o cerrado.
@@ -27,7 +28,7 @@ export const Header = () => {
       setIsSticky(true); // Si el desplazamiento vertical es mayor que 0, el header se vuelve sticky.
     } else {
       setIsSticky(false); // Si el desplazamiento vertical es 0 o menor, el encabezado deja de ser sticky.
-    }
+    };
   };
 
   // escuchamos el evento scroll.
@@ -41,8 +42,13 @@ export const Header = () => {
 
   return (
     <div>
-      <AppBar position='fixed' sx={{ backgroundColor: colors.terciaryColor, top: '0', zIndex: '999' }}>
-        <Toolbar sx={{ display: 'flex', justifyContent: { md: 'space-around', sm: 'space-around'} }}>
+      <AppBar position='fixed' sx={{ backgroundColor: colors.terciaryColor, top: '0', zIndex: '999', height: '64px', overflowX: 'hidden' }}>
+        <Toolbar sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flex: 1,
+          maxWidth: '100%', 
+        }}>
           <MobileMenuIcon onClick={toggleDrawer} />
           <Logo />
           <NavBar />
