@@ -83,10 +83,10 @@ const mapCategoryToID = (categoryName) => {
 
 
 
-const handleImageChange = (event, imageType, setNewProduct) => {
+const handleImageChange = async (event, imageType) => {
   const files = event.target.files;
 
-  setNewProduct((prevProduct) => {
+  await setNewProduct((prevProduct) => {
     if (imageType === 'primaryImage') {
       return {
         ...prevProduct,
@@ -123,26 +123,31 @@ const handleInputChange = (event) => {
 };
 
 
-useEffect(() => {
+
+
+
+const buildImageUploadRequest = () => {
   const imageUploadRequest = new FormData();
 
-  // Append primaryImage
+  // Agregar primaryImage si existe
   if (newProduct.primaryImage) {
     imageUploadRequest.append('primaryImage', newProduct.primaryImage);
     console.log('UE primaryImage: ', newProduct.primaryImage)
+    console.log('UE newProduct: ', newProduct)
+    console.log('imageUploadRequest dentro del 1ry: ', imageUploadRequest)
   }
 
-  // Append secondaryImages
-  if (newProduct.secondaryImages) {
+  // Agregar secondaryImages si existen
+  if (newProduct.secondaryImages && newProduct.secondaryImages.length > 0) {
     newProduct.secondaryImages.forEach((image, index) => {
-      imageUploadRequest.append(`secondaryImages[${index}]`, image);
+      imageUploadRequest.append(`secondaryImages`, image);
       console.log('UE secondaryImages: ', newProduct.secondaryImages)
+      console.log('UE newProduct: ', newProduct)
+      console.log('imageUploadRequest dentro del 2dry: ', imageUploadRequest)
     });
   }
-
-  console.log('imageUploadRequest: ', imageUploadRequest);
-}, [newProduct.primaryImage, newProduct.secondaryImages]);
-
+  return imageUploadRequest;
+};
 
 const handleSubmit = async () => {
   try {
@@ -152,17 +157,14 @@ const handleSubmit = async () => {
     console.log('newProduct handleSubmit: ', newProduct);
     console.log('Subiendo IMG productID: ' + productId);
 
-    // creamos FormData
-    const imageUploadRequest = new FormData();
+    const imageUploadRequest = buildImageUploadRequest();
 
-    console.log(`antes del for: \n length: ${newProduct.images.length} \n`, newProduct.images)
-
-    for (let index = 0; index < newProduct.images.length; index++) {
-      imageUploadRequest.append('images[]', newProduct.images[index]);
-      console.log(`dentro del for: \n index: ${index} \n ${newProduct.images[index]}`)
+    // Aquí agregamos el código para inspeccionar el FormData
+    for (let [key, value] of imageUploadRequest.entries()) {
+      console.log('inspeccionando FORMDATA: ', key, value);
     }
 
-    console.log('imageUploadRequest: ', imageUploadRequest);
+    console.log('imageUploadRequest: ', imageUploadRequest)
 
     const imageUploadResponse = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/images?productId=${productId}`, {
       method: 'POST',
@@ -272,7 +274,7 @@ const handleSubmit = async () => {
             id="main-image-file"
             type="file"
             style={{ display: 'none' }}
-            onChange={(event) => handleImageChange(event, 'primaryImage', setNewProduct)}
+            onChange={(event) => handleImageChange(event, 'primaryImage')}
           />
           <label htmlFor="main-image-file">
             <Button variant="contained" component="span">
@@ -287,7 +289,7 @@ const handleSubmit = async () => {
             type="file"
             multiple
             style={{ display: 'none' }}
-            onChange={(event) => handleImageChange(event, 'secondaryImages', setNewProduct)}
+            onChange={(event) => handleImageChange(event, 'secondaryImages')}
           />
           <label htmlFor="additional-images-file">
             <Button variant="contained" component="span">
