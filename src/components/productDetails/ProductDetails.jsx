@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
   Box,
   Grid,
@@ -22,6 +22,7 @@ import 'slick-carousel/slick/slick.css'; // Importar estilos del carrusel
 import 'slick-carousel/slick/slick-theme.css'; // Importar estilos del carrusel
 
 import './productDetails.css';
+import { useProductContext } from '../../utils/ProductContext';
 
 export const ProductDetails = ({ product }) => {
   const [showAllImages, setShowAllImages] = useState(false);
@@ -37,6 +38,22 @@ export const ProductDetails = ({ product }) => {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+  const { getProductById } = useContext(useProductContext)
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const details = await getProductById(product.id);
+        console.log('Detalles del producto:', details);
+        // Haz algo con los detalles del producto si es necesario
+      } catch (error) {
+        console.error('Error al obtener detalles del producto', error);
+      }
+    };
+
+    fetchProductDetails();
+  }, [getProductById, product.id]);
 
   // Configuración del carrusel
   const settings = {

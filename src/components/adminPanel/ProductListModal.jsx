@@ -1,4 +1,8 @@
-import { createTheme, ThemeProvider, Modal, Box, Typography } from '@mui/material';
+import { createTheme, ThemeProvider, Modal, Box, Typography, Button as MuiButton } from '@mui/material';
+import Pagination from '@mui/material/Pagination';
+
+import { useProductContext } from '../../utils/ProductContext';
+
 
 import { colors } from '../../utils/constants';
 
@@ -20,6 +24,10 @@ const customModalTheme = createTheme({
   });
 
 export const ProductListModal = ({ open, onClose}) => {
+
+  const products = useProductContext();
+
+
   return (
     <ThemeProvider theme={customModalTheme}>
         <Modal open={open} onClose={onClose}>
@@ -61,10 +69,10 @@ export const ProductListModal = ({ open, onClose}) => {
                 </tr>
               </thead>
               <tbody>
-                {/*products.map(product => (
-                  <tr key={product.id}>
-                    <td>{product.id}</td>
-                    <td>{product.title}</td>
+                {products.map(product => (
+                  <tr key={product.categoryId}>
+                    <td>{product.categoryId}</td>
+                    <td>{product.name}</td>
                     <td>{product.action}</td>
                     <td>
                       <MuiButton variant="outlined" color="error" size="small" onClick={() => openModal(product.id)}>
@@ -72,7 +80,7 @@ export const ProductListModal = ({ open, onClose}) => {
                       </MuiButton>
                     </td>
                   </tr>
-                ))*/}
+                ))}
               </tbody>
             </table>
           </Box>

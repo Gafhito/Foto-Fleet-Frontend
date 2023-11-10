@@ -72,7 +72,7 @@ export const ProductModal = ({ open, onClose, product }) => {
                   component="img"
                   height="280px"
                   image={product.images[selectedImageIndex].img_url}
-                  title={product.title}
+                  title={product.name}
                   sx={{ width: '100%' }}
                   onClick={() => handleImageClick((selectedImageIndex + 1) % product.images.length)}
                 />

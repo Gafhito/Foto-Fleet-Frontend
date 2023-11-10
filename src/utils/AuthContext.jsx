@@ -55,10 +55,41 @@ export function AuthProvider({ children }) {
   };
 
 
-  const getCategories = async () => {
+  const getUserData = async () => {
     const token = user ? user.token : null;
 
     if (!token) {
+      console.log('No hay token');
+      return null;
+    }
+
+    try {
+      const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/user', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const userData = await response.json();
+        console.log('Datos del usuario:', userData);
+        return userData;
+      } else {
+        console.error('Error al obtener datos del usuario:', response.status, response.statusText);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error al obtener datos del usuario:', error);
+      return null;
+    }
+  };
+
+// EL GETCATEGORIES ESTA DE ATREVIDA ACA - CAMBIARLO DE RUTA HACIA PRODUCTCONTEXT
+  const getCategories = async () => {
+    const token = user ? user.token : null;
+
+    if (!token) {1
       console.log('no hay token')
       return [];
     }
@@ -86,7 +117,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoggedIn, getCategories }}>
+    <AuthContext.Provider value={{ user, login, logout, isLoggedIn, getCategories, getUserData }}>
       {children}
     </AuthContext.Provider>
   );
