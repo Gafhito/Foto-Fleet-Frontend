@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from 'react';
 import './login.css';
 import  { LoginFormContext }   from '../../utils/LoginFormContext';
 import { useAuth } from '../../utils/AuthContext';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 /* Material UI imports */ 
 import Paper from '@mui/material/Paper';
@@ -61,8 +61,7 @@ export const Login = () => {
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [redirect, setRedirect] = useState(false);
-
-
+    const navigate = useNavigate();
 
     const { login, registerUser, setIsLoggedIn, isLoggedIn } = useAuth();
 
@@ -71,40 +70,38 @@ export const Login = () => {
         setError(null); // Limpiar errores al cambiar entre modos
       };
 
-
-    const handleChange = (event) => {
-
-        const { name, value } = event.target;
-
-        switch (name) {
-            case 'firstName':
-            setFirstName(value);
-            break;
-            case 'lastName':
-            setLastName(value);
-            break;
-            case 'email':
-            setEmail(value);
-            break;
-            case 'password':
-            setPassword(value);
-            break;
-            case 'address':
-            setAddress(value);
-            break;
-            case 'phone':
-            setPhone(value);
-            break;
-            default: ''
-            break;
-        }
-    };
+const handleChange = (event) => {
+  const { name, value } = event.target;
+  switch (name) {
+    case 'firstName':
+      setFirstName(value);
+      break;
+    case 'lastName':
+      setLastName(value);
+      break;
+    case 'email':
+      setEmail(value);
+      break;
+    case 'password':
+      setPassword(value);
+      break;
+    case 'address':
+      setAddress(value);
+      break;
+    case 'phone':
+      setPhone(value);
+      break;
+    default:
+      break;
+  }
+};
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
 
     const handleLogin = async () => {
+
         const userData = {
           email,
           password,
@@ -137,6 +134,7 @@ export const Login = () => {
       console.log('isLoggedIn al entrar al componente Login:', isLoggedIn);
 
       const handleRegister = async () => {
+
         const userData = {
           firstName,
           lastName,
@@ -176,7 +174,7 @@ export const Login = () => {
 
 
     if (redirect) {
-        return <Navigate to="/" />;
+        navigate('/');
       }
 
 
@@ -220,7 +218,7 @@ export const Login = () => {
                     <>
                         <TextField
                             sx={{ mb: '1rem' }}
-                            className='form_input'
+                            className={`form_input`}
                             id="filled-basic"
                             label="First Name"
                             variant="filled"
@@ -229,7 +227,7 @@ export const Login = () => {
                         />
                         <TextField
                             sx={{ mb: '1rem' }}
-                            className='form_input'
+                            className={`form_input`}
                             id="filled-basic"
                             label="Last Name"
                             variant="filled"
@@ -238,7 +236,7 @@ export const Login = () => {
                         />
                         <TextField
                             sx={{ mb: '1rem' }}
-                            className='form_input'
+                            className={`form_input`}
                             id="filled-basic"
                             label="Address"
                             variant="filled"
@@ -302,7 +300,7 @@ export const Login = () => {
                         </Link>
                     </div>
 
-                    <Button sx={{ mt: '1.5rem'}} variant="contained" disableElevation color='success' onClick={ isRegisterMode ? handleRegister: handleLogin}>
+                    <Button sx={{ mt: '1.5rem'}} variant="contained" disableElevation color='success' onClick={ isRegisterMode ? handleRegister: handleLogin} >
                         {isRegisterMode ? 'Registrate' : 'Inicia Sesión' }
                     </Button>
 

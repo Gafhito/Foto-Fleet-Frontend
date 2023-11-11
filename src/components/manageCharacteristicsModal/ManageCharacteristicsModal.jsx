@@ -148,7 +148,7 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
           </TableBody>
         </Table>
         <Dialog open={isAddCategoryFormOpen} onClose={() => setIsAddCategoryFormOpen(false)}>
-          <DialogTitle>Agregar Nueva Categoria</DialogTitle>
+          <DialogTitle>Agregar Nueva Caracteristica</DialogTitle>
           <DialogContent>
             <AddCategoryForm onAddCategory={handleAddCategory} />
           </DialogContent>
