@@ -69,13 +69,13 @@ export const ProductListModal = ({ open, onClose}) => {
                 </tr>
               </thead>
               <tbody>
-                {products.map(product => (
-                  <tr key={product.categoryId}>
-                    <td>{product.categoryId}</td>
+                {products.content?.map(product => (
+                  <tr key={product.productId}>
+                    <td>{product.productId}</td>
                     <td>{product.name}</td>
                     <td>{product.action}</td>
                     <td>
-                      <MuiButton variant="outlined" color="error" size="small" onClick={() => openModal(product.id)}>
+                      <MuiButton variant="outlined" color="error" size="small" onClick={() => openModal(product.productId)}>
                         Eliminar
                       </MuiButton>
                     </td>

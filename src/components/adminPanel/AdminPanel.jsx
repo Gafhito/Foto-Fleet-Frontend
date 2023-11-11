@@ -133,6 +133,7 @@ export const AdminPanel = () => {
       <RegisterCategory open={isCategoryModalOpen} onClose={closeCategoryModal} onCategorySubmit={handleCategorySubmit} />
       <ManageCharacteristicsModal open={isCharacteristicsModalOpen} onClose={closeCharacteristicsModal} />
       <EditProductModal open={isEditModalOpen} onClose={closeEditModal} products={products} />
+      {console.log('products desde el adminpanel: ', products)}
       <ConfirmationModal open={ confirmationModalOpen } onClose={ closeConfirmationModal } onConfirm={ () => handleDeleteProduct( productToDelete ) } />
       <Snackbar open={ snackbarOpen } autoHideDuration={ 6000 } onClose={ () => setSnackbarOpen( false ) }>
         <Alert severity="error" sx={{ width: '100%' }}>

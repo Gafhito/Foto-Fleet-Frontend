@@ -4,12 +4,19 @@ import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import { useProductContext } from '../../utils/productContext';
 import { colors } from '../../utils/constants';
+import { useAuth } from '../../utils/AuthContext';
 
 export const EditProductModal = ({ open, onClose, products }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [productDetails, setProductDetails] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const authContext = useAuth();
+
+
+  console.log('authContext: ', authContext)
 
 
   // campos editables
@@ -22,7 +29,37 @@ export const EditProductModal = ({ open, onClose, products }) => {
 
   const productsContext = useProductContext();
 
+  const productsContent = productsContext.products.content;
+
+
+
   console.log('productsContext: ',productsContext)
+  console.log('products content: ', productsContent)
+
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const fetchedCategories = await authContext.getCategories();
+        setCategories(fetchedCategories);
+        console.log('fetchedCategories: ', fetchedCategories)
+  
+        // If you have the categoryId in the productDetails, set it as the default selected category
+        if (productDetails && productDetails.categoryId) {
+          console.log('productDetails en el IF: ', productDetails)
+          const selectedCategory = fetchedCategories.find(category => category.categoryId === productDetails.categoryId);
+          setSelectedCategory(selectedCategory);
+          setEditedCategoryId(selectedCategory?.categoryId || 0);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+
+      console.log('selectedCategory.ID', selectedCategory?.categoryId)
+    };
+  
+    fetchCategories();
+  }, [authContext, productDetails]);
 
   useEffect(() => {
     console.log('DENTRO DLE UE DE EDIT')
@@ -30,7 +67,7 @@ export const EditProductModal = ({ open, onClose, products }) => {
       if (selectedProduct) {
         console.log('antes del try: ', selectedProduct)
         try {
-          const details = await productsContext.getProductById(54);// cambiar el 54 por selectedProduct
+          const details = await productsContext.getProductById(selectedProduct);// cambiar el 54 por selectedProduct
           setProductDetails(details);
 
           // actualizo los TextField con detalles del producto
@@ -51,7 +88,7 @@ export const EditProductModal = ({ open, onClose, products }) => {
     };
 
     fetchProductDetails();
-  }, [selectedProduct, productsContext]);
+  }, [selectedProduct, productsContent]);
 
   const handleProductChange = (event) => {
     console.log('Selected Product:', event.target.value);
@@ -72,7 +109,7 @@ export const EditProductModal = ({ open, onClose, products }) => {
 
       console.log('PRODUCTO EDITAD: ', editedProduct)
         // cambiar el 54 por selectedProduct
-      await productsContext.updateProduct(54, editedProduct);
+      await productsContext.updateProduct(selectedProduct, editedProduct);
 
 
 
@@ -109,6 +146,8 @@ export const EditProductModal = ({ open, onClose, products }) => {
         break;
     }
   };
+
+  
 
   const openSnackbar = (message) => {
     setSnackbarMessage(message);
@@ -147,8 +186,8 @@ export const EditProductModal = ({ open, onClose, products }) => {
             }}>
                 <Typography variant="h5" sx={{ marginBottom: '1rem' }}>Editar Producto</Typography>
                 <Select value={selectedProduct || ''} onChange={handleProductChange} sx={{ marginBottom: '1rem', width: '50%' }}>
-                {products.map((product) => (
-                    <MenuItem key={product.name} value={product.categoryId}>
+                {products.content?.map((product) => (
+                    <MenuItem key={product.productId} value={product.productId}>
                     {product.name}
                     </MenuItem>
                 ))}
@@ -169,12 +208,21 @@ export const EditProductModal = ({ open, onClose, products }) => {
                     onChange={(event) => handleFieldChange(event, 'description')}
                     fullWidth
                 />
-                <TextField
-                    label="Categoría"
-                    value={editedCategoryId || ''}
-                    onChange={(event) => handleFieldChange(event, 'categoryId')}
-                    fullWidth
-                />
+               <Select
+                  value={editedCategoryId || ''}
+                  onChange={(event) => {
+                    console.log('Selected Category ID:', event.target.value);
+                    setEditedCategoryId(event.target.value);
+                  }}
+                  fullWidth
+                  sx={{ marginBottom: '1rem' }}
+                >
+                  {categories.map((category) => (
+                    <MenuItem key={category.categoryId} value={category.categoryId}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
                 <TextField
                     label="Precio"
                     value={editedRentalPrice || ''}

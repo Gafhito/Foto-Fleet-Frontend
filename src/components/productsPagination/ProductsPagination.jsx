@@ -19,6 +19,14 @@ export const ProductsPagination = ({ itemsPerPage }) => {
 
   const {products} = useProductContext(); 
 
+
+  console.log('Products desde Pagination: ', products)
+
+
+  const productsContent = products.content;
+
+  console.log('este es el productCOntent: ', productsContent)
+
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +48,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
         Lista de Productos Aleatorios
       </Typography>
       <Grid container spacing={3}>
-        {products.map((product, index) => (
+        {productsContent?.map((product, index) => (
           <Grid item key={index} xs={12} sm={6} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Card sx={{ width: '345px' }}>
               <CardMedia

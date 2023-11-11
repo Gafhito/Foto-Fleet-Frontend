@@ -10,6 +10,8 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+
+
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
@@ -110,20 +112,20 @@ export function AuthProvider({ children }) {
 
 // EL GETCATEGORIES ESTA DE ATREVIDA ACA - CAMBIARLO DE RUTA HACIA PRODUCTCONTEXT
   const getCategories = async () => {
-    const token = user ? user.token : null;
+    /*const token = user ? user.token : null;
 
     if (!token) {1
       console.log('no hay token')
       return [];
-    }
+    }*/
 
     try {
-      const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/categories', {
+      const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/categories'/*, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
         },
-      });
+      }*/);
 
       if (response.status === 200) {
         const categories = await response.json();
