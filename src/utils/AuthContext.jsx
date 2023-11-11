@@ -54,6 +54,29 @@ export function AuthProvider({ children }) {
     setIsLoggedIn(false);
   };
 
+  const registerUser = (userData) => {
+    return fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/auth/register/user', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.userId) {
+          return data;
+        } else {
+          console.error('Error al registrar usuario:', data.error);
+          throw new Error('Registro de usuario fallido. Verifica los datos proporcionados.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error al registrar usuario:', error);
+        throw error;
+      });
+  };
+
 
   const getUserData = async () => {
     const token = user ? user.token : null;
@@ -117,7 +140,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoggedIn, getCategories, getUserData }}>
+    <AuthContext.Provider value={{ user, login, logout, setIsLoggedIn, isLoggedIn, getCategories, getUserData, registerUser }}>
       {children}
     </AuthContext.Provider>
   );

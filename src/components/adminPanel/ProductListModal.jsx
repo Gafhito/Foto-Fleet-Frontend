@@ -25,7 +25,7 @@ const customModalTheme = createTheme({
 
 export const ProductListModal = ({ open, onClose}) => {
 
-  const products = useProductContext();
+  const { products } = useProductContext();
 
 
   return (

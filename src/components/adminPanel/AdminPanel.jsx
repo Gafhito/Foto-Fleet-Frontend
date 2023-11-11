@@ -7,6 +7,7 @@ import { ProductForm } from '../productForm/ProductForm';
 import { ProductListModal } from './ProductListModal';
 import { RegisterProductModal } from './RegisterProductModal';
 import { ManageCharacteristicsModal } from '../manageCharacteristicsModal/ManageCharacteristicsModal';
+import { EditProductModal } from '../editProductModal/EditProductModal';
 
 import { useProductContext } from '../../utils/productContext';
 import { colors } from '../../utils/constants';
@@ -18,9 +19,9 @@ import { RegisterCategory } from '../RegisterCategory/RegisterCategory';
 
 export const AdminPanel = () => {
 
-  const productsContext = useProductContext();
+  const { products } = useProductContext();
   const isMobile = useMediaQuery('(max-width:850px)');
-  const [products, setProducts] = useState(productsContext);
+  //const [products, setProducts] = useState(productsContext);
   const [productToDelete, setProductToDelete] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -31,6 +32,7 @@ export const AdminPanel = () => {
   const [isListModalOpen, setIsListModalOpen] = useState(false); // Estado para el modal de listado de productos
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); // Estado para confirmación de DELETE
   const [isCharacteristicsModalOpen, setCharacteristicsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
 
   /*useEffect(() => {
@@ -44,6 +46,14 @@ export const AdminPanel = () => {
         console.error('Error al cargar los productos:', error);
       });
   }, []);*/
+
+  const openEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
 
   const openModal = (productId) => {
     if (productId == null) {
@@ -113,6 +123,7 @@ export const AdminPanel = () => {
             <Button label={ 'Listar Producto' } onClick={ () => setIsListModalOpen( true ) } mt={'1rem'} backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
             <Button label={'Agregar Categoría'} onClick={openCategoryModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
             <Button label={'Administrar Caracteristicas'} onClick={openCharacteristicsModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
+            <Button label={'Editar Producto'} onClick={openEditModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
           </Box>
         </div>
       )}
@@ -121,6 +132,7 @@ export const AdminPanel = () => {
       <RegisterProductModal open={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} />
       <RegisterCategory open={isCategoryModalOpen} onClose={closeCategoryModal} onCategorySubmit={handleCategorySubmit} />
       <ManageCharacteristicsModal open={isCharacteristicsModalOpen} onClose={closeCharacteristicsModal} />
+      <EditProductModal open={isEditModalOpen} onClose={closeEditModal} products={products} />
       <ConfirmationModal open={ confirmationModalOpen } onClose={ closeConfirmationModal } onConfirm={ () => handleDeleteProduct( productToDelete ) } />
       <Snackbar open={ snackbarOpen } autoHideDuration={ 6000 } onClose={ () => setSnackbarOpen( false ) }>
         <Alert severity="error" sx={{ width: '100%' }}>

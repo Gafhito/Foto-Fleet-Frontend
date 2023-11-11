@@ -17,7 +17,7 @@ import { ProductModal } from '../common/productModal/ProductModal';
 
 export const ProductsPagination = ({ itemsPerPage }) => {
 
-  const products = useProductContext(); 
+  const {products} = useProductContext(); 
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -45,7 +45,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
             <Card sx={{ width: '345px' }}>
               <CardMedia
                 sx={{ height: '170px' }}
-                image={product.images[0].url}
+                image={product.images[0]?.url}
                 title={product.name}
                 onClick={() => handleOpenModal(product)}
               />

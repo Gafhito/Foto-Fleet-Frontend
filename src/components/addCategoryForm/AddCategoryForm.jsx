@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { TextField, Button, Box } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { EmojiEmotions, SportsSoccer, Work, Restaurant } from '@mui/icons-material';
@@ -28,7 +28,7 @@ export const AddCategoryForm = ({ onAddCategory }) => {
   return (
     <Box>
       <TextField
-        label="Nombre"
+        label="Category Name"
         variant="outlined"
         fullWidth
         value={categoryName}
@@ -40,7 +40,7 @@ export const AddCategoryForm = ({ onAddCategory }) => {
         getOptionLabel={(option) => option.label}
         value={categoryIcon}
         onChange={(event, newValue) => setCategoryIcon(newValue)}
-        renderInput={(params) => <TextField {...params} label="Icono de Categoria" variant="outlined" fullWidth margin="normal" />}
+        renderInput={(params) => <TextField {...params} label="Category Icon" variant="outlined" fullWidth margin="normal" />}
         renderOption={(props, option) => (
           <li {...props}>
             {option.icon}
@@ -54,7 +54,7 @@ export const AddCategoryForm = ({ onAddCategory }) => {
         onClick={handleAddCategory}
         fullWidth
       >
-        Agregar Categoria
+        Add Category
       </Button>
     </Box>
   );

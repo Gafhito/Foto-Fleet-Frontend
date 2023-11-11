@@ -1,5 +1,5 @@
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import './login.css';
 import  { LoginFormContext }   from '../../utils/LoginFormContext';
 import { useAuth } from '../../utils/AuthContext';
@@ -22,6 +22,13 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { alpha, styled } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
+
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const label = { inputProps: { 'label': 'Checkbox demo' } };
 
@@ -46,12 +53,51 @@ export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const [isRegisterMode, setIsRegisterMode] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [address, setAddress] = useState('');
+    const [phone, setPhone] = useState('');
+    const [registrationSuccess, setRegistrationSuccess] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [redirect, setRedirect] = useState(false);
 
-    const { login, setIsLoggedIn, isLoggedIn } = useAuth();
+
+
+    const { login, registerUser, setIsLoggedIn, isLoggedIn } = useAuth();
+
+    const handleToggleMode = () => {
+        setIsRegisterMode(!isRegisterMode);
+        setError(null); // Limpiar errores al cambiar entre modos
+      };
 
 
     const handleChange = (event) => {
-        setChecked(event.target.checked);
+
+        const { name, value } = event.target;
+
+        switch (name) {
+            case 'firstName':
+            setFirstName(value);
+            break;
+            case 'lastName':
+            setLastName(value);
+            break;
+            case 'email':
+            setEmail(value);
+            break;
+            case 'password':
+            setPassword(value);
+            break;
+            case 'address':
+            setAddress(value);
+            break;
+            case 'phone':
+            setPhone(value);
+            break;
+            default: ''
+            break;
+        }
     };
 
     const handleClickShowPassword = () => {
@@ -81,157 +127,257 @@ export const Login = () => {
         }
       };
 
-      console.log('isLoggedIn al entrar al componente Login:', isLoggedIn);
-    
+
       if (isLoggedIn) {
         return <Navigate to="/" />;
       }
 
+
+
+      console.log('isLoggedIn al entrar al componente Login:', isLoggedIn);
+
+      const handleRegister = async () => {
+        const userData = {
+          firstName,
+          lastName,
+          email,
+          password,
+          address,
+          phone,
+        };
+      
+        try {
+
+            console.log('UserData enviado al registro: ', userData)
+          const response = await registerUser(userData);
+
+          console.log('response: ', response)
+      
+          if (response) {
+            console.log('entro al IF: ', response)
+            setRegistrationSuccess(true);
+            setOpenDialog(true);
+          } else {
+            setError('Registro de usuario fallido. Verifica los datos proporcionados.');
+          }
+        } catch (error) {
+          console.error('Error al registrar usuario:', error);
+          setError('Registro de usuario fallido. Verifica los datos proporcionados.');
+        }
+      };
+
+    
+      const handleRedirectHome = () => {
+        setOpenDialog(false);
+        console.log('antes de setear redirect')
+        setRedirect(true);
+        console.log('antes de setear redirect')
+    };
+
+
+    if (redirect) {
+        return <Navigate to="/" />;
+      }
+
+
+
+
+
   return (
     <div className='form_container'>
-        {isLoginFormOpen && <Paper 
-            elevation={6} 
-            className='paper_login_form' 
-            sx={{ 
-                width: { xs: '85vw', sm: '29rem', md: '29rem', lg: '29rem', xl: '29rem' },
-                height: {
-                    xs: '95vh',
-                    sm: '90vh',
-                    md: '90vh',
-                    lg: 'auto',
-                    xl: 'auto',
-                }
-                 
-             }}
-        >
-            <div>
+        {isLoginFormOpen && 
+            <Paper 
+                elevation={6} 
+                className='paper_login_form' 
+                sx={{ 
+                    width: { xs: '85vw', sm: '29rem', md: '29rem', lg: '29rem', xl: '29rem' },
+                    height: {
+                        xs: '95vh',
+                        sm: '90vh',
+                        md: '90vh',
+                        lg: 'auto',
+                        xl: 'auto',
+                    }
+                    
+                }}
+            >
                 <div>
-                    {/* checked 
-                        ? <Chip sx={{ m: '2rem', p:'1rem'}} icon={<FaceIcon style={{ color: 'white' }} />} label="Inicia Sesión" style={{ color: 'white' }} variant="outlined"  />
-                        : <Chip sx={{ m: '2rem', p: '1rem'}} icon={<LockIcon style={{ color: 'white' }} />} label="Regístrate" style={{ color: 'white' }} variant="outlined" />
-            */}
-                </div>
-                <div>
-                    <h2 style={{color: '#ffffff'}}>Bienvenido a FotoLibre!</h2>
+                    <div>
+                        <h2 style={{color: '#ffffff'}}>Bienvenido a FotoLibre!</h2>
 
-                    <div className='form_login_options'>
-                        <p style={{color: '#ffffff'}}>{ checked ? 'Inicia sesión' : 'Registrate'}</p>
-                        <PinkSwitch
-                            checked={checked}
-                            onChange={handleChange}
-                            inputProps={{ 'label': 'controlled' }}
-                        />
+                        <div className='form_login_options'>
+                            <p style={{color: '#ffffff'}}>{ isRegisterMode ? 'Registrate' : 'Inicia Sesion'}</p>
+                            <PinkSwitch
+                                checked={isRegisterMode}
+                                onChange={handleToggleMode}
+                                inputProps={{ 'label': 'controlled' }}
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <form action="/">
-                {!checked ? <TextField sx={{ mb: '1rem'}} className='form_input' id="filled-basic" label="User Name" variant="filled" /> : false}
-                <TextField 
-                    sx={{ mb: '1rem'}} 
-                    className='form_input' 
-                    id="filled-basic" 
-                    label="Email" 
-                    variant="filled" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)} // Actualiza el estado local de email
-                />
-                <TextField 
-                    sx={{
-                        mb: '1rem',
-                      }}
-                    type={showPassword ? 'text' : 'password'} 
-                    className='form_input' 
-                    id="filled-basic" 
-                    label="Password" 
-                    variant="filled"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)} // Actualiza el estado local de password 
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment 
-                                position="end"
-                            >
-                                <IconButton 
-                                    edge="end"
-                                    onClick={handleClickShowPassword}
-                                    sx={{
-                                        '&:focus': {
-                                          outline: 'none', // Quita el borde de enfoque por defecto en el icono
-                                        },
-                                      }}
-                                >
-                                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>),
+                <form action="/">
+                    {isRegisterMode && (
+                    <>
+                        <TextField
+                            sx={{ mb: '1rem' }}
+                            className='form_input'
+                            id="filled-basic"
+                            label="First Name"
+                            variant="filled"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                        />
+                        <TextField
+                            sx={{ mb: '1rem' }}
+                            className='form_input'
+                            id="filled-basic"
+                            label="Last Name"
+                            variant="filled"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                        />
+                        <TextField
+                            sx={{ mb: '1rem' }}
+                            className='form_input'
+                            id="filled-basic"
+                            label="Address"
+                            variant="filled"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                        />
+                        <TextField
+                            sx={{ mb: '1rem' }}
+                            className='form_input'
+                            id="filled-basic"
+                            label="Phone"
+                            variant="filled"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                        />
+                    </>
+                    )}
+                    <TextField 
+                        sx={{ mb: '1rem'}} 
+                        className='form_input' 
+                        id="filled-basic" 
+                        label="Email" 
+                        variant="filled" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)} // Actualiza el estado local de email
+                    />
+                    <TextField 
+                        sx={{
+                            mb: '1rem',
                         }}
-                />
-                <div className='form_options'>
-                    <FormControlLabel control={<Checkbox color="success" className='custom_chkbx'/>} label="Recuérdame" style={{color:'#ffffff'}}/>
-                    <Link href="#" sx={{ color: '#ffffff', textDecoration: 'none', '&:hover': { color: 'green' } }}>
-                        Olvidé contraseña
-                    </Link>
-                </div>
+                        type={showPassword ? 'text' : 'password'} 
+                        className='form_input' 
+                        id="filled-basic" 
+                        label="Password" 
+                        variant="filled"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)} // Actualiza el estado local de password 
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment 
+                                    position="end"
+                                >
+                                    <IconButton 
+                                        edge="end"
+                                        onClick={handleClickShowPassword}
+                                        sx={{
+                                            '&:focus': {
+                                            outline: 'none', // Quita el borde de enfoque por defecto en el icono
+                                            },
+                                        }}
+                                    >
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>),
+                            }}
+                    />
+                    <div className='form_options'>
+                        <FormControlLabel control={<Checkbox color="success" className='custom_chkbx'/>} label="Recuérdame" style={{color:'#ffffff'}}/>
+                        <Link href="#" sx={{ color: '#ffffff', textDecoration: 'none', '&:hover': { color: 'green' } }}>
+                            Olvidé contraseña
+                        </Link>
+                    </div>
 
-                <Button sx={{ mt: '1.5rem'}} variant="contained" disableElevation color='success' onClick={handleLogin}>
-                    {checked ? 'Inicia Sesión' : 'Registrate'}
-                </Button>
+                    <Button sx={{ mt: '1.5rem'}} variant="contained" disableElevation color='success' onClick={ isRegisterMode ? handleRegister: handleLogin}>
+                        {isRegisterMode ? 'Registrate' : 'Inicia Sesión' }
+                    </Button>
 
-                <hr className="divider" />
+                    <hr className="divider" />
 
-                <Button sx={{ 
-                    mt: '.5rem',
-                    p: '.5rem',
-                    display: 'flex',
-                    justifyContent: 'space-evenly',
-                    color: '#ffffff',
-                    borderColor: '#ffffff', 
-                    '&:hover': {
-                        color: '#43a047',
-                        borderColor: '#43a047',
-                    },}} 
-                    variant="outlined" 
-                    disableElevation 
-                
-                >
-                    <GoogleIcon /> Iniciar Sesion con Google
-                </Button>
-                <Button sx={{ 
-                    mt: '1rem',
-                    p: '.5rem',
-                    display: 'flex',
-                    justifyContent: 'space-evenly',
-                    color: '#ffffff',
-                    borderColor: '#ffffff', 
-                    '&:hover': {
-                        color: '#43a047',
-                        borderColor: '#43a047',
-                    },}} 
-                    variant="outlined" 
-                    disableElevation 
-                
-                >
-                     <FacebookIcon  sx={{mr: '-15px'}}/> Iniciar Sesion con Facebook
-                </Button>
-                <Button sx={{ 
-                    mt: '1rem',
-                    p: '.5rem',
-                    display: 'flex',
-                    justifyContent: 'space-evenly',
-                    color: '#ffffff',
-                    borderColor: '#ffffff', 
-                    '&:hover': {
-                        color: '#43a047',
-                        borderColor: '#43a047',
-                    },}} 
-                    variant="outlined" 
-                    disableElevation 
-                
-                >
-                    <TwitterIcon/> Iniciar Sesion con Twitter
-                </Button>
-            </form>
-        </Paper>}
+                    <Button sx={{ 
+                        mt: '.5rem',
+                        p: '.5rem',
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        color: '#ffffff',
+                        borderColor: '#ffffff', 
+                        '&:hover': {
+                            color: '#43a047',
+                            borderColor: '#43a047',
+                        },}} 
+                        variant="outlined" 
+                        disableElevation 
+                    
+                    >
+                        <GoogleIcon /> Iniciar Sesion con Google
+                    </Button>
+                    <Button sx={{ 
+                        mt: '1rem',
+                        p: '.5rem',
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        color: '#ffffff',
+                        borderColor: '#ffffff', 
+                        '&:hover': {
+                            color: '#43a047',
+                            borderColor: '#43a047',
+                        },}} 
+                        variant="outlined" 
+                        disableElevation 
+                    
+                    >
+                        <FacebookIcon  sx={{mr: '-15px'}}/> Iniciar Sesion con Facebook
+                    </Button>
+                    <Button sx={{ 
+                        mt: '1rem',
+                        p: '.5rem',
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        color: '#ffffff',
+                        borderColor: '#ffffff', 
+                        '&:hover': {
+                            color: '#43a047',
+                            borderColor: '#43a047',
+                        },}} 
+                        variant="outlined" 
+                        disableElevation 
+                    
+                    >
+                        <TwitterIcon/> Iniciar Sesion con Twitter
+                    </Button>
+                </form>
+
+                {registrationSuccess && (
+                    <Dialog open={openDialog} onClose={() => setOpenDialog(false)} sx={{zIndex:'1000000000000000000'}}>
+                        <DialogTitle>Registro exitoso</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                            Registro exitoso! Deberas iniciar sesion. Haz clic en "OK" para continuar.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleRedirectHome}>
+                            OK
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                )}
+            </Paper>
+        }
     </div>
   )
 }
