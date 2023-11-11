@@ -12,14 +12,14 @@ export function ProductProvider({ children }) {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const token = localStorage.getItem('token'); // token del localStorage
+        /*const token = localStorage.getItem('token'); // token del localStorage
         const headers = {
           Authorization: `Bearer ${token}`,
-        };
+        };*/
 
-        const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products?page=0', {
+        const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products?page=0'/*, {
           headers,
-        });
+        }*/);
 
         if (!response.ok) {
           throw new Error('Network response was not ok');

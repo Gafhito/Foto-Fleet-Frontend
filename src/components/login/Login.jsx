@@ -126,7 +126,7 @@ const handleChange = (event) => {
 
 
       if (isLoggedIn) {
-        return <Navigate to="/" />;
+        navigate('/');
       }
 
 
