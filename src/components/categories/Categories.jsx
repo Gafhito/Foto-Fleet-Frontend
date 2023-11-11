@@ -57,7 +57,7 @@ export const Categories = () => {
                 <CardMedia
                   component="img"
                   height="200"
-                  image={category.imagen}
+                  image={category.imageUrl}
                   alt={category.name}
                 />
                 <CardContent>

@@ -8,6 +8,7 @@ import { ProductPage } from './pages/ProductPage';
 import { colors } from './utils/constants';
 import './App.css';
 import { LoginPage } from './pages/LoginPage';
+import { UserProfile } from './components/UserInfo/UserProfile';
 
 import { useAuth } from './utils/AuthContext';
 
@@ -26,6 +27,7 @@ export const App = () => {
             />
             <Route path="/:productId" element={<ProductPage />} />
             <Route path="/auth/login" element={<LoginPage />} />
+            <Route path="/perfil" element={<UserProfile/>} />
           </Route>
         </Routes>
       </div>
