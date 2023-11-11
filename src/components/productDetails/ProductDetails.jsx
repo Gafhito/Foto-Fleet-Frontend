@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -27,6 +27,10 @@ import { useProductContext } from '../../utils/ProductContext';
 export const ProductDetails = ({ product }) => {
   const [showAllImages, setShowAllImages] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const { getProductById } = useProductContext();
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const toggleShowAllImages = () => {
     setShowAllImages((prevShowAllImages) => !prevShowAllImages);
@@ -36,15 +40,14 @@ export const ProductDetails = ({ product }) => {
     setSelectedImageIndex(index);
   };
 
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-  const { getProductById } = useContext(useProductContext)
+  console.log('Product pasado por prop: ', product)
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const details = await getProductById(product.id);
+        console.log('product.id del PD: ', product.productId)
+        const details = await getProductById(product.productId);
         console.log('Detalles del producto:', details);
         // Haz algo con los detalles del producto si es necesario
       } catch (error) {
@@ -87,7 +90,7 @@ export const ProductDetails = ({ product }) => {
           <ArrowBackIcon sx={{ marginLeft: '1.5rem' }} />
         </Link>
         <Typography variant="h5" textAlign={'start'} sx={{ marginLeft: '1rem' }}>
-          {product.title}
+          {product.name}
         </Typography>
       </Paper>
 
@@ -97,7 +100,7 @@ export const ProductDetails = ({ product }) => {
           <Grid container spacing={2} className='main_content_grid_container' sx={{marginLeft: '3rem',justifyContent:'start', alignItems:'center', height:'30rem'}}>
             <Grid item xs={12} sm={6} className='main_content_container'>
               <Card>
-                <CardMedia component="img" height="300px" image={product.images[selectedImageIndex].img_url} alt={product.title} />
+                <CardMedia component="img" height="300px" image={product.images[selectedImageIndex].url} alt={product.name} />
               </Card>
               <Grid item xs={12} sm={6} sx={{display: {xs: 'none', md:'block'}, maxWidth:'90%'}} className='detail_description_container'>
                 <Box sx={
@@ -119,7 +122,7 @@ export const ProductDetails = ({ product }) => {
             {product.images.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
               <Grid item xs={5} key={index} className='additional_img_container'>
                 <Card sx={{ marginLeft: '2rem', width: '75%' }} onClick={() => handleImageClick(index)}>
-                  <CardMedia component="img" height="150" image={image.img_url} alt={`Additional Image ${index + 1}`} />
+                  <CardMedia component="img" height="150" image={image.url} alt={`Additional Image ${index + 1}`} />
                 </Card>
               </Grid>
             ))}

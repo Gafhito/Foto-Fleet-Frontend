@@ -67,11 +67,11 @@ export const ProductModal = ({ open, onClose, product }) => {
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Card>
-                <Typography variant="h6">{product.title}</Typography>
+                <Typography variant="h6">{product.name}</Typography>
                 <CardMedia
                   component="img"
                   height="280px"
-                  image={product.images[selectedImageIndex].img_url}
+                  image={product.images[selectedImageIndex].url}
                   title={product.name}
                   sx={{ width: '100%' }}
                   onClick={() => handleImageClick((selectedImageIndex + 1) % product.images.length)}
@@ -97,7 +97,7 @@ export const ProductModal = ({ open, onClose, product }) => {
                     <CardMedia
                       component="img"
                       height="150px"
-                      image={image.img_url}
+                      image={image.url}
                       title={`Imagen ${index + 1}`}
                       sx={{ width: '100%', cursor: 'pointer' }}
                       onClick={() => handleImageClick(index)}

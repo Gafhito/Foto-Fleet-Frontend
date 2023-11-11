@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Modal, Select, MenuItem, Button, Typography, Box, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import { useProductContext } from '../../utils/productContext';
+import { useProductContext } from '../../utils/ProductContext';
 import { colors } from '../../utils/constants';
 import { useAuth } from '../../utils/AuthContext';
 
@@ -31,9 +31,7 @@ export const EditProductModal = ({ open, onClose, products }) => {
 
   const productsContent = productsContext.products.content;
 
-
-
-  console.log('productsContext: ',productsContext)
+  console.log('productsContext: ', productsContext)
   console.log('products content: ', productsContent)
 
 

@@ -9,7 +9,7 @@ import { RegisterProductModal } from './RegisterProductModal';
 import { ManageCharacteristicsModal } from '../manageCharacteristicsModal/ManageCharacteristicsModal';
 import { EditProductModal } from '../editProductModal/EditProductModal';
 
-import { useProductContext } from '../../utils/productContext';
+import { useProductContext } from '../../utils/ProductContext';
 import { colors } from '../../utils/constants';
 
 import './adminPanel.css';

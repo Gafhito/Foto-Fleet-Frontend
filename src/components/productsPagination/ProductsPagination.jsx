@@ -62,7 +62,8 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                 <Typography variant="body2" color="textSecondary">
                   {product.description}
                 </Typography>
-                <Link to={`products/${product.id}`} target='_blank'>Ver Detalles</Link>
+                {console.log('product.productId: antes del link:', product.productId)}
+                <Link to={`products/${product.productId}`} target='_blank'>Ver Detalles</Link>
               </CardContent>
             </Card>
           </Grid>
