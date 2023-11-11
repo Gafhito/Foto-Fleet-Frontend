@@ -89,8 +89,32 @@ export function ProductProvider({ children }) {
     }
   };
 
+
+
+  const handleDelete = async (productId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+        console.log('ProductID en el PD antes de reuqtes: ', productId)
+        console.log('Header en DELETE: ', headers)
+      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/${productId}`, {
+        method: 'DELETE',
+        headers,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete product', response);
+      }
+      console.log('Product deleted successfully');
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
+
   return (
-    <ProductContext.Provider value={{products, getProductById, updateProduct}}>
+    <ProductContext.Provider value={{products, getProductById, updateProduct, handleDelete}}>
       {children}
     </ProductContext.Provider>
   );

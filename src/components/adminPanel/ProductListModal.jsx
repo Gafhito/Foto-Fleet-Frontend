@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { createTheme, ThemeProvider, Modal, Box, Typography, Button as MuiButton } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 
 import { useProductContext } from '../../utils/ProductContext';
+import { ConfirmationModal } from '../common/confirmationModal/confirmationModal';
 
 
 import { colors } from '../../utils/constants';
@@ -25,7 +27,24 @@ const customModalTheme = createTheme({
 
 export const ProductListModal = ({ open, onClose}) => {
 
-  const { products } = useProductContext();
+  const { products, handleDelete } = useProductContext();
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+
+
+
+  const openModal = (productId) => {
+    console.log('ProductID pasado en el openModal: ', productId)
+    setSelectedProductId(productId);
+    setIsConfirmationModalOpen(true);
+  };
+
+  const handleDeleteClick = (selectedProductId) => {
+    console.log('selectedProductID before setting: ', selectedProductId);
+    setSelectedProductId(selectedProductId); // Wait for state to update
+    console.log('selectedProductID after setting: ', selectedProductId);
+    openModal(selectedProductId);
+  };
 
 
   return (
@@ -75,7 +94,7 @@ export const ProductListModal = ({ open, onClose}) => {
                     <td>{product.name}</td>
                     <td>{product.action}</td>
                     <td>
-                      <MuiButton variant="outlined" color="error" size="small" onClick={() => openModal(product.productId)}>
+                      <MuiButton variant="outlined" color="error" size="small" onClick={() => handleDeleteClick(product.productId)}>
                         Eliminar
                       </MuiButton>
                     </td>
@@ -85,6 +104,15 @@ export const ProductListModal = ({ open, onClose}) => {
             </table>
           </Box>
         </Modal>
+        {/* Confirmation Modal */}
+      <ConfirmationModal
+        open={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        onConfirm={() => {
+          handleDelete(selectedProductId);
+          setIsConfirmationModalOpen(false);
+        }}
+      />
       </ThemeProvider>
   )
 }
