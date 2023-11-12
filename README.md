@@ -1,12 +1,11 @@
 # FotoFleet: Alquiler de Equipo Fotográfico 📸
 FotoFleet es una aplicación web diseñada para facilitar el alquiler de equipos fotográficos. Cubriendo las necesidades tanto de fotógrafos profesionales como de aficionados, proporciona acceso a una amplia gama de productos fotográficos, incluyendo cámaras, lentes, luces y accesorios de las marcas más reconocidas del mercado.
 
-# 🔍 Características Principales:
+### 🔍 Características Principales:
 
 - Amplio Catálogo: Desde cámaras DSLR hasta drones, encuentre el equipo que mejor se adapte a sus necesidades.
 - Reserva Simplificada: Con pocos clics, reserve el equipo deseado para las fechas que lo necesite.
 - Entrega Flexibles: Opciones de entrega que se adaptan a tus necesidades y horarios.
-
 
 Esta descripción ofrece una visión general y concisa del proyecto, destacando sus características principales. Puede ser usada como introducción en el README.md para que los visitantes del repositorio comprendan rápidamente la finalidad y las funcionalidades de la aplicación.
 
@@ -27,7 +26,7 @@ npm install
 
 # Ejecución: 
 
-# Para ejecutar el proyecto en modo de desarrollo:
+### Para ejecutar el proyecto en modo de desarrollo:
 npm run dev
 
 # Contribuyentes:
