@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider, Modal, Box, Typography, Button as MuiButton } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 
@@ -27,7 +27,7 @@ const customModalTheme = createTheme({
 
 export const ProductListModal = ({ open, onClose}) => {
 
-  const { products, handleDelete } = useProductContext();
+  const productContext = useProductContext();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
@@ -39,12 +39,42 @@ export const ProductListModal = ({ open, onClose}) => {
     setIsConfirmationModalOpen(true);
   };
 
-  const handleDeleteClick = (selectedProductId) => {
-    console.log('selectedProductID before setting: ', selectedProductId);
-    setSelectedProductId(selectedProductId); // Wait for state to update
-    console.log('selectedProductID after setting: ', selectedProductId);
-    openModal(selectedProductId);
+  const handleDeleteClick = (productId) => {
+    openModal(productId);
   };
+
+
+  useEffect(() => {
+
+    const updatedProducts = productContext.products;
+
+    console.log('En el UE ELIMINANDO: ', updatedProducts)
+  
+  }, [productContext.lastUpdate]);
+
+
+  useEffect(() => {
+    if (selectedProductId) {
+      // Manejar la actualización de la lista de productos después de eliminar
+      const updatedProducts = productContext.products;
+      const filteredProducts = updatedProducts.content.filter(
+        (product) => product.productId !== selectedProductId
+      );
+  
+      // Verificar si el estado actual es igual al nuevo estado
+      const isSameState =
+        JSON.stringify(updatedProducts.content) ===
+        JSON.stringify(filteredProducts);
+  
+      // Actualizar el estado solo si es diferente
+      if (!isSameState) {
+        productContext.setProducts({
+          ...updatedProducts,
+          content: filteredProducts,
+        });
+      }
+    }
+  }, [selectedProductId, productContext]);
 
 
   return (
@@ -83,20 +113,29 @@ export const ProductListModal = ({ open, onClose}) => {
                 <tr>
                   <th>ID</th>
                   <th>Nombre</th>
+                  <th>Descripcion</th>
+                  <th>Caracteristicas</th>
                   <th>Acciones</th>
                   <th>Eliminar Producto</th>
                 </tr>
               </thead>
               <tbody>
-                {products.content?.map(product => (
+                {productContext.products.content?.map(product => (
                   <tr key={product.productId}>
                     <td>{product.productId}</td>
                     <td>{product.name}</td>
+                    <td>{product.description}</td>
+                    <td>{product.characteristics.map(char => char.name).join(', ')}</td>
                     <td>{product.action}</td>
                     <td>
-                      <MuiButton variant="outlined" color="error" size="small" onClick={() => handleDeleteClick(product.productId)}>
+                    <MuiButton
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        onClick={() => handleDeleteClick(product.productId)}
+                      >
                         Eliminar
-                      </MuiButton>
+                    </MuiButton>
                     </td>
                   </tr>
                 ))}
@@ -105,14 +144,39 @@ export const ProductListModal = ({ open, onClose}) => {
           </Box>
         </Modal>
         {/* Confirmation Modal */}
-      <ConfirmationModal
-        open={isConfirmationModalOpen}
-        onClose={() => setIsConfirmationModalOpen(false)}
-        onConfirm={() => {
-          handleDelete(selectedProductId);
-          setIsConfirmationModalOpen(false);
-        }}
-      />
+        <ConfirmationModal
+            open={isConfirmationModalOpen}
+            onClose={() => setIsConfirmationModalOpen(false)}
+            onConfirm={async () => {
+              try {
+                // Elimina el producto solo después de la confirmación
+                await productContext.handleDelete(selectedProductId);
+                
+                // Actualiza el estado solo después de confirmar
+                setIsConfirmationModalOpen(false);
+                
+                const updatedProducts = productContext.products;
+                const filteredProducts = updatedProducts.content.filter(
+                  (product) => product.productId !== selectedProductId
+                );
+
+                // Verifica si el estado actual es igual al nuevo estado
+                const isSameState =
+                  JSON.stringify(updatedProducts.content) ===
+                  JSON.stringify(filteredProducts);
+
+                // Actualiza el estado solo si es diferente
+                if (!isSameState) {
+                  productContext.setProducts({
+                    ...updatedProducts,
+                    content: filteredProducts,
+                  });
+                }
+              } catch (error) {
+                console.error('Error handling deletion:', error);
+              }
+            }}
+          />
       </ThemeProvider>
   )
 }

@@ -136,7 +136,6 @@ export const RegisterCategory = ({ open, onClose }) => {
             onChange={handleCategoryInputChange}
             sx={{ mb: 2 }}
           />
-          {/* Agrega el campo de input para la imagen */}
           <input
             type="file"
             accept="image/*"

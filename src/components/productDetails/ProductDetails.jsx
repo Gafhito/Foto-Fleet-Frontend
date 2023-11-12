@@ -49,7 +49,6 @@ export const ProductDetails = ({ product }) => {
         console.log('product.id del PD: ', product.productId)
         const details = await getProductById(product.productId);
         console.log('Detalles del producto:', details);
-        // Haz algo con los detalles del producto si es necesario
       } catch (error) {
         console.error('Error al obtener detalles del producto', error);
       }
