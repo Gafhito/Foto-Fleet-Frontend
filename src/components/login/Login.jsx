@@ -441,7 +441,7 @@ export const Login = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} // Actualiza el estado local de password 
                         onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, password: '' }))}
-                        onBlur={handlePasswordBlur}
+                        /*onBlur={handlePasswordBlur}*/
                         error={Boolean(inputErrors.password)}  // Agregado para manejar el estado de error
                         helperText={inputErrors.password}  // Agregado para mostrar el mensaje de error
                         InputProps={{

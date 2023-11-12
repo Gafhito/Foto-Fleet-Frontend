@@ -13,6 +13,7 @@ import {
 
 import { createProduct } from '../../utils/ProductService';
 import { useAuth } from '../../utils/AuthContext';
+import { useProductContext } from '../../utils/ProductContext';
 
 
 
@@ -27,12 +28,15 @@ export const ProductForm = ({ onSubmit, categories }) => {
     images: [],
     primaryImage: null,
     secondaryImages: [],
+    characteristics: [],
   });
 
   const [categoriesList, setCategoriesList] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(1); // estado para trackear el ID de la categoria
   const [mainImage, setMainImage] = useState(null);
   const { getCategories, user } = useAuth();
+  const [selectedCharacteristics, setSelectedCharacteristics] = useState([]);
+  const { characteristics, setCharacteristics } = useProductContext();
 
   console.log('Estado categoriesList: ', categoriesList)
   console.log('Estado selectedCategoryID:' + selectedCategoryId)
@@ -97,7 +101,7 @@ const handleImageChange = async (event, imageType) => {
       return {
         ...prevProduct,
         images: [...prevProduct.images, ...files],
-        secondaryImages: [...prevProduct.secondaryImages, ...files], // Append files to secondaryImages array
+        secondaryImages: [...prevProduct.secondaryImages, ...files], // Append archivos a secondaryImages array
       };
     }
 
@@ -114,6 +118,15 @@ const handleInputChange = (event) => {
       categoryId: value,
     }));
     setSelectedCategoryId(value);
+  } else if (name === 'characteristics') {
+    // Actualiza el estado de las características seleccionadas
+    setSelectedCharacteristics(value);
+    // Actualiza el estado del producto con las características seleccionadas
+    setNewProduct((prevProduct) => ({
+      ...prevProduct,
+      characteristics: value,
+    }));
+    console.log('CHARACTERISTICA VALUE: ', value);
   } else {
     setNewProduct((prevProduct) => ({
       ...prevProduct,
@@ -149,44 +162,78 @@ const buildImageUploadRequest = () => {
   return imageUploadRequest;
 };
 
-const handleSubmit = async () => {
-  try {
-    // se crea el producto y devuelve ID
-    const productId = await createProduct(newProduct, user.token);
+  const handleSubmit = async () => {
+    try {
+      //  Crear el producto y obtener el ID
+      const productId = await createProduct(newProduct, user.token);
 
-    console.log('newProduct handleSubmit: ', newProduct);
-    console.log('Subiendo IMG productID: ' + productId);
+      console.log('newProduct handleSubmit: ', newProduct);
+      console.log('Subiendo IMG productID: ' + productId);
 
-    const imageUploadRequest = buildImageUploadRequest();
+      //. Construir el FormData para las imágenes
+      const imageUploadRequest = buildImageUploadRequest();
 
-    // Aquí agregamos el código para inspeccionar el FormData
-    for (let [key, value] of imageUploadRequest.entries()) {
-      console.log('inspeccionando FORMDATA: ', key, value);
+      //  Subir imágenes
+      const imageUploadResponse = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/images?productId=${productId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${user.token}`,
+        },
+        body: imageUploadRequest,
+      });
+
+      //  Verificar la respuesta de la subida de imágenes
+      if (imageUploadResponse.status === 201) {
+        console.log('Product and images created successfully!');
+
+        //  Si hay características seleccionadas, registrarlas
+        if (selectedCharacteristics.length > 0) {
+          const characteristicsRequest = selectedCharacteristics.map((characteristicId) => ({
+            characteristicsId: characteristicId,
+          }));
+
+          const characteristicsResponse = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/characteristics/${productId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.token}`,
+            },
+            body: JSON.stringify(characteristicsRequest),
+          });
+
+          if (characteristicsResponse.status === 200) {
+            console.log('Characteristics registered successfully!');
+          } else {
+            console.error(`Error registering characteristics: ${characteristicsResponse.status} - ${characteristicsResponse.statusText}`);
+          }
+        } else {
+          console.log('No characteristics to register.');
+        }
+      } else {
+        console.error(`Error uploading images: ${imageUploadResponse.status} - ${imageUploadResponse.statusText}`);
+      }
+    } catch (error) {
+      console.error('Error creating product:', error);
     }
-
-    console.log('imageUploadRequest: ', imageUploadRequest)
-
-    const imageUploadResponse = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/images?productId=${productId}`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${user.token}`,
-      },
-      body: imageUploadRequest,
-    });
-
-    console.log('body IMG request: ', imageUploadRequest);
-
-    if (imageUploadResponse.status === 201) {
-      console.log('Product and images created successfully!');
-    } else {
-      console.error(`Error uploading images: ${imageUploadResponse.status} - ${imageUploadResponse.statusText}`);
-    }
-  } catch (error) {
-    console.error('Error creating product:', error);
-  }
-};
+  };
 
 
+
+  useEffect(() => {
+    const fetchCharacteristics = async () => {
+      try {
+        setCharacteristics(characteristics);
+      } catch (error) {
+        console.error('Error fetching characteristics:', error);
+      }
+    };
+  
+    fetchCharacteristics();
+  }, [characteristics]);
+
+
+
+  console.log('CHARACTERISTICS:' , characteristics)
   
   return (
     <Container>
@@ -235,6 +282,32 @@ const handleSubmit = async () => {
             ))}
           </Select>
         </FormControl>
+        </div>
+        <div>
+          <FormControl fullWidth>
+            <InputLabel>Características</InputLabel>
+            <Select
+              name="characteristics"
+              multiple
+              value={selectedCharacteristics}
+              onChange={(event) => {
+                const { value } = event.target;
+                console.log('EVENT.TARGET:', event.target)
+                setSelectedCharacteristics(value);
+                setNewProduct((prevProduct) => ({
+                  ...prevProduct,
+                  characteristics: value,
+                }));
+              }}
+            >
+              {console.log('SELECTED CHARACTERISTIC EN EL DIV: ', selectedCharacteristics)}
+              {characteristics.map((characteristic) => (
+                <MenuItem key={characteristic.characteristicsId} value={characteristic.characteristicsId}>
+                  {characteristic.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
         <div>
           <TextField

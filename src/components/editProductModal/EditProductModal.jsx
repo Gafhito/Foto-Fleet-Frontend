@@ -42,7 +42,7 @@ export const EditProductModal = ({ open, onClose, products }) => {
         setCategories(fetchedCategories);
         console.log('fetchedCategories: ', fetchedCategories)
   
-        // If you have the categoryId in the productDetails, set it as the default selected category
+        // si tenemos categoria ID seteamos
         if (productDetails && productDetails.categoryId) {
           console.log('productDetails en el IF: ', productDetails)
           const selectedCategory = fetchedCategories.find(category => category.categoryId === productDetails.categoryId);
@@ -252,12 +252,12 @@ export const EditProductModal = ({ open, onClose, products }) => {
         </Modal>
         <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000} // Adjust the duration as needed
+        autoHideDuration={3000} // ajustar duracion segun necesidad
         onClose={() => setSnackbarOpen(false)}
         >
         <SnackbarContent
             message={snackbarMessage}
-            style={{ backgroundColor: 'green' }} // Adjust the background color as needed
+            style={{ backgroundColor: 'green' }} // ajustar color 
         />
         </Snackbar>
     </>

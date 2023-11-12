@@ -8,6 +8,8 @@ export function useProductContext() {
 
 export function ProductProvider({ children }) {
   const [products, setProducts] = useState([]);
+  const [characteristics, setCharacteristics] = useState([]);
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
 
   useEffect(() => {
     async function fetchProducts() {
@@ -26,6 +28,7 @@ export function ProductProvider({ children }) {
         }
         const data = await response.json();
         setProducts(data);
+        //setLastUpdate(Date.now()); // Actualiza el estado de la última actualización
         console.log('esta es la data: ', data)
       } catch (error) {
         console.error('Error al obtener datos', error);
@@ -97,24 +100,55 @@ export function ProductProvider({ children }) {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-        console.log('ProductID en el PD antes de reuqtes: ', productId)
-        console.log('Header en DELETE: ', headers)
+  
+      console.log('ProductID en el PD antes de reuqtes: ', productId);
+      console.log('Header en DELETE: ', headers);
       const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/${productId}`, {
         method: 'DELETE',
         headers,
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to delete product', response);
       }
+  
       console.log('Product deleted successfully');
     } catch (error) {
       console.error('Error deleting product:', error);
+      throw error;
     }
   };
 
+
+  useEffect(() => {
+    async function fetchCharacteristics() {
+      try {
+        const token = localStorage.getItem('token');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+  
+        const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/characteristics', {
+          headers,
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const data = await response.json();
+        setCharacteristics(data);
+        console.log('Characteristics data:', data);
+      } catch (error) {
+        console.error('Error fetching characteristics', error);
+      }
+    }
+  
+    fetchCharacteristics();
+  }, []);
+
   return (
-    <ProductContext.Provider value={{products, getProductById, updateProduct, handleDelete}}>
+    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics}}>
       {children}
     </ProductContext.Provider>
   );
