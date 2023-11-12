@@ -63,6 +63,11 @@ export const Login = () => {
     const [redirect, setRedirect] = useState(false);
     const navigate = useNavigate();
 
+    const [inputErrors, setInputErrors] = useState({
+      email: '',
+      password: '',
+  });
+
     const { login, registerUser, setIsLoggedIn, isLoggedIn } = useAuth();
 
     const handleToggleMode = () => {
@@ -81,9 +86,11 @@ const handleChange = (event) => {
       break;
     case 'email':
       setEmail(value);
+      setInputErrors((prevErrors) => ({ ...prevErrors, email: '' })); // Limpiar mensaje de error
       break;
     case 'password':
       setPassword(value);
+      setInputErrors((prevErrors) => ({ ...prevErrors, password: '' })); // Limpiar mensaje de error
       break;
     case 'address':
       setAddress(value);
@@ -156,11 +163,21 @@ const handleChange = (event) => {
             setRegistrationSuccess(true);
             setOpenDialog(true);
           } else {
-            setError('Registro de usuario fallido. Verifica los datos proporcionados.');
+            setError('Inicio de sesión fallido. Verifica tus credenciales.');
+            setInputErrors((prevErrors) => ({
+              ...prevErrors,
+              email: 'Email o contraseña incorrectos', // Mensaje de error específico para email
+              password: 'Email o contraseña incorrectos', // Mensaje de error específico para contraseña
+            }));
           }
         } catch (error) {
           console.error('Error al registrar usuario:', error);
           setError('Registro de usuario fallido. Verifica los datos proporcionados.');
+          setInputErrors((prevErrors) => ({
+            ...prevErrors,
+            email: 'Email o contraseña incorrectos', // Mensaje de error específico para email
+            password: 'Email o contraseña incorrectos', // Mensaje de error específico para contraseña
+          }));
         }
       };
 
@@ -262,6 +279,8 @@ const handleChange = (event) => {
                         variant="filled" 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)} // Actualiza el estado local de email
+                        error={Boolean(inputErrors.email)}  // Agregado para manejar el estado de error
+                        helperText={inputErrors.email}  // Agregado para mostrar el mensaje de error
                     />
                     <TextField 
                         sx={{
