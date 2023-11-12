@@ -38,16 +38,16 @@ export function ProductProvider({ children }) {
 
   const getProductById = async (productId) => {
     try {
-      const token = localStorage.getItem('token');
+      /*const token = localStorage.getItem('token');
       const headers = {
         Authorization: `Bearer ${token}`,
-      };
+      };*/
 
       console.log("productID del getProductById: ", productId)
 
-      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/${productId}`, {
+      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/${productId}`/*, {
         headers,
-      });
+      }*/);
 
       if (!response.ok) {
         throw new Error('Network response was not ok');

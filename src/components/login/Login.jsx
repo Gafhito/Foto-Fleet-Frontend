@@ -22,6 +22,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { alpha, styled } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
+import FormHelperText from '@mui/material/FormHelperText';
 
 
 import Dialog from '@mui/material/Dialog';
@@ -61,6 +62,7 @@ export const Login = () => {
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [redirect, setRedirect] = useState(false);
+    const [hasErrors, setHasErrors] = useState(false);
     const navigate = useNavigate();
 
     const [inputErrors, setInputErrors] = useState({
@@ -73,35 +75,157 @@ export const Login = () => {
     const handleToggleMode = () => {
         setIsRegisterMode(!isRegisterMode);
         setError(null); // Limpiar errores al cambiar entre modos
-      };
+    };
 
-const handleChange = (event) => {
-  const { name, value } = event.target;
-  switch (name) {
-    case 'firstName':
-      setFirstName(value);
-      break;
-    case 'lastName':
-      setLastName(value);
-      break;
-    case 'email':
-      setEmail(value);
-      setInputErrors((prevErrors) => ({ ...prevErrors, email: '' })); // Limpiar mensaje de error
-      break;
-    case 'password':
-      setPassword(value);
-      setInputErrors((prevErrors) => ({ ...prevErrors, password: '' })); // Limpiar mensaje de error
-      break;
-    case 'address':
-      setAddress(value);
-      break;
-    case 'phone':
-      setPhone(value);
-      break;
-    default:
-      break;
-  }
-};
+    const setEmailError = (message) => {
+      setInputErrors((prevErrors) => ({ ...prevErrors, email: message }));
+    };
+
+    // -------------- VALIDACIONESSSSS ---------------------
+
+    const validateEmail = (email) => {
+      // Expresión regular para verificar el formato de un email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    };
+
+    const validatePassword = (password) => {
+      // Lógica de validación para la contraseña
+      // Mínimo 8 caracteres, máximo 15, al menos una mayúscula, un número y un carácter especial
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,15}$/;
+      return passwordRegex.test(password);
+    };
+    
+    const validateName = (name) => {
+      // Lógica de validación para el nombre o apellido (no debe contener números)
+      const nameRegex = /^[^\d]+$/;
+      return nameRegex.test(name);
+    };
+    
+    const validatePhone = (phone) => {
+      // Lógica de validación para el teléfono (solo números)
+      const phoneRegex = /^\d+$/;
+      return phoneRegex.test(phone);
+    };
+
+    const handleEmailFocus = () => {
+      // Limpiar el mensaje de error cuando el campo está en foco
+      setInputErrors((prevErrors) => ({ ...prevErrors, email: '' }));
+    };
+    
+    const handleEmailBlur = () => {
+      // Verificar el formato del correo electrónico al perder el foco
+      if (!email) {
+        setEmailError('El correo electrónico no puede estar vacío');
+        setHasErrors(true);
+      } else if (!validateEmail(email)) {
+        setEmailError('Formato de email incorrecto');
+        setHasErrors(true);
+      } else {
+        setEmailError(''); // Limpiar el mensaje de error si el formato es correcto
+        setHasErrors(false);
+      }
+    };
+
+    const handleNameBlur = () => {
+      if (!firstName) {
+        setInputErrors((prevErrors) => ({ ...prevErrors, firstName: 'El nombre no puede estar vacío' }));
+      } else if (!validateName(firstName)) {
+        setInputErrors((prevErrors) => ({ ...prevErrors, firstName: 'El nombre no puede contener números' }));
+      } else {
+        setInputErrors((prevErrors) => ({ ...prevErrors, firstName: '' }));
+      }
+  
+      // Validar todo el formulario y establecer hasErrors en consecuencia
+      setHasErrors(validateForm());
+    };
+
+    const handleLastNameBlur = () => {
+      if (!lastName) {
+        setInputErrors((prevErrors) => ({ ...prevErrors, lastName: 'El apellido no puede estar vacío' }));
+      } else if (!validateName(lastName)) {
+        setInputErrors((prevErrors) => ({ ...prevErrors, lastName: 'El apellido no puede contener números' }));
+      } else {
+        setInputErrors((prevErrors) => ({ ...prevErrors, lastName: '' }));
+      }
+  
+      // Validar todo el formulario y establecer hasErrors en consecuencia
+      setHasErrors(validateForm());
+    };
+
+    const handlePhoneBlur = () => {
+      if (!phone) {
+        setInputErrors((prevErrors) => ({ ...prevErrors, phone: 'El teléfono no puede estar vacío' }));
+      } else if (!validatePhone(phone)) {
+        setInputErrors((prevErrors) => ({ ...prevErrors, phone: 'Formato de teléfono incorrecto' }));
+      } else {
+        setInputErrors((prevErrors) => ({ ...prevErrors, phone: '' }));
+      }
+  
+      // Validar todo el formulario y establecer hasErrors en consecuencia
+      setHasErrors(validateForm());
+    };
+
+
+    const handlePasswordBlur = () => {
+      if (!password) {
+        setInputErrors((prevErrors) => ({ ...prevErrors, password: 'La contraseña no puede estar vacía' }));
+      } else if (!validatePassword(password)) {
+        setInputErrors((prevErrors) => ({ ...prevErrors, password: 'Formato de contraseña incorrecto' }));
+      } else {
+        setInputErrors((prevErrors) => ({ ...prevErrors, password: '' }));
+      }
+    
+      // Validar todo el formulario y establecer hasErrors en consecuencia
+      setHasErrors(validateForm());
+    };
+
+
+    const validateForm = () => {
+      // Lógica de validación para todos los campos
+      const emailValid = validateEmail(email);
+      const passwordValid = validatePassword(password);
+      const firstNameValid = validateName(firstName);
+      const lastNameValid = validateName(lastName);
+      const phoneValid = validatePhone(phone);
+    
+      // Devuelve true si hay algún error en cualquier campo
+      return !emailValid || !passwordValid || !firstNameValid || !lastNameValid || !phoneValid;
+    };
+    
+
+    const handleChange = (event) => {
+      const { name, value } = event.target;
+    
+      switch (name) {
+        case 'firstName':
+          setFirstName(value);
+          setInputErrors((prevErrors) => ({ ...prevErrors, firstName: '' }));
+          break;
+        case 'lastName':
+          setLastName(value);
+          setInputErrors((prevErrors) => ({ ...prevErrors, lastName: '' }));
+          break;
+        case 'email':
+          setEmail(value);
+          setInputErrors((prevErrors) => ({ ...prevErrors, email: '' }));
+          break;
+        case 'password':
+          setPassword(value);
+          setInputErrors((prevErrors) => ({ ...prevErrors, password: '' }));
+          break;
+        case 'address':
+          setAddress(value);
+          break;
+        case 'phone':
+          setPhone(value);
+          setInputErrors((prevErrors) => ({ ...prevErrors, phone: '' }));
+          break;
+        default:
+          break;
+      }
+    };
+    
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -124,10 +248,20 @@ const handleChange = (event) => {
             console.log('isLoggedIn establecido en true');
           } else {
             setError('Inicio de sesión fallido. Verifica tus credenciales.');
+            setInputErrors((prevErrors) => ({
+              ...prevErrors,
+              email: 'Email o contraseña incorrectos', // Mensaje de error específico para email
+              password: 'Email o contraseña incorrectos', // Mensaje de error específico para contraseña
+            }));
           }
         } catch (error) {
           console.error('Error al iniciar sesión:', error);
           setError('Inicio de sesión fallido. Verifica tus credenciales.');
+          setInputErrors((prevErrors) => ({
+            ...prevErrors,
+            email: 'Email o contraseña incorrectos', // Mensaje de error específico para email
+            password: 'Email o contraseña incorrectos', // Mensaje de error específico para contraseña
+          }));
         }
       };
 
@@ -234,25 +368,33 @@ const handleChange = (event) => {
                     {isRegisterMode && (
                     <>
                         <TextField
-                            sx={{ mb: '1rem' }}
+                            sx={{ mb: '2rem' }}
                             className={`form_input`}
                             id="filled-basic"
                             label="First Name"
                             variant="filled"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
+                            onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, firstName: '' }))}
+                            onBlur={handleNameBlur}
+                            error={Boolean(inputErrors.firstName)}
+                            helperText={inputErrors.firstName}
                         />
                         <TextField
-                            sx={{ mb: '1rem' }}
+                            sx={{ mb: '2rem' }}
                             className={`form_input`}
                             id="filled-basic"
                             label="Last Name"
                             variant="filled"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
+                            onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, lastName: '' }))}
+                            onBlur={handleLastNameBlur}
+                            error={Boolean(inputErrors.lastName)}
+                            helperText={inputErrors.lastName}
                         />
                         <TextField
-                            sx={{ mb: '1rem' }}
+                            sx={{ mb: '2rem' }}
                             className={`form_input`}
                             id="filled-basic"
                             label="Address"
@@ -261,30 +403,36 @@ const handleChange = (event) => {
                             onChange={(e) => setAddress(e.target.value)}
                         />
                         <TextField
-                            sx={{ mb: '1rem' }}
+                            sx={{ mb: '2rem' }}
                             className='form_input'
                             id="filled-basic"
                             label="Phone"
                             variant="filled"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
+                            onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, phone: '' }))}
+                            onBlur={handlePhoneBlur}
+                            error={Boolean(inputErrors.phone)}
+                            helperText={inputErrors.phone}
                         />
                     </>
                     )}
                     <TextField 
-                        sx={{ mb: '1rem'}} 
+                        sx={{ mb: '2rem'}} 
                         className='form_input' 
                         id="filled-basic" 
                         label="Email" 
                         variant="filled" 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)} // Actualiza el estado local de email
+                        onFocus={handleEmailFocus}
+                        onBlur={handleEmailBlur}
                         error={Boolean(inputErrors.email)}  // Agregado para manejar el estado de error
-                        helperText={inputErrors.email}  // Agregado para mostrar el mensaje de error
+                        helperText={<FormHelperText sx={{ color: 'black' }}>{inputErrors.email}</FormHelperText>}  // Agregado para mostrar el mensaje de error
                     />
                     <TextField 
                         sx={{
-                            mb: '1rem',
+                            mb: '2rem',
                         }}
                         type={showPassword ? 'text' : 'password'} 
                         className='form_input' 
@@ -293,6 +441,10 @@ const handleChange = (event) => {
                         variant="filled"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} // Actualiza el estado local de password 
+                        onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, password: '' }))}
+                        onBlur={handlePasswordBlur}
+                        error={Boolean(inputErrors.password)}  // Agregado para manejar el estado de error
+                        helperText={inputErrors.password}  // Agregado para mostrar el mensaje de error
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment 
@@ -319,7 +471,7 @@ const handleChange = (event) => {
                         </Link>
                     </div>
 
-                    <Button sx={{ mt: '1.5rem'}} variant="contained" disableElevation color='success' onClick={ isRegisterMode ? handleRegister: handleLogin} >
+                    <Button sx={{ mt: '1.5rem'}} variant="contained" disableElevation color='success' onClick={ isRegisterMode ? handleRegister: handleLogin}  disabled={hasErrors} >
                         {isRegisterMode ? 'Registrate' : 'Inicia Sesión' }
                     </Button>
 
