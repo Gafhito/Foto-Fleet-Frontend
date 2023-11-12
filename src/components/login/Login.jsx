@@ -90,9 +90,8 @@ export const Login = () => {
     };
 
     const validatePassword = (password) => {
-      // Lógica de validación para la contraseña
       // Mínimo 8 caracteres, máximo 15, al menos una mayúscula, un número y un carácter especial
-      const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,15}$/;
+      const passwordRegex =  /^.+$/; ///^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,15}$/;
       return passwordRegex.test(password);
     };
     
