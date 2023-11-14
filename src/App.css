@@ -1,11 +1,12 @@
 #root {
   width: 100vw;
-  height: auto;
   margin: 0 auto;
   text-align: center;
-}
-
-.App {
   position: relative;
   min-height: 100vh;
 }
+
+/*.App {
+  position: relative;
+  min-height: 100vh;
+}*/

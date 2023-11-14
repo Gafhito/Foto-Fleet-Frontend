@@ -141,8 +141,47 @@ export function AuthProvider({ children }) {
     }
   };
 
+
+
+  const updateUserRole = async (email, newRole) => {
+    const token = user ? user.token : null;
+  
+    if (!token) {
+      console.log('No hay token');
+      return null;
+    }
+  
+    try {
+      const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/auth/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          email,
+          rol: newRole,
+        }),
+      });
+
+      console.log('body', email, newRole);
+  
+      if (response.status === 200) {
+        console.log('Rol del usuario actualizado exitosamente');
+        return true;
+      } else {
+        console.error('Error al actualizar el rol del usuario:', response.status, response.statusText);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error al actualizar el rol del usuario:', error);
+      console.log('DATOS ENVIADOS: ', email, newRole);
+      return false;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, setIsLoggedIn, isLoggedIn, getCategories, getUserData, registerUser }}>
+    <AuthContext.Provider value={{ user, login, logout, setIsLoggedIn, isLoggedIn, getCategories, getUserData, registerUser, updateUserRole }}>
       {children}
     </AuthContext.Provider>
   );

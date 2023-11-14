@@ -1,8 +1,12 @@
 .form_container{
-    min-height: 100vh;
-    margin: 1.5rem auto;
-    position: relative;
-    z-index: 999999999999;
+    /*min-height: 100vh;*/
+    margin: auto;
+    width: 60%;
+    margin-top: 5rem;
+    position: absolute;
+    z-index: 10;
+    /*position: relative;
+    z-index: 999999999999;*/
     
 }
 
@@ -19,13 +23,12 @@
     position: relative;
 }
 
-form{
+.login_form{
 
     display: flex;
     flex-direction: column;
     width: 22.625rem;
     margin: 1.5rem;
-    min-height: 70%;
     
 }
 
