@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 import { useLoginForm } from '../../../utils/LoginFormContext';
-import { colorsHeader} from '../../../utils/constants';
+import { colorsHeader, colors } from '../../../utils/constants';
+
 
 export const HeaderButtons = () => {
   const { openLoginForm, setRegisterMode, setLoginMode, isRegisterMode } = useLoginForm();
@@ -17,12 +18,12 @@ export const HeaderButtons = () => {
     variant: "contained",
     color: "primary", 
     sx: {
-      backgroundColor: colorsHeader.secondaryColor,
-      color: colorsHeader.textColor,
+      backgroundColor: colors.primaryColor, //colorsHeader.secondaryColorHover,
+      color:'#000000',
       padding: '8px 16px',
       '&:hover': {
-        backgroundColor: colorsHeader.secondaryColorHover,
-        color: colorsHeader.textColor,
+        backgroundColor: colors.primaryColorHover,
+        color: colors.whiteColor
       },
       whiteSpace: 'nowrap',
     },
@@ -33,9 +34,11 @@ export const HeaderButtons = () => {
     ...buttonStyles,
     sx: {
       ...buttonStyles.sx,
-      backgroundColor: colorsHeader.primaryColor,
+      color:'#000000',
+      backgroundColor: colors.terciaryColor, //colorsHeader.primaryColor,
       '&:hover': {
-        backgroundColor: colorsHeader.primaryColorHover,
+        backgroundColor: colors.terciaryColorHover,
+        color:'#ffffff'
       },
     },
   };

@@ -18,7 +18,7 @@ export const App = () => {
 
   return (
     <Router>
-      <div className="App" style={{ backgroundColor: colors.backgroundColor }}>
+      <div className="App" style={{}}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />

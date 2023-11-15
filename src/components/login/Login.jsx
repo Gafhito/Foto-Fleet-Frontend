@@ -381,7 +381,7 @@ export const Login = () => {
                         </Link>
                     </div>
 
-                    <Button sx={{ mt: '1.5rem', backgroundColor:colors.primaryColor}} variant="contained" disableElevation onClick={ isRegisterMode ? handleRegister: handleLogin}  disabled={hasErrors} >
+                    <Button sx={{ mt: '1.5rem', backgroundColor:colors.primaryColor, color: colors.blackColor, '&:hover': { backgroundColor: colors.primaryColorHover, color:colors.whiteColor }}} variant="contained" disableElevation onClick={ isRegisterMode ? handleRegister: handleLogin}  disabled={hasErrors} >
                         {isRegisterMode ? 'Registrate' : 'Inicia Sesión' }
                     </Button>
 

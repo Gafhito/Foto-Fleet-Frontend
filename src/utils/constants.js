@@ -1,10 +1,17 @@
 export const colors = {
 
-    primaryColor: '#758B9D',
-    secondaryColor: '#E6AE6D',
-    terciaryColor: '#828E98',
-    backgroundColor: '#D0CAC2',
+    primaryColor: '#FCDC21', //'#8E5572', //'#758B9D',
+    secondaryColor: '#FCC121', //'#443850',//'#E6AE6D', -- DIM GRAY
+    terciaryColor: '#FCA621', //'#BCAA99', //'#828E98',
+    highlightColor: '#FCF621', //'#BBBE64',
+    backgroundColor: '#F2F6D0', //'#F9F8F8',//'#D0CAC2',
     textColor: '#282A23',
+    primaryColorHover: '#b8a518',
+    secondaryColorHover: '#c4971b',
+    terciaryColorHover: '#c2811d',
+    highlightColorHover: '#b8b31a',
+    blackColor: '#000000',
+    whiteColor: '#ffffff'
 };
 
 export const colorsHeader= {

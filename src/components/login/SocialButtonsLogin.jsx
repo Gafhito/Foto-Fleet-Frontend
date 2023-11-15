@@ -18,8 +18,8 @@ export const SocialButtonsLogin = () => {
             color: '#ffffff',
             borderColor: '#ffffff', 
             '&:hover': {
-                color: colors.terciaryColor,
-                 borderColor: colors.terciaryColor,
+                color: colors.primaryColor,
+                 borderColor: colors.primaryColor,
              },}} 
              variant="outlined" 
             disableElevation 
@@ -35,8 +35,8 @@ export const SocialButtonsLogin = () => {
                  color: '#ffffff',
                  borderColor: '#ffffff', 
                  '&:hover': {
-                     color: colors.terciaryColor,
-                      borderColor: colors.terciaryColor,
+                     color: colors.primaryColor,
+                      borderColor: colors.primaryColor,
                   },}} 
                   variant="outlined" 
                  disableElevation 
@@ -52,8 +52,8 @@ export const SocialButtonsLogin = () => {
                  color: '#ffffff',
                  borderColor: '#ffffff', 
                  '&:hover': {
-                     color: colors.terciaryColor,
-                      borderColor:colors.terciaryColor,
+                     color: colors.primaryColor,
+                      borderColor:colors.primaryColor,
                   },}} 
                   variant="outlined" 
                  disableElevation 

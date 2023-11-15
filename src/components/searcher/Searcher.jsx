@@ -53,26 +53,26 @@ const customTheme = createTheme({
   
     return (
       <ThemeProvider theme={customTheme}>
-        <Grid sx={{margin: '9rem auto', backgroundColor: colors.primaryColor, display: 'flex', flexDirection:'column', justifyContent: 'space-around', alignItems:'center', height:'15rem', width: '90vw', borderRadius: '1rem'}}>
-          <Typography variant='h3' sx={{fontWeight:'bolder', color:'White'}} >
-              Hacé tu reserva!
+        <Grid sx={{margin: '3rem auto', paddingTop:'3rem', backgroundColor: colors.primaryColor, display: 'flex', flexDirection:'column', justifyContent: 'space-around', alignItems:'center', height:'15rem', width: '100%', borderRadius: '1rem', boxShadow: '0px 0px 5px -4px rgba(0, 0, 0, 1)'}}>
+          <Typography variant='h3' sx={{fontWeight:'bolder', color: colors.blackColor}} >
+              Encúentra lo que buscas!
           </Typography>
-          <Box sx={{display:'flex', justifyContent:'space-between', alignItems:'center', width:'80%'}}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '40%' }}>
+          <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', width:'80%'}}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '55%' }}>
                 <StyledTextField
                   id="filled-basic"
                   label="Buscar..."
                   variant="filled"
-                  sx={{ width: '100%' }}
+                  sx={{ width: '100%', marginRight: '3rem' }}
                 />
             </Box>
-            <Box sx={{display: 'flex', justifyContent:'space-between', alignItems:'center'}}>
+            {/*<Box sx={{display: 'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <Calendar label={'Fecha Desde'}/>
                 <Calendar label={'Fecha Hasta'}/>
-            </Box>
-            <Box display="flex" justifyContent="flex-end">
-                <Button label={'Buscar'} backgroundColor={colors.backgroundColor} backgroundColorHover={colors.secondaryColor} color={colors.textColor}/>
-            </Box>
+              </Box>*/}
+
+                <Button label={'Buscar'} backgroundColor={colors.blackColor} backgroundColorHover={colors.secondaryColorHover} color={'#ffffff'} mt={'1rem'} minWidth={'100px'}/>
+
           </Box>
         </Grid>
       </ThemeProvider>     

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Slider from 'react-slick';
-import { Card, CardContent, CardMedia, Typography, Grid, Container } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, Box, Container } from '@mui/material';
 import { useAuth } from '../../utils/AuthContext';
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -47,7 +47,7 @@ export const Categories = () => {
   };
 
   return (
-    <>
+    <Box>
       <Typography variant='h3' sx={{ marginTop: '3rem' }}>Nuestras Categorias</Typography>
       <Container sx={{ mt: '2rem' }}>
         <Slider {...settings}>
@@ -70,6 +70,6 @@ export const Categories = () => {
           ))}
         </Slider>
       </Container>
-    </>
+    </Box>
   );
 };
