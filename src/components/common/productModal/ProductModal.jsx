@@ -14,6 +14,10 @@ import {
 } from '@mui/material';
 
 import CloseIcon from '@mui/icons-material/Close';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
+import { colors } from '../../../utils/constants';
 
 export const ProductModal = ({ open, onClose, product }) => {
   const [showAllImages, setShowAllImages] = useState(false);
@@ -46,41 +50,66 @@ export const ProductModal = ({ open, onClose, product }) => {
             backgroundColor: 'white',
             borderRadius: '8px',
             boxShadow: '0 0 20px rgba(0, 0, 0, 0.15)',
+            '&::-webkit-scrollbar': {
+              width: '12px',
+              height: '12px',
+              /*borderRadius: '8px',*/
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: colors.blackColor,
+              /*borderRadius: '8px',*/
+            },
           }}
         >
           {/* Header */}
           <Box
             sx={{
-              backgroundColor: 'lightgray',
+              backgroundColor: colors.primaryColor,
               display: 'flex',
               justifyContent: 'space-between',
               padding: '1rem',
               alignItems: 'center',
             }}
           >
-            <Typography variant="h5">Producto</Typography>
+            <Typography variant="h4">{product.name}</Typography>
             <IconButton onClick={onClose}>
               <CloseIcon />
             </IconButton>
           </Box>
 
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{backgroundColor:colors.backgroundColor}}>
             <Grid item xs={6}>
-              <Card>
-                <Typography variant="h6">{product.name}</Typography>
+              <Card sx={{boxShadow:'none', backgroundColor:colors.backgroundColor}}>
                 <CardMedia
                   component="img"
                   height="280px"
                   image={product.images[selectedImageIndex].url}
                   title={product.name}
-                  sx={{ width: '100%' }}
+                  sx={{ width: '100%', objectFit:'contain' }}
                   onClick={() => handleImageClick((selectedImageIndex + 1) % product.images.length)}
                 />
-                <CardContent sx={{ height: '8rem' }}>
-                  <Typography variant="body2" color="textSecondary">
+                <CardContent sx={{ height: 'auto', }}>
+                  <Typography variant="body2" color={colors.textColor} sx={{width:'90%', margin:'auto', textAlign:'center'}}>
                     {product.description}
                   </Typography>
                 </CardContent>
+              {/* Characteristics */}
+              <Typography variant="h6" mt={2} sx={{textAlign:'center', marginBottom:'.5rem'}}>
+                Características
+              </Typography>
+              <div style={{ display: 'flex', flexDirection: 'column', marginTop:'1rem', width:'90%', margin:'auto', paddingBottom:'2rem' }}>
+                <div style={{ columnCount: 2, columnGap: '16px' }}>
+                  {product.characteristics.map((characteristic, index) => (
+                    <div key={index} style={{ marginBottom: '8px', display: 'flex', alignItems:'center' }}>
+                      <FontAwesomeIcon icon={characteristic.urlIcono.replace(/\s/g, '-').toLowerCase()} style={{marginRight:'.5rem'}}/>
+                      <div>
+                        <Typography variant="subtitle2">{characteristic.name}</Typography>
+                        {/*<Typography variant="body2">{characteristic.description}</Typography>*/}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
               </Card>
             </Grid>
             <Grid item xs={6}>
@@ -90,16 +119,17 @@ export const ProductModal = ({ open, onClose, product }) => {
                   display: 'grid',
                   gridTemplateColumns: 'repeat(2, 1fr)',
                   gap: '8px',
+                  padding:'0 2rem'
                 }}
               >
                 {product.images.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
-                  <Card key={index}>
+                  <Card key={index} sx={{boxShadow:'none'}}>
                     <CardMedia
                       component="img"
                       height="150px"
                       image={image.url}
                       title={`Imagen ${index + 1}`}
-                      sx={{ width: '100%', cursor: 'pointer' }}
+                      sx={{ width: '100%', cursor: 'pointer', objectFit:'contain' }}
                       onClick={() => handleImageClick(index)}
                     />
                   </Card>

@@ -222,6 +222,7 @@ const buildImageUploadRequest = () => {
   useEffect(() => {
     const fetchCharacteristics = async () => {
       try {
+        console.log("CHARACTERISTICS EN EL UE: ", characteristics)
         setCharacteristics(characteristics);
       } catch (error) {
         console.error('Error fetching characteristics:', error);

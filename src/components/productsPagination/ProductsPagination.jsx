@@ -50,16 +50,21 @@ export const ProductsPagination = ({ itemsPerPage }) => {
       <Grid container spacing={3}>
         {productsContent?.map((product, index) => (
           <Grid item key={index} xs={12} sm={6} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Card sx={{ width: '345px' }}>
+            <Card sx={{ width: '345px', borderRadius:'.5rem', cursor:'pointer', transition:'all .3s', '&:hover': { transform:'scale(.95)' } }}>
               <CardMedia
-                sx={{ height: '170px' }}
+                sx={{ height: '170px', backgroundSize:'contain' }}
                 image={product.images[0]?.url}
                 title={product.name}
                 onClick={() => handleOpenModal(product)}
               />
-              <CardContent sx={{maxHeight: '8rem'}}>
-                <Typography variant="h6">{product.title}</Typography>
-                <Typography variant="body2" color="textSecondary">
+              <CardContent sx={{maxHeight: '4rem'}}>
+                <Typography variant="h6">{product.name}</Typography>
+                <Typography variant="body2" color="textSecondary" sx={{
+                                                                    overflow: 'hidden',
+                                                                    textOverflow: 'ellipsis',
+                                                                    whiteSpace: 'nowrap',
+
+                                                                    }}>
                   {product.description}
                 </Typography>
                 {console.log('product.productId: antes del link:', product.productId)}

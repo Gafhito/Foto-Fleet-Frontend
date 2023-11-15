@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Card, CardContent, Typography } from '@mui/material';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import { useTheme } from '@mui/system';
 
 import './recomendation.css';
 
@@ -51,13 +52,17 @@ const products = [
   },
 ];
 
+export const Recomendations = () => {
 
-const SampleNextArrow = (props) => {
+  const theme = useTheme();
+
+
+  const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem', right: '-50px' }}
+        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem', right: theme.breakpoints.down('xs') ? '-25px' : theme.breakpoints.down('md') ? '-50px' : '0', }}
         onClick={onClick}
       >
         <ArrowForward sx={{color:'black', width: '2rem', height:'2rem', transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.5)' }}}/>
@@ -70,24 +75,45 @@ const SamplePrevArrow = (props)  => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem', left: '-50px' }}
+        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem', left: theme.breakpoints.down('xs') ? '-25px' : theme.breakpoints.down('md') ? '-50px' : '0', }}
         onClick={onClick}
       >
         <ArrowBack sx={{color:'black', width: '2rem', height:'2rem', transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.5)' } }}/>
       </div>
     );
   }
-
-export const Recomendations = () => {
  
-    const settings = {
+  const settings = {
     infinite: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
     dots: true,
     nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />
+    prevArrow: <SamplePrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1390,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 680,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -96,9 +122,9 @@ export const Recomendations = () => {
     <Slider {...settings} className='recomendaciones_container'>
         {products.map((product, index) => (
             <div key={index} className='recomendaciones_inner_container'>
-            <Card sx={{width: '17rem', height: '17rem'}}>
+            <Card sx={{width: { xs:'13rem', lg:'15rem'} , height: { xs:'13rem', lg:'15rem'}, }}>
                 <img className='recomendacion_img' src={product.image} alt={product.title}/>
-                <CardContent>
+                <CardContent sx={{padding:'.5rem'}}>
                     <Typography variant="h6">{product.title}</Typography>
                     <Typography variant="body2">{product.description}</Typography>
                     <Typography variant="subtitle1">{product.price}</Typography>

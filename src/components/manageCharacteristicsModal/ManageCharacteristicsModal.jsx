@@ -172,6 +172,7 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
           </TableHead>
           <TableBody>
             {console.log('CHARACTERISTICS 173: ', characteristics)}
+            {console.log('SELECTED CHARACTER: ', selectedCharacteristic)}
             {characteristics.map((characteristic) => (
               <TableRow key={characteristic.characteristicsId}>
                 <TableCell>

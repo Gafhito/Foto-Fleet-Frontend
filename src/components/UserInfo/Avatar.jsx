@@ -3,6 +3,8 @@ import { Avatar as MuiAvatar, Tooltip } from '@mui/material';
 
 import { useAuth } from '../../utils/AuthContext';
 
+import { colors } from '../../utils/constants';
+
 export const Avatar = ({ onClick }) => {
     const { user, getUserData } = useAuth();
     const [userData, setUserData] = useState(null);
@@ -40,7 +42,7 @@ export const Avatar = ({ onClick }) => {
             <MuiAvatar
                 className="avatar"
                 onClick={onClick}
-                sx={{ cursor: 'pointer' }}
+                sx={{ cursor: 'pointer', backgroundColor:colors.primaryColor, color:colors.blackColor }}
             >
                 {userInitial}
             </MuiAvatar>
