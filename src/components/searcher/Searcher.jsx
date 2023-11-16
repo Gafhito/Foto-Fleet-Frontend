@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import { TextField, Box, Grid, Typography, ThemeProvider, createTheme, styled } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { TextField, Box, Grid, Typography, ThemeProvider, createTheme, styled,  MenuItem, Select, InputLabel, FormControl, } from '@mui/material';
 
 import { Button } from '../common/button/Button';
 import { colors } from '../../utils/constants';
 import { Calendar } from '../common/calendar/Calendar';
+
+import { useProductContext } from '../../utils/ProductContext';
+import { useAuth } from '../../utils/AuthContext';
 
 
 const customTheme = createTheme({
@@ -35,8 +38,7 @@ const customTheme = createTheme({
       },
     },
   });
-  
-  
+
   
   const StyledTextField = styled(TextField)({
     paddingTop: '1rem',
@@ -46,9 +48,24 @@ const customTheme = createTheme({
   export const Searcher = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
+    const { searchProducts } = useProductContext();
+    const { getCategories } = useAuth();
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [categories, setCategories] = useState([]);
+  
+    useEffect(() => {
+      // Fetch categories when the component mounts
+      const fetchCategories = async () => {
+        const fetchedCategories = await getCategories();
+        setCategories(fetchedCategories);
+      };
+  
+      fetchCategories();
+    }, [getCategories]);
   
     const handleSearch = () => {
-      // Falta desarrollar logica de busqueda por fecha
+      console.log('SearchQuery: ' + searchQuery + ' selectedCategory: ' + selectedCategory)
+      searchProducts(searchQuery || '""', selectedCategory || '""');
     };
   
     return (
@@ -58,20 +75,42 @@ const customTheme = createTheme({
               Encúentra lo que buscas!
           </Typography>
           <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', width:'80%'}}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '55%' }}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '40%' }}>
                 <StyledTextField
                   id="filled-basic"
+                  className='searcher_buscar'
                   label="Buscar..."
                   variant="filled"
-                  sx={{ width: '100%', marginRight: '3rem' }}
+                  sx={{ width: '100%', marginRight: '1.5rem' }}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </Box>
+
+            <FormControl variant="filled" className='searcher_select' sx={{ marginRight: '3rem', width:'15%', paddingTop:'1rem', fontSize:'.8rem' }}>
+            <InputLabel id="category-label">Categoría</InputLabel>
+            <Select sx={{height:'3rem'}}
+              labelId="category-label"
+              id="category-select"
+              value={selectedCategory}
+              label="Categoría"
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <MenuItem value="">Todas</MenuItem>
+              {categories.map((category) => (
+                <MenuItem key={category.categoryId} value={category.name}>
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
             {/*<Box sx={{display: 'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <Calendar label={'Fecha Desde'}/>
                 <Calendar label={'Fecha Hasta'}/>
               </Box>*/}
 
-                <Button label={'Buscar'} backgroundColor={colors.blackColor} backgroundColorHover={colors.secondaryColorHover} color={'#ffffff'} mt={'1rem'} minWidth={'100px'}/>
+                <Button label={'Buscar'} backgroundColor={colors.blackColor} backgroundColorHover={colors.secondaryColorHover} color={'#ffffff'} mt={'1rem'} minWidth={'100px'} onClick={handleSearch}/>
 
           </Box>
         </Grid>

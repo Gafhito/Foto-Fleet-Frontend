@@ -35,6 +35,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [favoriteStatus, setFavoriteStatus] = useState({});
 
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -48,9 +49,12 @@ export const ProductsPagination = ({ itemsPerPage }) => {
     setIsModalOpen(false);
   };
 
-  const handleFavorite = () => {
-    isFavorite ? setIsFavorite(false) : setIsFavorite(true);
-  }
+  const handleFavorite = (productId) => {
+    setFavoriteStatus((prevStatus) => ({
+      ...prevStatus,
+      [productId]: !prevStatus[productId],
+    }));
+  };
 
 
   return (
@@ -59,7 +63,8 @@ export const ProductsPagination = ({ itemsPerPage }) => {
         Lista de Productos Aleatorios
       </Typography>
       <Grid container spacing={3}>
-        {productsContent?.map((product, index) => (
+        {productsContent?.map((product, index) => {
+          return(
           <Grid item key={index} xs={12} sm={6} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Card sx={{ width: '345px', borderRadius:'.5rem', cursor:'pointer', transition:'all .3s', '&:hover': { transform:'scale(.95)' }, position:'relative', '&:hover .favorite-icon, &:hover .share-icon': { opacity: 1 }, }}>
               <CardMedia
@@ -79,14 +84,14 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                   {product.description}
                 </Typography>
                 {console.log('product.productId: antes del link:', product.productId)}
-                <IconButton aria-label="add to favorites" className="favorite-icon" onClick={handleFavorite}
+                <IconButton aria-label="add to favorites" className="favorite-icon" onClick={() => handleFavorite(product.productId)}
                   sx={{
                     position: 'absolute',
                     top: '10px', // Ajusta la posición según sea necesario
                     right: '10px', // Ajusta la posición según sea necesario
                     opacity: 0, // Inicialmente oculto
                     transition: 'opacity 0.3s ease', // Agrega una transición suave
-                    color: isFavorite ? 'red' : ''
+                    color: favoriteStatus[product.productId] ? 'red' : '',
                   }}>
                   <FavoriteIcon />
                 </IconButton>
@@ -104,7 +109,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
               </CardContent>
             </Card>
           </Grid>
-        ))}
+        )})}
       </Grid>
 
       {selectedProduct && (

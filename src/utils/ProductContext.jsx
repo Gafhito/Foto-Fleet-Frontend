@@ -147,8 +147,29 @@ export function ProductProvider({ children }) {
     fetchCharacteristics();
   }, []);
 
+
+  const searchProducts = async (searchQuery, categoryName) => {
+
+    console.log('searchQuery pasada: ' + searchQuery + ' categoryname pasada: ' + categoryName)
+    try {
+      const response = await fetch(
+        `http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/search?page=0&product=${searchQuery}&categoryName=${categoryName}`
+      );
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setProducts(data);
+      console.log('Searched products data:', data);
+    } catch (error) {
+      console.error('Error searching for products', error);
+    }
+  };
+
   return (
-    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics}}>
+    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts,}}>
       {children}
     </ProductContext.Provider>
   );
