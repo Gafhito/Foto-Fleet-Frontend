@@ -340,16 +340,12 @@ export const Login = () => {
     <div className='form_container'>
             <Paper elevation={6} className='paper_login_form' 
                 sx={{ 
-                    width: { xs: '85vw', sm: '29rem', md: '29rem', lg: '29rem', xl: '29rem' },
-                    height: { xs: '95vh', sm: '90vh', md: '90vh', lg: 'auto', xl: 'auto', }
+                    width: { xs: '95vw', sm: '29rem', md: '29rem', lg: '29rem', xl: '29rem' },
+                    
                 }}>
                 <div>
                     <div>
                         <h2 style={{color: '#ffffff'}}>Bienvenido a FotoFleet!</h2>
-                        <div className='form_login_options'>
-                            <p style={{color: '#ffffff'}}>{ isRegisterMode ? 'Registrate' : 'Inicia Sesion'}</p>
-                           {/*<PinkSwitch checked={isRegisterMode} onChange={handleToggleMode} inputProps={{ 'label': 'controlled' }}/>*/}
-                        </div>
                     </div>
                 </div>
                 <form action="/" className={'login_form'}>
@@ -358,22 +354,24 @@ export const Login = () => {
 
                       <CustomTextField label={'First Name'} value={firstName} onChange={(e) => setFirstName(e.target.value)} onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, firstName: '' }))} onBlur={handleNameBlur} error={inputErrors.firstName} helperText={inputErrors.firstName}/>
                       <CustomTextField label={'Last Name'} value={lastName} onChange={(e) => setLastName(e.target.value)} onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, lastName: '' }))} onBlur={handleLastNameBlur} error={inputErrors.lastName} helperText={inputErrors.lastName}/>
-                      <TextField sx={{ mb: '2rem' }} className={`form_input`} id="filled-basic" label="Address" variant="filled" value={address} onChange={(e) => setAddress(e.target.value)}/>
+                      <TextField sx={{ margin:'0 0 2rem 0', width: {xs:'90%'} }} className={`form_input`} id="filled-basic" label="Address" variant="filled" value={address} onChange={(e) => setAddress(e.target.value)}/>
                       <CustomTextField label={'Phone'} value={phone} onChange={(e) => setPhone(e.target.value)} onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, phone: '' }))} onBlur={handlePhoneBlur} error={inputErrors.phone} helperText={inputErrors.phone}/>
                     </div>
                     )}
-                    <CustomTextField label={'Email'} value={email} onChange={(e) => setEmail(e.target.value)} onFocus={handleEmailFocus} onBlur={handleEmailBlur} error={inputErrors.email} helperText={inputErrors.email}/>       
-                    <TextField sx={{ mb: '2rem', }} type={showPassword ? 'text' : 'password'} className='form_input' id="filled-basic" label="Password" variant="filled" value={password} onChange={(e) => setPassword(e.target.value)}  onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, password: '' }))}
-                        error={Boolean(inputErrors.password)}
-                        helperText={inputErrors.password}  
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton edge="end"onClick={handleClickShowPassword} sx={{ '&:focus': { outline: 'none', },}}>
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>),
-                        }}/>
+                    <div>
+                      <CustomTextField label={'Email'} value={email} onChange={(e) => setEmail(e.target.value)} onFocus={handleEmailFocus} onBlur={handleEmailBlur} error={inputErrors.email} helperText={inputErrors.email}/>       
+                      <TextField sx={{ margin:'0 0 2rem 0', width: {xs:'90%'} }} type={showPassword ? 'text' : 'password'} className='form_input' id="filled-basic" label="Password" variant="filled" value={password} onChange={(e) => setPassword(e.target.value)}  onFocus={() => setInputErrors((prevErrors) => ({ ...prevErrors, password: '' }))}
+                          error={Boolean(inputErrors.password)}
+                          helperText={inputErrors.password}  
+                          InputProps={{
+                              endAdornment: (
+                                  <InputAdornment position="end">
+                                      <IconButton edge="end"onClick={handleClickShowPassword} sx={{ '&:focus': { outline: 'none', },}}>
+                                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                                      </IconButton>
+                                  </InputAdornment>),
+                          }}/>
+                    </div>
                     <div className='form_options'>
                         <FormControlLabel control={<Checkbox color="success" className='custom_chkbx'/>} label="Recuérdame" style={{color:'#ffffff'}}/>
                         <Link href="#" sx={{ color: '#ffffff', textDecoration: 'none', '&:hover': { color: colors.terciaryColor } }}>
@@ -385,9 +383,9 @@ export const Login = () => {
                         {isRegisterMode ? 'Registrate' : 'Inicia Sesión' }
                     </Button>
 
-                    <hr className="divider" />
+                    {/*<hr className="divider" />*/}
 
-                    <SocialButtonsLogin /> 
+                    {/*<SocialButtonsLogin /> */}
                 </form>
 
                 {registrationSuccess && (

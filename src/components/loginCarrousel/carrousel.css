@@ -1,12 +1,12 @@
-/* Carousel Container */
+
 .carousel {
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    width: 100%;
+    width: 100vw;
     overflow: hidden;
-    height: 160vh;
+    height: 155vh;
     top: 1rem;
     z-index: 3;
   }
@@ -14,25 +14,15 @@
 
   .overlay {
     position: absolute;
-    top: 0;
+    top: 1rem;
     left: 0;
-    width: 100%;
-    height: 160vh;
-    background-color: rgba(0, 0, 0, 0.5); /* Ajusta el valor alpha para controlar la opacidad */
-    backdrop-filter: blur(8px); /* Ajusta el valor del desenfoque según tus preferencias */
+    height: 155vh;
+    background-color: rgba(0, 0, 0, 0.5); /* opacidad */
+    backdrop-filter: blur(8px); /*desenfoque*/
     pointer-events: none; /* Permite que los eventos pasen a través de la capa */
     z-index: 8;
   }
   
-  /* Image Styles 
-  .carousel img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    transition: opacitu .5 ease;
-  }*/
-
-
   .slide_container{
     width: 100%;
     height: 100%;
@@ -43,8 +33,8 @@
     max-width: 100%;
     height: 100%;
     display: block;
-    /*position: absolute;*/
-    transition: opacity 3s; /* Transición suave de la propiedad "opacity" */
+
+    transition: opacity 3s;
     opacity: 0;
   }
   
@@ -53,7 +43,6 @@
     z-index: 1;
   }
   
-  /* Button Styles */
   .carousel-button {
     position: absolute;
     color: #ffffff;
@@ -105,3 +94,23 @@
       opacity: 1;
     }
   }
+
+
+
+@media (min-width: 1199px) and (max-width: 1360) {
+  .overlay, .carousel {
+    height: 130vh;
+}
+}
+
+@media (min-width:900px) and (max-width:1023px){
+  .overlay, .carousel{
+    height: 98vh;
+}
+}
+
+@media (min-width: 1024px) and (max-width: 1280px){
+  .overlay, .carousel{
+      height: 96vh;
+  }
+}

@@ -103,7 +103,7 @@ const SamplePrevArrow = (props)  => {
             <div key={index} className='category_card_container'>
               <Card className='category_card' sx={{ 
                 backgroundImage:`url(${category.imageUrl})`, 
-                backgroundSize:'contain', 
+                backgroundSize:'cover', 
                 backgroundRepeat:'no-repeat', 
                 height:{xs: '150px', sm:'200px', lg:'250px'}, 
                 width: {xs: '150px', sm:'200px', lg:'250px'},

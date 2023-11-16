@@ -1,10 +1,10 @@
 import { TextField } from '@mui/material';
 import FormHelperText from '@mui/material/FormHelperText';
 
-export const CustomTextField = ({ label, value, onChange, onFocus, onBlur, error, helperText }) => {
+export const CustomTextField = ({ label, value, onChange, onFocus, onBlur, error, helperText, xsw }) => {
   return (
     <TextField 
-                        sx={{ mb: '2rem'}} 
+                        sx={{ width: { xs: xsw ? xsw : '90%' }, margin:'0 0 2rem 0'}} 
                         className='form_input' 
                         id="filled-basic" 
                         label={label} 

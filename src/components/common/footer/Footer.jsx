@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from '@mui/material';
-import logo from '../../../assets/img/Logo.png';
+import logo from '../../../assets/img/Logo (1).png';
 import './footer.css';
 
 
