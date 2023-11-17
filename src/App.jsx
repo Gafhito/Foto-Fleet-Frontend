@@ -9,6 +9,7 @@ import { colors } from './utils/constants';
 import './App.css';
 import { LoginPage } from './pages/LoginPage';
 import { UserProfile } from './components/UserInfo/UserProfile';
+import { FavoritesPage } from './pages/FavoritesPage';
 
 import { useAuth } from './utils/AuthContext';
 
@@ -28,6 +29,7 @@ export const App = () => {
             <Route path="products/:productId" element={<ProductPage />} />
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/perfil" element={<UserProfile/>} />
+            <Route path="/favoritos" element={<FavoritesPage/>} />
           </Route>
         </Routes>
       </div>

@@ -11,6 +11,27 @@ export function ProductProvider({ children }) {
   const [characteristics, setCharacteristics] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
 
+  
+  
+  /* --------- FAVORITOS ---------- */
+
+  const [favorites, setFavorites] = useState([]);
+
+  const addToFavorites = (productId) => {
+    setFavorites((prevFavorites) => [...prevFavorites, productId]);
+  };
+
+  const removeFromFavorites = (productId) => {
+    setFavorites((prevFavorites) => prevFavorites.filter((id) => id !== productId));
+  };
+
+  const isFavorite = (productId) => favorites.includes(productId);
+
+  /* --------- FAVORITOS ---------- */
+
+
+
+
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -169,7 +190,7 @@ export function ProductProvider({ children }) {
   };
 
   return (
-    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts,}}>
+    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts, favorites, addToFavorites, removeFromFavorites, isFavorite,}}>
       {children}
     </ProductContext.Provider>
   );

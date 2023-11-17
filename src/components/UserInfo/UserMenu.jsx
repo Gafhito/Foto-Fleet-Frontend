@@ -18,6 +18,11 @@ export const UserMenu = ({ anchorEl, onClose }) => {
       navigate('/perfil');
       onClose();
     };
+
+    const handleNavigateToFavorites = () => {
+      navigate('/favoritos');
+      onClose();
+    };
   
     return (
       <Menu
@@ -27,6 +32,7 @@ export const UserMenu = ({ anchorEl, onClose }) => {
       >
           <MenuItem onClick={handleNavigateToProfile}>Perfil</MenuItem> 
           <MenuItem onClick={onClose}>Mis Reservas</MenuItem>
+          <MenuItem onClick={handleNavigateToFavorites}>Mis Favoritos</MenuItem>
           <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
       </Menu>
     );
