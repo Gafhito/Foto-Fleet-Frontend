@@ -189,8 +189,42 @@ export function ProductProvider({ children }) {
     }
   };
 
+
+
+  const fetchProductSuggestions = async (searchQuery) => {
+    try {
+      const response = await fetch(
+        `http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/search?page=0&product=${searchQuery}&categoryName=""`
+      );
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const resp = await response.json();
+
+      const data = resp.content;
+
+      console.log('DATA: ', data);
+  
+      // Ensure data is an array before mapping
+      const suggestions = Array.isArray(data)
+        ? data.map((product) => ({
+            label: product.name, // Adjust based on your product structure
+            value: product.productId, // Adjust based on your product structure
+          }))
+        : [];
+  
+      return suggestions;
+    } catch (error) {
+      console.error('Error fetching product suggestions', error);
+      throw error;
+    }
+  };
+  
+
   return (
-    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts, favorites, addToFavorites, removeFromFavorites, isFavorite,}}>
+    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts, favorites, addToFavorites, removeFromFavorites, isFavorite, fetchProductSuggestions}}>
       {children}
     </ProductContext.Provider>
   );

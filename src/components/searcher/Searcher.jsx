@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TextField, Box, Grid, Typography, ThemeProvider, createTheme, styled,  MenuItem, Select, InputLabel, FormControl, } from '@mui/material';
+import { TextField, Box, Grid, Typography, ThemeProvider, createTheme, styled,  MenuItem, Select, InputLabel, FormControl, Autocomplete, } from '@mui/material';
 
 import { Button } from '../common/button/Button';
 import { colors } from '../../utils/constants';
@@ -48,13 +48,13 @@ const customTheme = createTheme({
   export const Searcher = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
-    const { searchProducts } = useProductContext();
+    const { searchProducts, fetchProductSuggestions } = useProductContext();
     const { getCategories } = useAuth();
     const [selectedCategory, setSelectedCategory] = useState('');
     const [categories, setCategories] = useState([]);
+    const [suggestedProducts, setSuggestedProducts] = useState([]);
   
     useEffect(() => {
-      // Fetch categories when the component mounts
       const fetchCategories = async () => {
         const fetchedCategories = await getCategories();
         setCategories(fetchedCategories);
@@ -62,10 +62,55 @@ const customTheme = createTheme({
   
       fetchCategories();
     }, [getCategories]);
+
+
+
+    // Debounce 
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
   
     const handleSearch = () => {
       console.log('SearchQuery: ' + searchQuery + ' selectedCategory: ' + selectedCategory)
       searchProducts(searchQuery || '""', selectedCategory || '""');
+    };
+
+    const handleInputChange = debounce(async (event, params) => {
+      if (!params) {
+        return;
+      }
+  
+      const { inputProps } = params;
+  
+      if (!inputProps) {
+        return;
+      }
+  
+      const { value } = inputProps;
+  
+      setSearchQuery(value);
+  
+      try {
+        console.log('VALUE: ' + value);
+        const suggestions = await fetchProductSuggestions(value);
+        setSuggestedProducts(suggestions);
+        console.log('SUGGESTIONS: ', suggestions);
+      } catch (error) {
+        console.error('Error fetching product suggestions', error);
+      }
+    }, 450); // Adjust the delay as needed
+
+
+    const handleSelect = (event, newValue) => {
+      if (newValue && newValue.label) {
+        setSearchQuery(newValue.label);
+      }
     };
   
     return (
@@ -75,17 +120,26 @@ const customTheme = createTheme({
               Encúentra lo que buscas!
           </Typography>
           <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', width:'80%'}}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '40%' }}>
-                <StyledTextField
-                  id="filled-basic"
-                  className='searcher_buscar'
-                  label="Buscar..."
-                  variant="filled"
-                  sx={{ width: '100%', marginRight: '1.5rem' }}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-            </Box>
+          <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '40%' }}>
+          <Autocomplete
+      sx={{ width: '80%' }}
+      id="search-input"
+      options={suggestedProducts}
+      getOptionLabel={(option) => option.label || ''}
+      freeSolo
+      value={{ label: searchQuery }}
+      onChange={handleSelect}
+      renderInput={(params) => (
+        <StyledTextField
+          {...params}
+          label="Buscar..."
+          variant="filled"
+          sx={{ width: '100%', marginRight: '1.5rem' }}
+          onChange={(e) => handleInputChange(e, params)}
+        />
+              )}
+            />
+          </Box>
 
             <FormControl variant="filled" className='searcher_select' sx={{ marginRight: '3rem', width:'15%', paddingTop:'1rem', fontSize:'.8rem' }}>
             <InputLabel id="category-label">Categoría</InputLabel>
