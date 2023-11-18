@@ -15,7 +15,7 @@ export const PaginationNumbers = ({ totalPages, currentPage, changePage }) => {
       {pages.length <= pagesToShow ? (
         // Mostrar todos los números de página
         pages.map((page) => (
-          <Button minWidth={'16px'} color={colors.blackColor} label={page} key={page} onClick={() => handleClick(page)} disabled={currentPage === page}>
+          <Button minWidth={'16px'} color={currentPage === page ? colors.highlightColorHover : colors.blackColor} colorHover={colors.highlightColorHover} label={page} key={page} onClick={() => handleClick(page)} disabled={currentPage === page}>
             {page}
           </Button>
         ))
