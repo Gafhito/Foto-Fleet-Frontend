@@ -112,7 +112,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
       <Button label={'Anterior'} backgroundColor={colors.primaryColor} colorHover={colors.primaryColorHover} color={colors.blackColor} onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
         Anterior
       </Button>
-      <PaginationNumbers totalPages={products.totalPages} currentPage={currentPage} changePage={setCurrentPage} />
+      <PaginationNumbers totalPages={products.totalPages} currentPage={currentPage} changePage={setCurrentPage}/>
       <Button label={'Siguiente'} backgroundColor={colors.primaryColor} colorHover={colors.primaryColorHover} color={colors.blackColor} onClick={() => changePage(currentPage + 1)} disabled={currentPage === products.totalPages}>
         Siguiente
       </Button>
