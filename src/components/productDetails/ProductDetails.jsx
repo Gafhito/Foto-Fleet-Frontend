@@ -117,7 +117,7 @@ export const ProductDetails = ({ product }) => {
           <Grid container spacing={2} className='main_content_grid_container' sx={{marginLeft: '3rem',justifyContent:'start', alignItems:'center', height:'30rem'}}>
             <Grid item xs={12} sm={6} className='main_content_container'>
               <Card sx={{boxShadow:'none', background:'transparent'}}>
-                <CardMedia component="img" height="300px" image={product.images[selectedImageIndex].url} alt={product.name} />
+                <CardMedia component="img" height="300px" image={product.images[selectedImageIndex]?.url} alt={product.name} />
               </Card>
               <Grid item xs={12} sm={9} sx={{ display: {xs: 'none', md:'block'} }} className='detail_description_container'>
                 <Box sx={
@@ -130,7 +130,7 @@ export const ProductDetails = ({ product }) => {
                   <Typography variant="h6" textAlign={'left'} sx={{margin:'1rem'}}>Características</Typography>
                   <div style={{ display: 'flex', flexDirection: 'column', marginTop:'1rem', width:'100%', margin:'auto', paddingBottom:'2rem', textAlign: 'left' }}>
                     <div style={{ columnCount: 2, columnGap: '16px' }}>
-                      {product.characteristics.map((characteristic, index) => (
+                      {product.characteristics?.map((characteristic, index) => (
                         <div key={index} style={{ marginBottom: '8px', display: 'flex', alignItems:'center' }}>
                           <FontAwesomeIcon icon={characteristic.urlIcono.replace(/\s/g, '-').toLowerCase()} style={{marginRight:'.5rem'}}/>
                           <div>
@@ -147,7 +147,7 @@ export const ProductDetails = ({ product }) => {
           </Grid>
         <Grid item xs={12} sm={6} sx={{maxWidth:'40%', marginTop: {md: '-29.5rem', lg:'-28.5rem'}, marginLeft: {md: '55vw' ,lg:'50vw'}}}>
           <Grid container spacing={1}>
-            {product.images.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
+            {product.images?.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
               <Grid item xs={5} key={index} className='additional_img_container'>
                 <Card sx={{ marginLeft: '2rem', width: '13rem', boxShadow:'none', padding:'.5rem', borderRadius:'.5rem', cursor:'pointer', height: {xs: '75px', sm:'100px', md:'100px'} }} onClick={() => handleImageClick(index)}>
                   <CardMedia component="img" height="150" image={image.url} alt={`Additional Image ${index + 1}`} sx={{height: {xs: '75px', sm:'100px', md:'100px'}, objectFit:'contain'}}  />

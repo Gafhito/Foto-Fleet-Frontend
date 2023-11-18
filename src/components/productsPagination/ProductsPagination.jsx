@@ -5,7 +5,8 @@ import {
   Grid,
   Card,
   CardMedia,
-  CardContent
+  CardContent,
+  Box
 } from '@mui/material';
 
 import { Link } from 'react-router-dom';
@@ -14,6 +15,7 @@ import { Button } from '../common/button/Button';
 import { useProductContext } from '../../utils/ProductContext';
 import { colors } from '../../utils/constants';
 import { ProductModal } from '../common/productModal/ProductModal';
+import { PaginationNumbers } from './PaginationNumbers';
 
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -21,7 +23,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import IconButton from '@mui/material/IconButton';
 
 export const ProductsPagination = ({ itemsPerPage }) => {
-  const { products, addToFavorites, removeFromFavorites, isFavorite } = useProductContext();
+  const { products, addToFavorites, removeFromFavorites, isFavorite, currentPage, setCurrentPage, changePage } = useProductContext();
 
   const productsContent = products.content;
 
@@ -29,7 +31,6 @@ export const ProductsPagination = ({ itemsPerPage }) => {
 
   console.log('PRODUCTS CONTENT: ', productsContent)
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -52,7 +53,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
       <Typography variant="h4" sx={{ marginBottom: '3rem' }}>
         Lista de Productos Aleatorios
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
         {productsContent?.map((product, index) => {
           return (
             <Grid item key={index} xs={12} sm={6} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -107,6 +108,15 @@ export const ProductsPagination = ({ itemsPerPage }) => {
           );
         })}
       </Grid>
+      <Box sx={{marginTop:'4rem', display:'flex', justifyContent:'center', alignItems:'center'}}>
+      <Button label={'Anterior'} backgroundColor={colors.primaryColor} colorHover={colors.primaryColorHover} color={colors.blackColor} onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
+        Anterior
+      </Button>
+      <PaginationNumbers totalPages={products.totalPages} currentPage={currentPage} changePage={setCurrentPage} />
+      <Button label={'Siguiente'} backgroundColor={colors.primaryColor} colorHover={colors.primaryColorHover} color={colors.blackColor} onClick={() => changePage(currentPage + 1)} disabled={currentPage === products.totalPages}>
+        Siguiente
+      </Button>
+      </Box>
 
       {selectedProduct && (
         <ProductModal

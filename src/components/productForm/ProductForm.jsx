@@ -159,6 +159,12 @@ const buildImageUploadRequest = () => {
       console.log('imageUploadRequest dentro del 2dry: ', imageUploadRequest)
     });
   }
+
+  console.log('FormData entries:');
+  for (const entry of imageUploadRequest.entries()) {
+    console.log(entry);
+  }
+
   return imageUploadRequest;
 };
 
@@ -172,6 +178,11 @@ const buildImageUploadRequest = () => {
 
       //. Construir el FormData para las imágenes
       const imageUploadRequest = buildImageUploadRequest();
+
+      console.log('imageUplodRequest :');
+        for (const entry of imageUploadRequest.entries()) {
+          console.log(entry);
+        }
 
       //  Subir imágenes
       const imageUploadResponse = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/images?productId=${productId}`, {

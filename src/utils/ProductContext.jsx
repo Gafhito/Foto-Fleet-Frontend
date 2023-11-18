@@ -11,6 +11,13 @@ export function ProductProvider({ children }) {
   const [characteristics, setCharacteristics] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const changePage = (page) => {
+    setCurrentPage(page);
+  };
+
+
   
   
   /* --------- FAVORITOS ---------- */
@@ -40,7 +47,7 @@ export function ProductProvider({ children }) {
           Authorization: `Bearer ${token}`,
         };*/
 
-        const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products?page=0'/*, {
+        const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products?page=${currentPage - 1}`/*, {
           headers,
         }*/);
 
@@ -57,7 +64,7 @@ export function ProductProvider({ children }) {
     }
 
     fetchProducts();
-  }, []);
+  }, [currentPage]);
 
 
   const getProductById = async (productId) => {
@@ -224,7 +231,7 @@ export function ProductProvider({ children }) {
   
 
   return (
-    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts, favorites, addToFavorites, removeFromFavorites, isFavorite, fetchProductSuggestions}}>
+    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts, favorites, addToFavorites, removeFromFavorites, isFavorite, fetchProductSuggestions,  currentPage, setCurrentPage, changePage,}}>
       {children}
     </ProductContext.Provider>
   );

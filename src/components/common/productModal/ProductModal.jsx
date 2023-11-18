@@ -83,7 +83,7 @@ export const ProductModal = ({ open, onClose, product }) => {
                 <CardMedia
                   component="img"
                   height="280px"
-                  image={product.images[selectedImageIndex].url}
+                  image={product.images[selectedImageIndex]?.url}
                   title={product.name}
                   sx={{ width: '100%', objectFit:'contain' }}
                   onClick={() => handleImageClick((selectedImageIndex + 1) % product.images.length)}
@@ -122,7 +122,7 @@ export const ProductModal = ({ open, onClose, product }) => {
                   padding:'0 2rem'
                 }}
               >
-                {product.images.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
+                {product.images?.slice(0, showAllImages ? product.images.length : 4).map((image, index) => (
                   <Card key={index} sx={{boxShadow:'none'}}>
                     <CardMedia
                       component="img"
