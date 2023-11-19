@@ -16,23 +16,51 @@ import { useProductContext } from '../../utils/ProductContext';
 import { colors } from '../../utils/constants';
 import { ProductModal } from '../common/productModal/ProductModal';
 import { PaginationNumbers } from './PaginationNumbers';
-
+import { useAuth } from '../../utils/AuthContext';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import IconButton from '@mui/material/IconButton';
 
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 export const ProductsPagination = ({ itemsPerPage }) => {
-  const { products, addToFavorites, removeFromFavorites, isFavorite, currentPage, setCurrentPage, changePage } = useProductContext();
+  const { products, currentPage, setCurrentPage, changePage, isFavorite, addToFavorites, removeFromFavorites, showSnackbar, snackbarMessage, initializeUserData } = useProductContext();
+  const { getUserData } = useAuth();
 
   const productsContent = products.content;
 
-  console.log('PRODUCTS: ', products)
+  const [userData, setUserData] = useState(null);
 
-  console.log('PRODUCTS CONTENT: ', productsContent)
+  const [ userFavorites, setUserFavorites ] = useState([]);
+
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await initializeUserData(); 
+        const userData = await getUserData();
+        setUserData(userData);
+
+        setUserFavorites(userData.favorites || []);
+      } catch (error) {
+        console.error('Error fetching user data', error);
+      }
+    };
+
+    fetchData();
+  }, [initializeUserData, getUserData]);
+
+
+  console.log('USER DATA: ', userData)
+  console.log('USER FAVORITES: ', userFavorites);
+
+
 
   const handleOpenModal = (product) => {
     setSelectedProduct(product);
@@ -44,8 +72,14 @@ export const ProductsPagination = ({ itemsPerPage }) => {
     setIsModalOpen(false);
   };
 
-  const handleFavoriteClick = (productId) => {
-    isFavorite(productId) ? removeFromFavorites(productId) : addToFavorites(productId);
+  const handleFavoriteClick = async (productId, productName) => {
+    const isCurrentlyFavorite = userFavorites.some((fav) => fav.productId === productId);
+  
+    if (isCurrentlyFavorite) {
+      await removeFromFavorites(productId, productName);
+    } else {
+      await addToFavorites(productId, productName);
+    }
   };
 
   return (
@@ -55,6 +89,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
       </Typography>
       <Grid container spacing={3} sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
         {productsContent?.map((product, index) => {
+          console.log('PRODUCT ID: ', product.productId )
           return (
             <Grid item key={index} xs={12} sm={6} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Card sx={{ width: '345px', borderRadius:'.5rem', cursor:'pointer', transition:'all .3s', '&:hover': { transform:'scale(.95)' }, position:'relative', '&:hover .favorite-icon, &:hover .share-icon': { opacity: 1 }, }}>
@@ -76,14 +111,14 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                   <IconButton
                     aria-label="add to favorites"
                     className="favorite-icon"
-                    onClick={() => handleFavoriteClick(product.productId)}
+                    onClick={() => handleFavoriteClick(product.productId, product.name)}
                     sx={{
                       position: 'absolute',
                       top: '10px',
                       right: '10px',
                       opacity: 0,
                       transition: 'opacity 0.3s ease',
-                      color: isFavorite(product.productId) ? 'red' : '',
+                      color: userFavorites.some((fav) => fav.productId === product.productId) ? 'red' : '',
                     }}
                   >
                     <FavoriteIcon />
@@ -125,6 +160,19 @@ export const ProductsPagination = ({ itemsPerPage }) => {
           product={selectedProduct}
         />
       )}
+
+    <Snackbar
+      open={Boolean(snackbarMessage.open)}
+      autoHideDuration={3000}
+      onClose={() => showSnackbar('', '', false)} 
+    >
+      <Alert
+        severity={snackbarMessage.severity}
+        onClose={() => showSnackbar('', '', false)} 
+      >
+        {snackbarMessage.message}
+      </Alert>
+    </Snackbar>
     </Container>
   );
 };

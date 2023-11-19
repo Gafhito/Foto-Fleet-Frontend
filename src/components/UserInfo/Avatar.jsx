@@ -18,7 +18,7 @@ export const Avatar = ({ onClick }) => {
         fetchUserData();
       }, [getUserData]);
 
-    console.log('userData en el UE: ', userData)
+
 
     const role = user && user.role;
     console.log(' Avatar role:' + role)
@@ -31,11 +31,8 @@ export const Avatar = ({ onClick }) => {
         )
       : '';
     
-    console.log('userInitial: ' + userInitial)
-    console.log('User: ', user)
     const userName = userData && userData.firstName + ' ' + userData.lastName;
 
-    console.log('userName: ' + userName)
 
     return (
         <Tooltip title={userName}>

@@ -44,13 +44,10 @@ const SamplePrevArrow = (props)  => {
   }
 
 
-  console.log('GET CATEGORIES: ', getCategories)
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const categories = await getCategories();
-        console.log('CATEGORIES: ', categories)
         setCategoriesArr(categories);
       } catch (error) {
         console.error('Error al obtener categorías:', error);

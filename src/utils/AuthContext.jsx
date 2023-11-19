@@ -9,10 +9,12 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userFavorties, setUserFavorties] = useState([]);
 
 
 
   useEffect(() => {
+    console.log('useEffect in AuthProvider running'); // Add this line
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
 
@@ -99,6 +101,7 @@ export function AuthProvider({ children }) {
       if (response.status === 200) {
         const userData = await response.json();
         console.log('Datos del usuario:', userData);
+        console.log('USER: ', user)
         return userData;
       } else {
         console.error('Error al obtener datos del usuario:', response.status, response.statusText);
@@ -129,7 +132,6 @@ export function AuthProvider({ children }) {
 
       if (response.status === 200) {
         const categories = await response.json();
-        console.log('categories del Auth: ', categories)
         return categories;
       } else {
         console.error('Error al obtener las categorías:', response.status, response.statusText);

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const ProductContext = createContext();
 
@@ -10,29 +11,128 @@ export function ProductProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [characteristics, setCharacteristics] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
+  const [favorites, setFavorites] = useState([]);
+
+  const [dataUser, setDataUser] = useState(null)
 
   const [currentPage, setCurrentPage] = useState(1);
+
+  const { getUserData } = useAuth();
+
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const showSnackbar = (message, severity, open = true) => {
+    console.log('Snackbar Severity:', severity);
+    setSnackbarMessage({
+      message,
+      severity,
+      open,
+    });
+  };
 
   const changePage = (page) => {
     setCurrentPage(page);
   };
 
 
+
+  const initializeUserData = async () => {
+    try {
+      if (favorites.length === 0) {
+        const data = await getUserData();
+        setFavorites(data.favorites);
+        setDataUser(data)
+        return dataUser;
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  /*initializeUserData();*/
+
+
+
   
   
   /* --------- FAVORITOS ---------- */
 
-  const [favorites, setFavorites] = useState([]);
 
-  const addToFavorites = (productId) => {
+  const addToFavorites = async (productId, productName) => {
+    // Actualizar el estado local
     setFavorites((prevFavorites) => [...prevFavorites, productId]);
-  };
+    console.log('PRODUCTID EN EL ADDFAV: ' + productId)
+  
+    try {
+      
+      const authToken = localStorage.getItem('token');
+      console.log('token del favorites: ' , authToken)
+  
+  
+      if (!authToken) {
+        console.error('Token de autenticación no encontrado. No se puede realizar la solicitud.');
+        return;
+      }
+  
+      
+      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/user/favorite?productId=${productId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`, 
+        },
+   
+      });
+  
+    
+      if (!response.ok) {
+  
+        console.error('Error al agregar a favoritos:', response.status, response.statusText);
+      }else {
+        console.log('ProductName: ', productName)
 
-  const removeFromFavorites = (productId) => {
+        showSnackbar(`Producto ${productName} agregado a favoritos`, 'success');
+      }
+    } catch (error) {
+
+      console.error('Error en la solicitud POST:', error.message);
+    }
+  };
+  
+
+  const removeFromFavorites = async (productId, productName) => {
     setFavorites((prevFavorites) => prevFavorites.filter((id) => id !== productId));
+  
+    try {
+      const authToken = localStorage.getItem('token');
+  
+      if (!authToken) {
+        console.error('Token de autenticación no encontrado. No se puede realizar la solicitud.');
+        return;
+      }
+  
+      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/user/favorite?productId=${productId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+      });
+  
+      if (!response.ok) {
+        console.error('Error al eliminar de favoritos:', response.status, response.statusText);
+      } else {
+        showSnackbar(`Producto ${productName} eliminado de favoritos`, 'error');
+      }
+    } catch (error) {
+      console.error('Error en la solicitud DELETE:', error.message);
+    }
   };
 
-  const isFavorite = (productId) => favorites.includes(productId);
+  const isFavorite = (productId) => {
+    return favorites.includes(productId);
+  };
+
 
   /* --------- FAVORITOS ---------- */
 
@@ -57,7 +157,6 @@ export function ProductProvider({ children }) {
         const data = await response.json();
         setProducts(data);
         //setLastUpdate(Date.now()); // Actualiza el estado de la última actualización
-        console.log('esta es la data: ', data)
       } catch (error) {
         console.error('Error al obtener datos', error);
       }
@@ -109,9 +208,6 @@ export function ProductProvider({ children }) {
       if (!response.ok) {
         throw new Error('Failed to update product');
       }
-  
-      // Optionally, update the local state with the new data
-      // This depends on whether you want to re-fetch the data or not
   
       console.log('Product updated successfully');
     } catch (error) {
@@ -166,7 +262,6 @@ export function ProductProvider({ children }) {
   
         const data = await response.json();
         setCharacteristics(data);
-        console.log('Characteristics data:', data);
       } catch (error) {
         console.error('Error fetching characteristics', error);
       }
@@ -190,7 +285,6 @@ export function ProductProvider({ children }) {
 
       const data = await response.json();
       setProducts(data);
-      console.log('Searched products data:', data);
     } catch (error) {
       console.error('Error searching for products', error);
     }
@@ -211,14 +305,11 @@ export function ProductProvider({ children }) {
       const resp = await response.json();
 
       const data = resp.content;
-
-      console.log('DATA: ', data);
   
-      // Ensure data is an array before mapping
       const suggestions = Array.isArray(data)
         ? data.map((product) => ({
-            label: product.name, // Adjust based on your product structure
-            value: product.productId, // Adjust based on your product structure
+            label: product.name,
+            value: product.productId, 
           }))
         : [];
   
@@ -231,7 +322,7 @@ export function ProductProvider({ children }) {
   
 
   return (
-    <ProductContext.Provider value={{products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts, favorites, addToFavorites, removeFromFavorites, isFavorite, fetchProductSuggestions,  currentPage, setCurrentPage, changePage,}}>
+    <ProductContext.Provider value={{snackbarMessage, showSnackbar, dataUser, initializeUserData, products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts, favorites, setFavorites, addToFavorites, removeFromFavorites, isFavorite, fetchProductSuggestions,  currentPage, setCurrentPage, changePage,}}>
       {children}
     </ProductContext.Provider>
   );
