@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { List, Typography, Box } from '@mui/material';
 import { useAuth } from '../../utils/AuthContext';
-import { CategoryItem } from './CategoryItem';
+import { CategoryItem } from './Categoryitem';
 
 import { colors } from '../../utils/constants';
 
