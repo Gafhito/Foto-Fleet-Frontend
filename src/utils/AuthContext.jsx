@@ -9,10 +9,12 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userFavorties, setUserFavorties] = useState([]);
 
 
 
   useEffect(() => {
+    console.log('useEffect in AuthProvider running'); // Add this line
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
 
@@ -99,6 +101,7 @@ export function AuthProvider({ children }) {
       if (response.status === 200) {
         const userData = await response.json();
         console.log('Datos del usuario:', userData);
+        console.log('USER: ', user)
         return userData;
       } else {
         console.error('Error al obtener datos del usuario:', response.status, response.statusText);
@@ -129,7 +132,6 @@ export function AuthProvider({ children }) {
 
       if (response.status === 200) {
         const categories = await response.json();
-        console.log('categories del Auth: ', categories)
         return categories;
       } else {
         console.error('Error al obtener las categorías:', response.status, response.statusText);
@@ -141,8 +143,47 @@ export function AuthProvider({ children }) {
     }
   };
 
+
+
+  const updateUserRole = async (email, newRole) => {
+    const token = user ? user.token : null;
+  
+    if (!token) {
+      console.log('No hay token');
+      return null;
+    }
+  
+    try {
+      const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/auth/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          email,
+          rol: newRole,
+        }),
+      });
+
+      console.log('body', email, newRole);
+  
+      if (response.status === 200) {
+        console.log('Rol del usuario actualizado exitosamente');
+        return true;
+      } else {
+        console.error('Error al actualizar el rol del usuario:', response.status, response.statusText);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error al actualizar el rol del usuario:', error);
+      console.log('DATOS ENVIADOS: ', email, newRole);
+      return false;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, setIsLoggedIn, isLoggedIn, getCategories, getUserData, registerUser }}>
+    <AuthContext.Provider value={{ user, login, logout, setIsLoggedIn, isLoggedIn, getCategories, getUserData, registerUser, updateUserRole }}>
       {children}
     </AuthContext.Provider>
   );

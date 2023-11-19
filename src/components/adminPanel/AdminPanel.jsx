@@ -8,12 +8,15 @@ import { ProductListModal } from './ProductListModal';
 import { RegisterProductModal } from './RegisterProductModal';
 import { ManageCharacteristicsModal } from '../manageCharacteristicsModal/ManageCharacteristicsModal';
 import { EditProductModal } from '../editProductModal/EditProductModal';
+import { ManageRolesModal } from '../manageRoleModal/ManageRolesModal';
 
 import { useProductContext } from '../../utils/ProductContext';
 import { colors } from '../../utils/constants';
+import { useAuth } from '../../utils/AuthContext';
 
 import './adminPanel.css';
 import { RegisterCategory } from '../RegisterCategory/RegisterCategory';
+import { DeleteCategoryList } from '../DeleteCategory/DeleteCategorylist';
 
 
 
@@ -26,13 +29,18 @@ export const AdminPanel = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const { getCategories } = useAuth();
+
   // Abrir modales
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isDeleteCategoryModalOpen, setIsDeleteCategoryModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false); // Estado para el modal de registro de productos
   const [isListModalOpen, setIsListModalOpen] = useState(false); // Estado para el modal de listado de productos
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); // Estado para confirmación de DELETE
   const [isCharacteristicsModalOpen, setCharacteristicsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isRolesModalOpen, setIsRolesModalOpen] = useState(false);
 
 
   /*useEffect(() => {
@@ -93,6 +101,25 @@ export const AdminPanel = () => {
     setCharacteristicsModalOpen(false);
   };
 
+  const openRolesModal = () => {
+    setIsRolesModalOpen(true);
+  };
+
+  const closeRolesModal = () => {
+    setIsRolesModalOpen(false);
+  };
+
+  const openDeleteCategoryModal = (category) => {
+    setSelectedCategory(category);
+    setIsDeleteCategoryModalOpen(true);  // Actualizar el estado para abrir el modal de categorías
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    // Update the categories list after deletion
+    const updatedCategories = await getCategories();
+    console.log('UPDATED CATEGORIES: ', updatedCategories)
+  };
+
   const handleCategorySubmit = (categoryData) => {
     // Manejar el envío de la categoría -- enviar los datos al servidor.
     console.log(categoryData);
@@ -122,8 +149,16 @@ export const AdminPanel = () => {
             <Button label={ 'Registrar Producto' } onClick={ () => setIsRegisterModalOpen( true ) } backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
             <Button label={ 'Listar Producto' } onClick={ () => setIsListModalOpen( true ) } mt={'1rem'} backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
             <Button label={'Agregar Categoría'} onClick={openCategoryModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
+            <Button
+        label={'Eliminar Categoría'}
+        onClick={() => openDeleteCategoryModal(selectedCategory)}
+        backgroundColor={colors.terciaryColor}
+        mt={'1rem'}
+        backgroundColorHover={colors.secondaryColor}
+      />
             <Button label={'Administrar Caracteristicas'} onClick={openCharacteristicsModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
             <Button label={'Editar Producto'} onClick={openEditModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
+            <Button label={'Administrar Roles'} onClick={openRolesModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor}/>
           </Box>
         </div>
       )}
@@ -131,9 +166,19 @@ export const AdminPanel = () => {
       <ProductListModal open={isListModalOpen} onClose={closeModal} />
       <RegisterProductModal open={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} />
       <RegisterCategory open={isCategoryModalOpen} onClose={closeCategoryModal} onCategorySubmit={handleCategorySubmit} />
+
+      {isDeleteCategoryModalOpen && (
+        <DeleteCategoryList
+          open={isDeleteCategoryModalOpen}
+          onClose={() => setIsDeleteCategoryModalOpen(false)}  // Cerrar el modal de categorías
+          onDeleteCategory={handleDeleteCategory}
+        />
+      )}
+
       <ManageCharacteristicsModal open={isCharacteristicsModalOpen} onClose={closeCharacteristicsModal} />
       <EditProductModal open={isEditModalOpen} onClose={closeEditModal} products={products} />
       {console.log('products desde el adminpanel: ', products)}
+      <ManageRolesModal open={isRolesModalOpen} onClose={closeRolesModal}/>
       <ConfirmationModal open={ confirmationModalOpen } onClose={ closeConfirmationModal } onConfirm={ () => handleDeleteProduct( productToDelete ) } />
       <Snackbar open={ snackbarOpen } autoHideDuration={ 6000 } onClose={ () => setSnackbarOpen( false ) }>
         <Alert severity="error" sx={{ width: '100%' }}>

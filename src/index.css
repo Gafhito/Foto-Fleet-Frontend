@@ -11,12 +11,22 @@
   --text-color: #37423D;
 }
 
-body {
+html {
+  min-height: 100%;
   position: relative;
-  margin: 0;
-  display: flex;
-  place-items: center;
+}
+
+body {
   max-width: 100vw;
   min-height: 100vh;
-  background-color: var(--background-color);
+  background-color:#F2F6D0;
+  margin: 0;
+}
+
+
+.slick-next:before {
+  content: '';
+}
+.slick-prev:before {
+  content: '';
 }

@@ -8,6 +8,7 @@ export function useLoginForm() {
 
 export function LoginFormProvider({ children }) {
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
+  const [isRegisterMode, setIsRegisterMode] = useState(false);
 
   const openLoginForm = () => {
     setIsLoginFormOpen(true);
@@ -17,8 +18,25 @@ export function LoginFormProvider({ children }) {
     setIsLoginFormOpen(false);
   };
 
+
+   const setRegisterMode = () => {
+    setIsRegisterMode(true);
+  };
+
+  const setLoginMode = () => {
+    setIsRegisterMode(false);
+    setIsLoginFormOpen(true);
+  };
+
   return (
-    <LoginFormContext.Provider value={{ isLoginFormOpen, openLoginForm, closeLoginForm }}>
+    <LoginFormContext.Provider value={{
+      isLoginFormOpen,
+      openLoginForm,
+      closeLoginForm,
+      isRegisterMode,
+      setRegisterMode,
+      setLoginMode,
+    }}>
       {children}
     </LoginFormContext.Provider>
   );

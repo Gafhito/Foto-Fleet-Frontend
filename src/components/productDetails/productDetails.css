@@ -14,9 +14,13 @@
     align-items: center;
 }
 
+.img_slider_container{
+    width: auto !important;
+}
 
 
-.slick-slide {
+
+/*.slick-slide {
     margin-left: 2rem;
   }
 
@@ -32,3 +36,4 @@
 .detail_description_container{
     max-width: 85% !important;
 }
+*/

@@ -42,7 +42,7 @@ export const Header = () => {
 
   return (
     <div>
-      <AppBar position='fixed' sx={{ backgroundColor: colors.terciaryColor, top: '0', zIndex: '999', height: '64px', overflowX: 'hidden' }}>
+      <AppBar position='fixed' sx={{ backgroundColor: colors.blackColor, top: '0', zIndex: '999', height: '64px', overflowX: 'hidden' }}>
         <Toolbar sx={{
           display: 'flex',
           justifyContent: 'space-between',

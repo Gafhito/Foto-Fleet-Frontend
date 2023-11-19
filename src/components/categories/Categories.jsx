@@ -1,13 +1,48 @@
 import { useState, useEffect } from 'react';
-import Slider from 'react-slick';
-import { Card, CardContent, CardMedia, Typography, Grid, Container } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, Box, Container } from '@mui/material';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import { useTheme } from '@mui/system';
 import { useAuth } from '../../utils/AuthContext';
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+import { colors } from '../../utils/constants';
+
+import './categories.css'
 
 export const Categories = () => {
   const { getCategories } = useAuth();
   const [categoriesArr, setCategoriesArr] = useState([]);
+  const theme = useTheme();
+
+
+  const SampleNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem', right: theme.breakpoints.down('xs') ? '-25px' : theme.breakpoints.down('md') ? '-50px' : '0', }}
+        onClick={onClick}
+      >
+        <ArrowForward sx={{color:'black', width: '2rem', height:'2rem', transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.5)' }, right: {xs:'-15px', md:'-50px'} }}/>
+      </div>
+    );
+  }
+  
+const SamplePrevArrow = (props)  => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={` category_prev_arrow ${className}`}
+        style={{ ...style, display: "block", background: "transparent", width: '2rem', height: '2rem', left: theme.breakpoints.down('xs') ? '-25px' : theme.breakpoints.down('md') ? '-50px' : '0', }}
+        onClick={onClick}
+      >
+        <ArrowBack sx={{color:'black', width: '2rem', height:'2rem', transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.5)' } }}/>
+      </div>
+    );
+  }
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -27,17 +62,27 @@ export const Categories = () => {
     infinite: true,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 2,
+    slidesToScroll: 1,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+    centerPadding:'150px',
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1390,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 900,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 680,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -47,29 +92,53 @@ export const Categories = () => {
   };
 
   return (
-    <>
+    <Box sx={{padding:'2rem', width:'85%', margin:'auto'}}>
       <Typography variant='h3' sx={{ marginTop: '3rem' }}>Nuestras Categorias</Typography>
       <Container sx={{ mt: '2rem' }}>
-        <Slider {...settings}>
+        <Slider {...settings} className='category_slider'>
           {categoriesArr.map((category, index) => (
-            <div key={index}>
-              <Card sx={{ transition: 'transform 0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
-                <CardMedia
+            <div key={index} className='category_card_container'>
+              <Card className='category_card' sx={{ 
+                backgroundImage:`url(${category.imageUrl})`, 
+                backgroundSize:'cover', 
+                backgroundRepeat:'no-repeat', 
+                height:{xs: '150px', sm:'200px', lg:'250px'}, 
+                width: {xs: '150px', sm:'200px', lg:'250px'},
+                boxShadow:'none',
+                borderRadius:'.5rem',
+                position:'relative' }}>
+                {/*<CardMedia sx={{backgroundSize:'cover', borderRadius:'.5rem .5rem 0 0'}}
                   component="img"
-                  height="200"
+                  height="150"
                   image={category.imageUrl}
                   alt={category.name}
-                />
-                <CardContent>
-                  <Typography variant="h6" component="div">
+                  />*/}
+
+                  <Typography variant="h6" component="div" className='category_title' sx={{
+                    color: 'white',
+                    position: 'absolute',
+                    bottom: '0',
+                    left: '0',
+                    width: '100%',
+                    height:'100%',
+                    textAlign: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, .6)',
+                    padding: '0.5rem',
+                    boxSizing: 'border-box',
+                    opacity: 0,
+                    transition: 'opacity 0.3s',
+                    '&:hover': { opacity: 1 },
+                    display:'flex',
+                    alignItems:'center',
+                    justifyContent:'center'
+                  }}>
                     {category.name}
                   </Typography>
-                </CardContent>
               </Card>
             </div>
           ))}
         </Slider>
       </Container>
-    </>
+    </Box>
   );
 };

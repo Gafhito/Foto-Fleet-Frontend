@@ -7,7 +7,7 @@ export const HeaderDrawer = ({ open, onClose }) => {
       <Link to="/auth/login">
         <MenuItem onClick={onClose}>Iniciar Sesión</MenuItem>
       </Link>
-      <Link to="/auth/registro">
+      <Link to="/auth/login">
         <MenuItem onClick={onClose}>Crear Cuenta</MenuItem>
       </Link>
       <Link to="/">
