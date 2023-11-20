@@ -10,7 +10,12 @@ import {
   List,
   ListItem,
   Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from '@mui/material';
+
 
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/system';
@@ -24,11 +29,18 @@ import 'slick-carousel/slick/slick-theme.css'; // Importar estilos del carrusel
 
 import './productDetails.css';
 import { useProductContext } from '../../utils/ProductContext';
+import { CustomCalendar } from '../common/calendar/Calendar';
 
 export const ProductDetails = ({ product }) => {
   const [showAllImages, setShowAllImages] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { getProductById } = useProductContext();
+
+
+
+  const [quantity, setQuantity] = useState(1);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -41,20 +53,23 @@ export const ProductDetails = ({ product }) => {
     setSelectedImageIndex(index);
   };
 
-
-  console.log('Product pasado por prop: ', product)
-
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        console.log('product.id del PD: ', product.productId)
         const details = await getProductById(product.productId);
-        console.log('Detalles del producto:', details);
+  
+        // You might need to replace these default values with your desired defaults
+        const defaultStartDate = new Date();
+        const defaultEndDate = new Date();
+  
+        // Set the state with default values or leave them undefined
+        setStartDate(defaultStartDate);
+        setEndDate(defaultEndDate);
       } catch (error) {
         console.error('Error al obtener detalles del producto', error);
       }
     };
-
+  
     fetchProductDetails();
   }, [getProductById, product.id]);
 
@@ -81,6 +96,49 @@ export const ProductDetails = ({ product }) => {
         },
       },
     ],
+  };
+
+  const handleQuantityChange = (event) => {
+    console.log('Cantidad: ' , event.target.value)
+    setQuantity(event.target.value);
+  };
+
+  const handleStartDateChange = (newStartDate) => {
+    console.log('Fecha desde: ', newStartDate)
+    setStartDate(newStartDate);
+  };
+  const handleEndDateChange = (newEndDate) => {
+    console.log('Fecha Hasta: ', newEndDate)
+    setEndDate(newEndDate);
+  };
+
+  const handleReserveClick = async () => {
+    try {
+      const rentalData = [
+        {
+          productId: product.productId,
+          quantity: quantity,
+          startDate: startDate[0] ? startDate[0].toLocaleDateString('en-US') : null,
+          endDate: endDate[1] ? endDate[1].toLocaleDateString('en-US') : null,
+        },
+      ];
+
+      console.log('RENTAL DATA: ', rentalData)
+
+      const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/rental', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(rentalData),
+      });
+
+      const result = await response.json();
+      console.log('Reservation response:', result);
+
+    } catch (error) {
+      console.error('Error making reservation:', error);
+    }
   };
 
   return (
@@ -162,6 +220,32 @@ export const ProductDetails = ({ product }) => {
               </Button>
             </ListItem>
           )}
+
+
+         {/* Form for selecting dates, quantity, and making a reservation */}
+      <Box sx={{ marginTop: '2rem', marginLeft: '3rem' }}>
+        <FormControl sx={{ minWidth: 120, marginRight: '1rem' }}>
+          <InputLabel id="quantity-label">Cantidad</InputLabel>
+          <Select
+            labelId="quantity-label"
+            id="quantity"
+            value={quantity}
+            onChange={handleQuantityChange}
+          >
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            {/* Add more options as needed */}
+          </Select>
+        </FormControl>
+
+        <CustomCalendar label={'Fecha Desde'} value={startDate} onChange={handleStartDateChange} />
+        <CustomCalendar label={'Fecha Hasta'} value={endDate} onChange={handleEndDateChange} />
+
+        <Button variant="contained" color="primary" onClick={handleReserveClick}>
+          Reservar
+        </Button>
+      </Box>
         </Grid>
       </>
       ) : 

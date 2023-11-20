@@ -22,7 +22,6 @@ export function ProductProvider({ children }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const showSnackbar = (message, severity, open = true) => {
-    console.log('Snackbar Severity:', severity);
     setSnackbarMessage({
       message,
       severity,
@@ -61,12 +60,10 @@ export function ProductProvider({ children }) {
   const addToFavorites = async (productId, productName) => {
     // Actualizar el estado local
     setFavorites((prevFavorites) => [...prevFavorites, productId]);
-    console.log('PRODUCTID EN EL ADDFAV: ' + productId)
   
     try {
       
       const authToken = localStorage.getItem('token');
-      console.log('token del favorites: ' , authToken)
   
   
       if (!authToken) {
@@ -173,8 +170,6 @@ export function ProductProvider({ children }) {
         Authorization: `Bearer ${token}`,
       };*/
 
-      console.log("productID del getProductById: ", productId)
-
       const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/${productId}`/*, {
         headers,
       }*/);
@@ -272,8 +267,6 @@ export function ProductProvider({ children }) {
 
 
   const searchProducts = async (searchQuery, categoryName) => {
-
-    console.log('searchQuery pasada: ' + searchQuery + ' categoryname pasada: ' + categoryName)
     try {
       const response = await fetch(
         `http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/search?page=0&product=${searchQuery}&categoryName=${categoryName}`
