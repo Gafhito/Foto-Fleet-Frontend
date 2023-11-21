@@ -17,15 +17,16 @@ import {
 } from '@mui/material';
 
 
+
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/system';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colors } from '../../utils/constants';
-import Slider from 'react-slick'; // Importar el componente Slider
-import 'slick-carousel/slick/slick.css'; // Importar estilos del carrusel
-import 'slick-carousel/slick/slick-theme.css'; // Importar estilos del carrusel
+import Slider from 'react-slick'; 
+import 'slick-carousel/slick/slick.css'; 
+import 'slick-carousel/slick/slick-theme.css';
 
 import './productDetails.css';
 import { useProductContext } from '../../utils/ProductContext';
@@ -58,11 +59,10 @@ export const ProductDetails = ({ product }) => {
       try {
         const details = await getProductById(product.productId);
   
-        // You might need to replace these default values with your desired defaults
+
         const defaultStartDate = new Date();
         const defaultEndDate = new Date();
-  
-        // Set the state with default values or leave them undefined
+
         setStartDate(defaultStartDate);
         setEndDate(defaultEndDate);
       } catch (error) {
@@ -99,47 +99,71 @@ export const ProductDetails = ({ product }) => {
   };
 
   const handleQuantityChange = (event) => {
-    console.log('Cantidad: ' , event.target.value)
-    setQuantity(event.target.value);
+    const newQuantity = event.target.value;
+
+    console.log('Cantidad: ', event.target.value)
+  
+    if (newQuantity >= 1 && newQuantity <= product.stock) {
+      setQuantity(newQuantity);
+    } else {    
+      console.log('Cantidad Invalida');   
+    }
   };
 
   const handleStartDateChange = (newStartDate) => {
-    console.log('Fecha desde: ', newStartDate)
-    setStartDate(newStartDate);
+    console.log('Fecha desde: ', newStartDate);
+    const formattedStartDate = newStartDate instanceof Date ? newStartDate.toISOString() : null;
+    console.log("Formated Start Date: ", formattedStartDate);
+    setStartDate(formattedStartDate);
   };
+  
   const handleEndDateChange = (newEndDate) => {
-    console.log('Fecha Hasta: ', newEndDate)
-    setEndDate(newEndDate);
+    console.log('Fecha Hasta: ', newEndDate);
+    const formattedEndDate = newEndDate instanceof Date ? newEndDate.toISOString() : null;
+    console.log('Formated End Date: ', formattedEndDate);
+    setEndDate(formattedEndDate);
   };
+  
 
   const handleReserveClick = async () => {
     try {
-      const rentalData = [
-        {
-          productId: product.productId,
-          quantity: quantity,
-          startDate: startDate[0] ? startDate[0].toLocaleDateString('en-US') : null,
-          endDate: endDate[1] ? endDate[1].toLocaleDateString('en-US') : null,
-        },
-      ];
-
-      console.log('RENTAL DATA: ', rentalData)
-
+      const jwt = localStorage.getItem('token');
+  
+      console.log('JWT: ', jwt);
+  
+      const rentalData = {
+        productId: product.productId,
+        quantity: quantity,
+        startDate: startDate, 
+        endDate: endDate,  
+      };
+  
+      console.log('RENTAL DATA: ', rentalData);
+  
       const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/rental', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwt}`,
         },
-        body: JSON.stringify(rentalData),
+        body: JSON.stringify([rentalData]), 
       });
-
+  
+      if (!response.ok) {
+        console.error('Error making reservation:', response.statusText);
+       
+        return;
+      }
+  
       const result = await response.json();
       console.log('Reservation response:', result);
-
+  
     } catch (error) {
       console.error('Error making reservation:', error);
     }
   };
+  
+  
 
   return (
   <Box sx={{
@@ -221,8 +245,6 @@ export const ProductDetails = ({ product }) => {
             </ListItem>
           )}
 
-
-         {/* Form for selecting dates, quantity, and making a reservation */}
       <Box sx={{ marginTop: '2rem', marginLeft: '3rem' }}>
         <FormControl sx={{ minWidth: 120, marginRight: '1rem' }}>
           <InputLabel id="quantity-label">Cantidad</InputLabel>
@@ -232,15 +254,30 @@ export const ProductDetails = ({ product }) => {
             value={quantity}
             onChange={handleQuantityChange}
           >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            {/* Add more options as needed */}
+            {[...Array(product.stock).keys()].map((index) => (
+              <MenuItem key={index + 1} value={index + 1}>
+                {index + 1}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
-        <CustomCalendar label={'Fecha Desde'} value={startDate} onChange={handleStartDateChange} />
-        <CustomCalendar label={'Fecha Hasta'} value={endDate} onChange={handleEndDateChange} />
+        {/* CALENDARIOS  */}
+
+        <CustomCalendar
+          label={'Fecha Desde'}
+          value={startDate}
+          onChange={handleStartDateChange}
+          rentedDates={product.rentalDate}
+        />
+        <CustomCalendar
+          label={'Fecha Hasta'}
+          value={endDate}
+          onChange={handleEndDateChange}
+          rentedDates={product.rentalDate}
+        />
+
+         {/* CALENDARIOS  */}
 
         <Button variant="contained" color="primary" onClick={handleReserveClick}>
           Reservar
