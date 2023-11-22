@@ -56,10 +56,10 @@ export const CustomCalendar = ({ value, onChange, label, rentedDates }) => {
       (rental) =>
         new Date(rental.startDate) <= date && date <= new Date(rental.endDate)
     );
-
+  
     const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-
-    if (isRented) {
+  
+    if (isRented || rentedDates.some((rental) => rental.endDate === date.toISOString().split('T')[0])) {
       return 'rented-date';
     } else if (isWeekend) {
       return 'weekend-date';
@@ -72,7 +72,7 @@ export const CustomCalendar = ({ value, onChange, label, rentedDates }) => {
     <div className="custom-calendar-container" style={containerStyle}>
       <Button label={label} color={colors.blackColor} backgroundColor={colors.secondaryColor} className="calendar-button" onClick={openCalendar} />
       <div className="selected-date">
-        Fecha Seleccionada: {selectedDate.toLocaleDateString()}
+        {selectedDate.toLocaleDateString()}
       </div>
 
       {/* Modal */}

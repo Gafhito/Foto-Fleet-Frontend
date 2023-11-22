@@ -9,7 +9,7 @@ export const Button = ({label, minWidth, onClick, backgroundColor, backgroundCol
         onClick={onClick}
         sx={{
             marginRight: mr ? mr  : 2,
-            color: color ? color : '#fff',
+            color: color ? color : '#000000',
             minWidth: minWidth ? minWidth : '64px',
             boxShadow: bxShadow ? bxShadow : 'none',
             marginTop: mt ? mt : '0',

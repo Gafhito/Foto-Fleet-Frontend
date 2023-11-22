@@ -9,7 +9,7 @@ import {
   CardContent,
   List,
   ListItem,
-  Button,
+  Button as MuiButton,
   Select,
   MenuItem,
   FormControl,
@@ -24,6 +24,8 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colors } from '../../utils/constants';
+
+/* Carrousel imports */
 import Slider from 'react-slick'; 
 import 'slick-carousel/slick/slick.css'; 
 import 'slick-carousel/slick/slick-theme.css';
@@ -31,6 +33,14 @@ import 'slick-carousel/slick/slick-theme.css';
 import './productDetails.css';
 import { useProductContext } from '../../utils/ProductContext';
 import { CustomCalendar } from '../common/calendar/Calendar';
+import { Button } from '../common/button/Button';
+
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+import { useNavigate } from 'react-router-dom';
+
+
 
 export const ProductDetails = ({ product }) => {
   const [showAllImages, setShowAllImages] = useState(false);
@@ -42,6 +52,16 @@ export const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
+  const [rentalPrice, setRentalPrice] = useState(product.rentalPrice);
+
+  const navigate = useNavigate();
+
+
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -62,6 +82,7 @@ export const ProductDetails = ({ product }) => {
 
         const defaultStartDate = new Date();
         const defaultEndDate = new Date();
+        defaultEndDate.setDate(defaultEndDate.getDate() + 1);
 
         setStartDate(defaultStartDate);
         setEndDate(defaultEndDate);
@@ -72,6 +93,26 @@ export const ProductDetails = ({ product }) => {
   
     fetchProductDetails();
   }, [getProductById, product.id]);
+
+
+  const calculateRentalPrice = (quantity, startDate, endDate) => {
+   
+
+    console.log('Calculate Rental Price - Quantity:', quantity);
+    console.log('Calculate Rental Price - Start Date:', startDate);
+    console.log('Calculate Rental Price - End Date:', endDate);
+    const basePrice = product.rentalPrice; 
+    const numberOfDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Calculate the number of days
+    const updatedRentalPrice = basePrice * quantity * numberOfDays;
+
+
+    console.log("NUmber of Days: " + numberOfDays)
+
+
+    console.log('Updated Rental Price:', updatedRentalPrice);
+  
+    return updatedRentalPrice;
+  };
 
   // Configuración del carrusel
   const settings = {
@@ -100,42 +141,55 @@ export const ProductDetails = ({ product }) => {
 
   const handleQuantityChange = (event) => {
     const newQuantity = event.target.value;
-
-    console.log('Cantidad: ', event.target.value)
   
     if (newQuantity >= 1 && newQuantity <= product.stock) {
       setQuantity(newQuantity);
-    } else {    
-      console.log('Cantidad Invalida');   
+      const updatedPrice = calculateRentalPrice(newQuantity, startDate, endDate);
+      setRentalPrice(updatedPrice);
+    } else {
+      console.log('Invalid Quantity');
     }
   };
 
   const handleStartDateChange = (newStartDate) => {
-    console.log('Fecha desde: ', newStartDate);
-    const formattedStartDate = newStartDate instanceof Date ? newStartDate.toISOString() : null;
-    console.log("Formated Start Date: ", formattedStartDate);
-    setStartDate(formattedStartDate);
+    setStartDate(newStartDate);
+    const updatedPrice = calculateRentalPrice(quantity, newStartDate, endDate);
+    setRentalPrice(updatedPrice);
   };
   
   const handleEndDateChange = (newEndDate) => {
-    console.log('Fecha Hasta: ', newEndDate);
-    const formattedEndDate = newEndDate instanceof Date ? newEndDate.toISOString() : null;
-    console.log('Formated End Date: ', formattedEndDate);
-    setEndDate(formattedEndDate);
+    setEndDate(newEndDate);
+    const updatedPrice = calculateRentalPrice(quantity, startDate, newEndDate);
+    setRentalPrice(updatedPrice);
   };
   
 
   const handleReserveClick = async () => {
+
+    const jwt = localStorage.getItem('token');
+
+    if (!jwt) {
+
+      setSnackbarMessage('Por favor, inicia sesión o regístrate para reservar un producto');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      // El usuario no está autenticado, redirige a la página de inicio de sesión o registro
+      setTimeout(() => {
+        navigate('/auth/login');
+      }, 2000); 
+      return;
+    }
+
+
     try {
-      const jwt = localStorage.getItem('token');
   
       console.log('JWT: ', jwt);
   
       const rentalData = {
         productId: product.productId,
         quantity: quantity,
-        startDate: startDate, 
-        endDate: endDate,  
+        startDate: startDate,
+        endDate: endDate,
       };
   
       console.log('RENTAL DATA: ', rentalData);
@@ -146,22 +200,53 @@ export const ProductDetails = ({ product }) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${jwt}`,
         },
-        body: JSON.stringify([rentalData]), 
+        body: JSON.stringify([rentalData]),
       });
   
       if (!response.ok) {
-        console.error('Error making reservation:', response.statusText);
-       
+        const errorResponse = await response.json();
+        console.error(errorResponse.message);
+        setSnackbarMessage(`Error al reservar: ${errorResponse.message}`);
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+  
         return;
       }
   
       const result = await response.json();
-      console.log('Reservation response:', result);
-  
+      console.log('reserva response:', result);
+      setSnackbarMessage('Reserva exitosa');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
     } catch (error) {
-      console.error('Error making reservation:', error);
+      console.error('Error al reservar:', error);
+      setSnackbarMessage('API Error al reservar');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
+
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setSnackbarOpen(false);
+  };
+  
+  const renderSnackbar = () => (
+    <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleCloseSnackbar}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    >
+      <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity={snackbarSeverity}>
+      {snackbarMessage}
+      </MuiAlert>
+    </Snackbar>
+  );
   
   
 
@@ -239,15 +324,15 @@ export const ProductDetails = ({ product }) => {
           </Grid>
           {product.images.length > 4 && (
             <ListItem sx={{display: {xs: 'none', md: 'block'}}}>
-              <Button onClick={toggleShowAllImages}>
+              <MuiButton onClick={toggleShowAllImages}>
                 {showAllImages ? 'Ver menos' : 'Ver más'}
-              </Button>
+              </MuiButton>
             </ListItem>
           )}
 
       <Box sx={{ marginTop: '2rem', marginLeft: '3rem' }}>
         <FormControl sx={{ minWidth: 120, marginRight: '1rem' }}>
-          <InputLabel id="quantity-label">Cantidad</InputLabel>
+          <InputLabel id="quantity-label"></InputLabel>
           <Select
             labelId="quantity-label"
             id="quantity"
@@ -264,24 +349,32 @@ export const ProductDetails = ({ product }) => {
 
         {/* CALENDARIOS  */}
 
-        <CustomCalendar
-          label={'Fecha Desde'}
-          value={startDate}
-          onChange={handleStartDateChange}
-          rentedDates={product.rentalDate}
-        />
-        <CustomCalendar
-          label={'Fecha Hasta'}
-          value={endDate}
-          onChange={handleEndDateChange}
-          rentedDates={product.rentalDate}
-        />
+        <Box sx={{display:'flex', marginTop:'2rem'}}>
+
+          
+          <CustomCalendar
+            label={'Fecha Desde'}
+            value={startDate}
+            onChange={handleStartDateChange}
+            rentedDates={product.rentalDate}
+          />
+          <CustomCalendar
+            label={'Fecha Hasta'}
+            value={endDate}
+            onChange={handleEndDateChange}
+            rentedDates={product.rentalDate}
+          />
+
+        </Box>
 
          {/* CALENDARIOS  */}
 
-        <Button variant="contained" color="primary" onClick={handleReserveClick}>
-          Reservar
-        </Button>
+         <Typography variant="h6" textAlign={'left'} sx={{ margin: '1rem' }}>
+          Precio de alquiler: US$ {rentalPrice}
+        </Typography>
+
+        <Button label={'Reservar'} mt={'3rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />
+
       </Box>
         </Grid>
       </>
@@ -328,6 +421,7 @@ export const ProductDetails = ({ product }) => {
            </Grid>
          </Box>
         )}
+        {renderSnackbar()}
     </Box>
   );
 };
