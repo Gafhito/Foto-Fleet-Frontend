@@ -152,16 +152,33 @@ export const ProductDetails = ({ product }) => {
   };
 
   const handleStartDateChange = (newStartDate) => {
+    // Perform validation
+    if (newStartDate > endDate) {
+      setSnackbarMessage('La fecha de inicio no puede ser posterior a la fecha de fin');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return;
+    }
+  
     setStartDate(newStartDate);
     const updatedPrice = calculateRentalPrice(quantity, newStartDate, endDate);
     setRentalPrice(updatedPrice);
   };
   
   const handleEndDateChange = (newEndDate) => {
+    // Perform validation
+    if (startDate > newEndDate) {
+      setSnackbarMessage('La fecha de fin no puede ser anterior a la fecha de inicio');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return;
+    }
+  
     setEndDate(newEndDate);
     const updatedPrice = calculateRentalPrice(quantity, startDate, newEndDate);
     setRentalPrice(updatedPrice);
   };
+  
   
 
   const handleReserveClick = async () => {
@@ -177,6 +194,13 @@ export const ProductDetails = ({ product }) => {
       setTimeout(() => {
         navigate('/auth/login');
       }, 2000); 
+      return;
+    }
+
+    if (startDate > endDate) {
+      setSnackbarMessage('La fecha de inicio no puede ser posterior a la fecha de fin');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
       return;
     }
 
@@ -369,7 +393,7 @@ export const ProductDetails = ({ product }) => {
 
          {/* CALENDARIOS  */}
 
-         <Typography variant="h6" textAlign={'left'} sx={{ margin: '1rem' }}>
+         <Typography  variant="h6" textAlign={'left'} sx={{ margin: '1.5rem auto', width:'fit-content' }}>
           Precio de alquiler: US$ {rentalPrice}
         </Typography>
 

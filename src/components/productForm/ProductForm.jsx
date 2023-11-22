@@ -14,6 +14,7 @@ import {
 import { createProduct } from '../../utils/ProductService';
 import { useAuth } from '../../utils/AuthContext';
 import { useProductContext } from '../../utils/ProductContext';
+import { colors } from '../../utils/constants';
 
 
 
@@ -245,13 +246,12 @@ const buildImageUploadRequest = () => {
 
 
 
-  console.log('CHARACTERISTICS:' , characteristics)
+  const textFieldStyle = {
+    marginBottom: '1rem',
+  };
   
   return (
     <Container>
-      <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
-        Registrar Producto
-      </Typography>
       <form>
         <div>
           <TextField
@@ -261,6 +261,7 @@ const buildImageUploadRequest = () => {
             onChange={handleInputChange}
             fullWidth
             required // Agregar validación de requerido
+            sx={textFieldStyle}
           />
         </div>
         <div>
@@ -271,12 +272,11 @@ const buildImageUploadRequest = () => {
             onChange={handleInputChange}
             fullWidth
             required // Agregar validación de requerido
+            sx={textFieldStyle}
           />
         </div>
         <div>
-        {console.log('Categories prop antes del FormControl:', categories)}
-        {console.log('newProduct.category: ' + newProduct.category)}
-        <FormControl fullWidth>
+        <FormControl fullWidth sx={textFieldStyle}>
           <InputLabel>Categoría</InputLabel>
           <Select
             name="categoryId"
@@ -293,10 +293,10 @@ const buildImageUploadRequest = () => {
               </MenuItem>
             ))}
           </Select>
-        </FormControl>
+        </FormControl >
         </div>
         <div>
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={textFieldStyle}>
             <InputLabel>Características</InputLabel>
             <Select
               name="characteristics"
@@ -304,7 +304,6 @@ const buildImageUploadRequest = () => {
               value={selectedCharacteristics}
               onChange={(event) => {
                 const { value } = event.target;
-                console.log('EVENT.TARGET:', event.target)
                 setSelectedCharacteristics(value);
                 setNewProduct((prevProduct) => ({
                   ...prevProduct,
@@ -312,7 +311,6 @@ const buildImageUploadRequest = () => {
                 }));
               }}
             >
-              {console.log('SELECTED CHARACTERISTIC EN EL DIV: ', selectedCharacteristics)}
               {characteristics.map((characteristic) => (
                 <MenuItem key={characteristic.characteristicsId} value={characteristic.characteristicsId}>
                   {characteristic.name}
@@ -329,7 +327,8 @@ const buildImageUploadRequest = () => {
             value={newProduct.rentalPrice}
             onChange={handleInputChange}
             fullWidth
-            required 
+            required
+            sx={textFieldStyle}
           />
         </div>
         <div>
@@ -340,7 +339,8 @@ const buildImageUploadRequest = () => {
             value={newProduct.stock}
             onChange={handleInputChange}
             fullWidth
-            required 
+            required
+            sx={textFieldStyle}
           />
         </div>
         <div>
@@ -350,9 +350,10 @@ const buildImageUploadRequest = () => {
             value={newProduct.status}
             onChange={handleInputChange}
             fullWidth
+            sx={textFieldStyle}
           />
         </div>
-        <div>
+        <div style={{display:'flex', justifyContent:'center'}}>
           {/* primaryImage */}
           <input
             accept="image/*"
@@ -362,8 +363,8 @@ const buildImageUploadRequest = () => {
             onChange={(event) => handleImageChange(event, 'primaryImage')}
           />
           <label htmlFor="main-image-file">
-            <Button variant="contained" component="span">
-              Subir Imagen Principal
+            <Button variant="contained" component="span" sx={{backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover }}}>
+              Imagen Principal
             </Button>
           </label>
 
@@ -377,13 +378,13 @@ const buildImageUploadRequest = () => {
             onChange={(event) => handleImageChange(event, 'secondaryImages')}
           />
           <label htmlFor="additional-images-file">
-            <Button variant="contained" component="span">
-              Subir Imágenes Adicionales
+            <Button sx={{marginLeft:'1rem', backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover }}} variant="contained" component="span">
+              Imágenes Adicionales
             </Button>
           </label>
         </div>
-        <div>
-          <Button variant="contained" onClick={handleSubmit}>
+        <div style={{display:'flex', justifyContent:'center'}}>
+          <Button sx={{marginRight:'2rem', marginTop:'1.5rem', backgroundColor:colors.primaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.primaryColorHover }}} variant="contained" onClick={handleSubmit}>
             Registrar
           </Button>
         </div>
