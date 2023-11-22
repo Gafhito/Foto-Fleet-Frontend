@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@date-io/date-fns": "^2.17.0",
-    "@emotion/react": "^11.11.1",
+    "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
@@ -30,7 +30,6 @@
     "react": "^18.2.0",
     "react-calendar": "^4.6.1",
     "react-datepicker": "^4.21.0",
-    "react-dates": "^21.8.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.17.0",
     "react-slick": "^0.29.0",
