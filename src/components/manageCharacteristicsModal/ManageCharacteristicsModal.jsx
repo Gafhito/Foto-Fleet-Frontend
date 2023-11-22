@@ -23,6 +23,7 @@ import { useAuth } from '../../utils/AuthContext';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { iconOptions } from '../addCategoryForm/AddCharacteristicForm';
+import { colors } from '../../utils/constants';
 
 export const ManageCharacteristicsModal = ({ open, onClose }) => {
   const [characteristics, setCharacteristics] = useState([]);
@@ -154,7 +155,7 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Administrar Características</DialogTitle>
       <DialogContent>
-        <Button
+        <Button sx={{backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover' : { backgroundColor:colors.terciaryColorHover }}}
           variant="contained"
           startIcon={<AddIcon />}
           onClick={openAddCategoryForm}
@@ -171,8 +172,6 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {console.log('CHARACTERISTICS 173: ', characteristics)}
-            {console.log('SELECTED CHARACTER: ', selectedCharacteristic)}
             {characteristics?.map((characteristic) => (
               <TableRow key={characteristic.characteristicsId}>
                 <TableCell>

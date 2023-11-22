@@ -11,9 +11,6 @@ export const DeleteCategoryList = ({ open, onClose, onDeleteCategory }) => {
           // Styling for the modal box
         }}
       >
-        <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
-          Eliminar Categoría
-        </Typography>
         <CategoryList onDeleteCategory={onDeleteCategory} />
       </Box>
     </Modal>

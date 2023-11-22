@@ -157,6 +157,11 @@ export const EditProductModal = ({ open, onClose, products }) => {
     setSnackbarOpen(true);
   };
 
+  const textFieldStyle = {
+    marginBottom: '1rem',
+  };
+  
+
   return (
     <>
         <Modal open={open} onClose={onClose}>
@@ -198,27 +203,27 @@ export const EditProductModal = ({ open, onClose, products }) => {
 
                 {productDetails && (
                 <div>
-                    <Typography variant="subtitle1" sx={{ marginBottom: '0.5rem' }}>Detalles del Producto:</Typography>
+                    <Typography variant="subtitle1" sx={textFieldStyle}>Detalles del Producto:</Typography>
                     <TextField
                     label="Nombre"
                     value={editedName || ''}
                     onChange={(event) => handleFieldChange(event, 'name')}
                     fullWidth
+                    sx={textFieldStyle}
                 />
-                <TextField
+                <TextField sx={textFieldStyle}
                     label="Descripción"
                     value={editedDescription || ''}
                     onChange={(event) => handleFieldChange(event, 'description')}
                     fullWidth
                 />
-               <Select
+               <Select 
                   value={editedCategoryId || ''}
                   onChange={(event) => {
-                    console.log('Selected Category ID:', event.target.value);
                     setEditedCategoryId(event.target.value);
                   }}
                   fullWidth
-                  sx={{ marginBottom: '1rem' }}
+                  sx={textFieldStyle}
                 >
                   {categories.map((category) => (
                     <MenuItem key={category.categoryId} value={category.categoryId}>
@@ -227,7 +232,7 @@ export const EditProductModal = ({ open, onClose, products }) => {
                   ))}
                 </Select>
 
-                <FormControl fullWidth>
+                <FormControl fullWidth sx={textFieldStyle}>
                   <InputLabel>Características</InputLabel>
                   <Select
                     name="characteristics"
@@ -251,19 +256,19 @@ export const EditProductModal = ({ open, onClose, products }) => {
                 </FormControl>
 
 
-                <TextField
+                <TextField sx={textFieldStyle}
                     label="Precio"
                     value={editedRentalPrice || ''}
                     onChange={(event) => handleFieldChange(event, 'rentalPrice')}
                     fullWidth
                 />
-                <TextField
+                <TextField sx={textFieldStyle}
                     label="Stock"
                     value={editedStock || ''}
                     onChange={(event) => handleFieldChange(event, 'stock')}
                     fullWidth
                 />
-                <TextField
+                <TextField sx={textFieldStyle}
                     label="Estado"
                     value={editedStatus || ''}
                     onChange={(event) => handleFieldChange(event, 'status')}
@@ -272,17 +277,17 @@ export const EditProductModal = ({ open, onClose, products }) => {
                 </div>
                 )}
 
-                <Button onClick={handleEditProduct} variant="contained" color="primary" sx={{ marginRight: '1rem' }}>
+                <Button onClick={handleEditProduct} variant="contained" sx={{ marginRight: '1rem', marginLeft:'1rem', backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover } }}>
                 Editar
                 </Button>
-                <Button onClick={onClose} variant="contained" color="secondary">
+                <Button onClick={onClose} variant="contained" sx={{  backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover } }}>
                 Cancelar
                 </Button>
             </Box>
         </Modal>
         <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000} // ajustar duracion segun necesidad
+        autoHideDuration={3000} // ajustar duracion 
         onClose={() => setSnackbarOpen(false)}
         >
         <SnackbarContent

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal, Box, Typography, TextField, Button, Snackbar } from '@mui/material';
 import { useAuth } from '../../utils/AuthContext';
+import { colors } from '../../utils/constants';
 
 export const RegisterCategory = ({ open, onClose }) => {
   const { user } = useAuth();
@@ -136,22 +137,27 @@ export const RegisterCategory = ({ open, onClose }) => {
             onChange={handleCategoryInputChange}
             sx={{ mb: 2 }}
           />
-          <input
-            type="file"
-            accept="image/*"
-            name="image"
-            id="image-input"
-            style={{ display: 'none' }}
-            onChange={(e) => setCategoryData({ ...categoryData, image: e.target.files[0] })}
-          />
-          <label htmlFor="image-input">
-            <Button variant="outlined" color="primary" component="span">
-              Subir Imagen
+
+          <Box sx={{display:'flex', justifyContent:'start', alignItems:'center'}}>
+
+            <input
+              type="file"
+              accept="image/*"
+              name="image"
+              id="image-input"
+              style={{ display: 'none' }}
+              onChange={(e) => setCategoryData({ ...categoryData, image: e.target.files[0] })}
+            />
+            <label htmlFor="image-input">
+              <Button variant="contained" component="span" sx={{backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': {backgroundColor:colors.terciaryColorHover}}}>
+                Subir Imagen
+              </Button>
+            </label>
+            <Button variant="contained" onClick={handleSubmit} sx={{backgroundColor:colors.terciaryColor, color:colors.blackColor, marginLeft:'1.5rem', '&:hover': {backgroundColor:colors.terciaryColorHover}}}>
+              Guardar
             </Button>
-          </label>
-          <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ mt: 2 }}>
-            Guardar
-          </Button>
+
+          </Box>
         </Box>
       </Modal>
       <Snackbar
