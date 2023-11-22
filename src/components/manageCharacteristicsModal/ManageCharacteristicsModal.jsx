@@ -53,11 +53,9 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
         });
 
 
-        console.log('lAS CARACTERISTICAS SON: ', response)
-
         if (response.ok) {
           const fetchedCharacteristics = await response.json();
-          console.log('fetchedCharacteristics: ', fetchCharacteristics)
+
           setCharacteristics(fetchedCharacteristics);
         } else {
           console.error('Error al obtener las características:', response.statusText);
@@ -121,10 +119,6 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
           console.error('No se encontró un token de autenticación.');
           return;
         }
-
-
-        console.log('SELECTED CATEGORY: ', selectedCharacteristic)
-        console.log('UPDATED CHARACTER: ', updatedCharacteristic)
 
         const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/characteristics/${selectedCharacteristic.characteristicsId}`, {
           method: 'PUT',

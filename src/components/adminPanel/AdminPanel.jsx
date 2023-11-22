@@ -115,15 +115,10 @@ export const AdminPanel = () => {
   };
 
   const handleDeleteCategory = async (categoryId) => {
-    // Update the categories list after deletion
+
     const updatedCategories = await getCategories();
-    console.log('UPDATED CATEGORIES: ', updatedCategories)
   };
 
-  const handleCategorySubmit = (categoryData) => {
-    // Manejar el envío de la categoría -- enviar los datos al servidor.
-    console.log(categoryData);
-  };
 
   return (
     <div>
@@ -149,13 +144,7 @@ export const AdminPanel = () => {
             <Button label={ 'Registrar Producto' } onClick={ () => setIsRegisterModalOpen( true ) } backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
             <Button label={ 'Listar Producto' } onClick={ () => setIsListModalOpen( true ) } mt={'1rem'} backgroundColor={ colors.terciaryColor } backgroundColorHover={ colors.secondaryColor }/>
             <Button label={'Agregar Categoría'} onClick={openCategoryModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
-            <Button
-        label={'Eliminar Categoría'}
-        onClick={() => openDeleteCategoryModal(selectedCategory)}
-        backgroundColor={colors.terciaryColor}
-        mt={'1rem'}
-        backgroundColorHover={colors.secondaryColor}
-      />
+            <Button label={'Eliminar Categoría'} onClick={() => openDeleteCategoryModal(selectedCategory)} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor}/>
             <Button label={'Administrar Caracteristicas'} onClick={openCharacteristicsModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
             <Button label={'Editar Producto'} onClick={openEditModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
             <Button label={'Administrar Roles'} onClick={openRolesModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor}/>
@@ -177,7 +166,6 @@ export const AdminPanel = () => {
 
       <ManageCharacteristicsModal open={isCharacteristicsModalOpen} onClose={closeCharacteristicsModal} />
       <EditProductModal open={isEditModalOpen} onClose={closeEditModal} products={products} />
-      {console.log('products desde el adminpanel: ', products)}
       <ManageRolesModal open={isRolesModalOpen} onClose={closeRolesModal}/>
       <ConfirmationModal open={ confirmationModalOpen } onClose={ closeConfirmationModal } onConfirm={ () => handleDeleteProduct( productToDelete ) } />
       <Snackbar open={ snackbarOpen } autoHideDuration={ 6000 } onClose={ () => setSnackbarOpen( false ) }>

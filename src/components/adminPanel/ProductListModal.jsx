@@ -36,7 +36,6 @@ export const ProductListModal = ({ open, onClose}) => {
 
 
   const openModal = (productId) => {
-    console.log('ProductID pasado en el openModal: ', productId)
     setSelectedProductId(productId);
     setIsConfirmationModalOpen(true);
   };
@@ -49,8 +48,6 @@ export const ProductListModal = ({ open, onClose}) => {
   useEffect(() => {
 
     const updatedProducts = productContext.products;
-
-    console.log('En el UE ELIMINANDO: ', updatedProducts)
   
   }, [productContext.lastUpdate]);
 
@@ -79,7 +76,7 @@ export const ProductListModal = ({ open, onClose}) => {
   }, [selectedProductId, productContext]);
 
 
-  // Función flecha para truncar las características
+  // Función para truncar las características
   const truncateCharacteristics = (characteristics) => {
     const truncatedChars = characteristics
       .map(char => char.name)
@@ -165,10 +162,10 @@ export const ProductListModal = ({ open, onClose}) => {
             onClose={() => setIsConfirmationModalOpen(false)}
             onConfirm={async () => {
               try {
-                // Elimina el producto solo después de la confirmación
+                // Eliminamos el producto solo después de la confirmación
                 await productContext.handleDelete(selectedProductId);
                 
-                // Actualiza el estado solo después de confirmar
+                // Actualizamos el estado solo después de confirmar
                 setIsConfirmationModalOpen(false);
                 
                 const updatedProducts = productContext.products;
@@ -176,12 +173,12 @@ export const ProductListModal = ({ open, onClose}) => {
                   (product) => product.productId !== selectedProductId
                 );
 
-                // Verifica si el estado actual es igual al nuevo estado
+                // Verificamos si el estado actual es igual al nuevo estado
                 const isSameState =
                   JSON.stringify(updatedProducts.content) ===
                   JSON.stringify(filteredProducts);
 
-                // Actualiza el estado solo si es diferente
+                // Actualizamos el estado solo si es diferente
                 if (!isSameState) {
                   productContext.setProducts({
                     ...updatedProducts,

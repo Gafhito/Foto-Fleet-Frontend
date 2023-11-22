@@ -97,19 +97,9 @@ export const ProductDetails = ({ product }) => {
 
   const calculateRentalPrice = (quantity, startDate, endDate) => {
    
-
-    console.log('Calculate Rental Price - Quantity:', quantity);
-    console.log('Calculate Rental Price - Start Date:', startDate);
-    console.log('Calculate Rental Price - End Date:', endDate);
     const basePrice = product.rentalPrice; 
     const numberOfDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Calculate the number of days
     const updatedRentalPrice = basePrice * quantity * numberOfDays;
-
-
-    console.log("NUmber of Days: " + numberOfDays)
-
-
-    console.log('Updated Rental Price:', updatedRentalPrice);
   
     return updatedRentalPrice;
   };
@@ -152,7 +142,7 @@ export const ProductDetails = ({ product }) => {
   };
 
   const handleStartDateChange = (newStartDate) => {
-    // Perform validation
+    // validacion
     if (newStartDate > endDate) {
       setSnackbarMessage('La fecha de inicio no puede ser posterior a la fecha de fin');
       setSnackbarSeverity('error');
@@ -166,7 +156,7 @@ export const ProductDetails = ({ product }) => {
   };
   
   const handleEndDateChange = (newEndDate) => {
-    // Perform validation
+    // validacion
     if (startDate > newEndDate) {
       setSnackbarMessage('La fecha de fin no puede ser anterior a la fecha de inicio');
       setSnackbarSeverity('error');
@@ -238,7 +228,6 @@ export const ProductDetails = ({ product }) => {
       }
   
       const result = await response.json();
-      console.log('reserva response:', result);
       setSnackbarMessage('Reserva exitosa');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);

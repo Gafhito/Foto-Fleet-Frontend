@@ -36,10 +36,6 @@ export const ProductsPagination = ({ itemsPerPage }) => {
 
   const productsContent = products.content;
 
-  console.log('PRODUCTS: ', products)
-
-  console.log('PRODUCTS CONTENT: ', productsContent)
-
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

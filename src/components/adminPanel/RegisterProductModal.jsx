@@ -26,8 +26,6 @@ export const RegisterProductModal = ({ open, onClose }) => {
       const token = user ? user.token : null;
       const data = await createProduct(newProduct, token);
 
-      console.log('Producto registrado exitosamente:', data);
-
       // Cierra el modal
       onClose();
     } catch (error) {
