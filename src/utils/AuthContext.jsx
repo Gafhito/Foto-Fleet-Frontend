@@ -14,7 +14,6 @@ export function AuthProvider({ children }) {
 
 
   useEffect(() => {
-    console.log('useEffect in AuthProvider running'); // Add this line
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
 
@@ -100,8 +99,6 @@ export function AuthProvider({ children }) {
 
       if (response.status === 200) {
         const userData = await response.json();
-        console.log('Datos del usuario:', userData);
-        console.log('USER: ', user)
         return userData;
       } else {
         console.error('Error al obtener datos del usuario:', response.status, response.statusText);
@@ -159,14 +156,13 @@ export function AuthProvider({ children }) {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
         },
         body: JSON.stringify({
           email,
           rol: newRole,
         }),
       });
-
-      console.log('body', email, newRole);
   
       if (response.status === 200) {
         console.log('Rol del usuario actualizado exitosamente');

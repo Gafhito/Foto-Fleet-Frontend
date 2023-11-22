@@ -1,0 +1,16 @@
+.rented-date {
+
+    color:red;
+}
+
+.weekend-date {
+    color: green;
+}
+  
+.available-date {
+    color: green; 
+}
+
+.Calendar {
+    background-color: rgba(255,255,255, 1);
+}

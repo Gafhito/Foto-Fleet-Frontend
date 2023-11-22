@@ -21,9 +21,7 @@ export const Avatar = ({ onClick }) => {
 
 
     const role = user && user.role;
-    console.log(' Avatar role:' + role)
     
-    // Verificar si userData existe antes de acceder a sus propiedades
     const userInitial = userData
       ? (
           (userData.firstName && userData.firstName.charAt(0).toUpperCase()) +

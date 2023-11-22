@@ -26,7 +26,7 @@ export const App = () => {
             {/* Protegemos ruta /administracion */}
             <Route path="/administracion" element={ isLoggedIn ? <AdminPage /> : <Navigate to="/" />}
             />
-            <Route path="products/:productId" element={<ProductPage />} />
+            <Route path="/products/:productId" element={<ProductPage />} />
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/perfil" element={<UserProfile/>} />
             <Route path="/favoritos" element={<FavoritesPage/>} />

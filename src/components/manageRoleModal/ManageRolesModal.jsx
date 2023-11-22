@@ -20,18 +20,17 @@ export const ManageRolesModal = ({ open, onClose }) => {
 
   const handleConfirmClick = async () => {
     try {
-      // Utiliza la función updateUserRole para modificar el rol
+
       const success = await updateUserRole(email, rol);
 
       if (success) {
-        // Puedes realizar acciones adicionales si la modificación es exitosa
+
         console.log('Rol del usuario modificado con éxito');
       } else {
-        // Puedes manejar errores o mostrar mensajes al usuario
+  
         console.error('Error al modificar el rol del usuario');
       }
 
-      // Cierra el modal independientemente del resultado
       onClose();
     } catch (error) {
       console.error('Error al confirmar la acción:', error);

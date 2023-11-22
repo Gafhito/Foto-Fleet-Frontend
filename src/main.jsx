@@ -6,14 +6,17 @@ import { ProductProvider } from './utils/ProductContext.jsx';
 import './index.css'
 import { AuthProvider } from './utils/AuthContext.jsx';
 
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      <ProductProvider>
-        <LoginFormProvider>
-          <App />
-        </LoginFormProvider>
-      </ProductProvider>
+
+        <ProductProvider>
+          <LoginFormProvider>
+            <App />
+          </LoginFormProvider>
+        </ProductProvider>
+
     </AuthProvider>
   </React.StrictMode>,
 )

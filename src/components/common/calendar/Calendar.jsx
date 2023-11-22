@@ -1,56 +1,90 @@
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
-
+import { useState } from 'react';
+import Calendar from 'react-calendar';
+import { Button } from '../button/Button'
+import 'react-calendar/dist/Calendar.css';
 import { colors } from '../../../utils/constants';
 
+import './calendar.css';
 
-const customTheme = createTheme({
-  components: {
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          '&.MuiOutlinedInput-root': {
-            borderRadius: '8px'
-          },
-          '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: colors.textColor,
-          },
-        },
-      },
-    },
-    MuiInputLabel: {
-      styleOverrides: {
-        root: {
-          color: `${colors.textColor}`,
-          '&[data-shrink="false"]' : {
-          },
-          '&[data-shrink="true"]': {
-            color: `${colors.textColor}`,
-          },
-        },
-      },
-    },
-  },
-});
+export const CustomCalendar = ({ value, onChange, label, rentedDates }) => {
+  const [isCalendarOpen, setCalendarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(value || new Date());
 
-const StyledDatePicker = styled(DatePicker)({
-    backgroundColor: colors.backgroundColor,
-    borderColor: colors.backgroundColor,
-    borderRadius: '8px'
-});
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    onChange(date);
+    setCalendarOpen(false);
+  };
 
-export const Calendar = ({label}) => {
+  const openCalendar = () => {
+    setCalendarOpen(true);
+  };
+
+  const closeCalendar = () => {
+    setCalendarOpen(false);
+  };
+
+  const containerStyle = {
+    position: 'relative',
+    height: '5vh',
+    width: '40vw',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop:'1.5rem'
+  };
+
+  const modalStyle = {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100vw',
+    height: '100vh',
+    background: 'rgba(0, 0, 0, 0.5)', 
+    zIndex: '1000', 
+    display: isCalendarOpen ? 'flex' : 'none',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
+  const calendarStyle = {
+    width: '80%',
+  };
+
+  const tileClassName = ({ date }) => {
+    const isRented = rentedDates.some(
+      (rental) =>
+        new Date(rental.startDate) <= date && date <= new Date(rental.endDate)
+    );
+  
+    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+  
+    if (isRented || rentedDates.some((rental) => rental.endDate === date.toISOString().split('T')[0])) {
+      return 'rented-date';
+    } else if (isWeekend) {
+      return 'weekend-date';
+    } else {
+      return 'available-date';
+    }
+  };
 
   return (
-    <ThemeProvider theme={customTheme}>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DatePicker']} sx={{ marginRight: '1rem', paddingTop: '1rem' }}>
-        <StyledDatePicker label={label} />
-      </DemoContainer>
-    </LocalizationProvider>
-  </ThemeProvider>
-  )
-}
+    <div className="custom-calendar-container" style={containerStyle}>
+      <Button label={label} color={colors.blackColor} backgroundColor={colors.secondaryColor} className="calendar-button" onClick={openCalendar} />
+      <div className="selected-date">
+        {selectedDate.toLocaleDateString()}
+      </div>
+
+      {/* Modal */}
+      <div style={modalStyle} onClick={closeCalendar}>
+        <Calendar
+          className={'Calendar'}
+          onChange={handleDateChange}
+          value={selectedDate}
+          tileClassName={tileClassName}
+          style={calendarStyle}
+        />
+      </div>
+    </div>
+  );
+};

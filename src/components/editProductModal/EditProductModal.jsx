@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Modal, Select, MenuItem, Button, Typography, Box, TextField } from '@mui/material';
+import { Modal, Select, MenuItem, Button, Typography, Box, TextField, FormControl, InputLabel } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import { useProductContext } from '../../utils/ProductContext';
@@ -26,14 +26,12 @@ export const EditProductModal = ({ open, onClose, products }) => {
   const [editedRentalPrice, setEditedRentalPrice] = useState(0); 
   const [editedStock, setEditedStock] = useState(null);
   const [editedStatus, setEditedStatus] = useState('Active');
+  const [productCharacteristics, setProductCharacteristics] = useState([]); // Características del producto
+  const [selectedCharacteristics, setSelectedCharacteristics] = useState([]); // Características seleccionadas en el formulario
 
   const productsContext = useProductContext();
 
   const productsContent = productsContext.products.content;
-
-  console.log('productsContext: ', productsContext)
-  console.log('products content: ', productsContent)
-
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -44,7 +42,6 @@ export const EditProductModal = ({ open, onClose, products }) => {
   
         // si tenemos categoria ID seteamos
         if (productDetails && productDetails.categoryId) {
-          console.log('productDetails en el IF: ', productDetails)
           const selectedCategory = fetchedCategories.find(category => category.categoryId === productDetails.categoryId);
           setSelectedCategory(selectedCategory);
           setEditedCategoryId(selectedCategory?.categoryId || 0);
@@ -60,36 +57,41 @@ export const EditProductModal = ({ open, onClose, products }) => {
   }, [authContext, productDetails]);
 
   useEffect(() => {
-    console.log('DENTRO DLE UE DE EDIT')
     const fetchProductDetails = async () => {
       if (selectedProduct) {
-        console.log('antes del try: ', selectedProduct)
+        console.log('antes del try: ', selectedProduct);
         try {
-          const details = await productsContext.getProductById(selectedProduct);// cambiar el 54 por selectedProduct
+          const details = await productsContext.getProductById(selectedProduct);
           setProductDetails(details);
-
+  
           // actualizo los TextField con detalles del producto
-        setEditedName(details.name || '');
-        setEditedDescription(details.description || '');
-        setEditedCategoryId(details.categoryId || 0);
-        setEditedRentalPrice(details.rentalPrice || 0);
-        setEditedStock(details.stock || 0);
-        setEditedStatus(details.status || '');
+          setEditedName(details.name || '');
+          setEditedDescription(details.description || '');
+          setEditedCategoryId(details.categoryId || 0);
+          setEditedRentalPrice(details.rentalPrice || 0);
+          setEditedStock(details.stock || 0);
+          setEditedStatus(details.status || '');
 
-          console.log('details: ', details)
+  
+          // Actualizo el estado de las características seleccionadas
+          setSelectedCharacteristics(details.characteristics || []);
+  
+          console.log('details: ', details);
+          console.log('SelectedCharacteristics: ', selectedCharacteristics)
         } catch (error) {
           console.error('Error fetching product details:', error);
         }
-      }else{
-        console.log('selectedProduct es null: ', selectedProduct)
+      } else {
+        console.log('selectedProduct es null: ', selectedProduct);
       }
     };
-
+  
     fetchProductDetails();
   }, [selectedProduct, productsContent]);
+  
 
   const handleProductChange = (event) => {
-    console.log('Selected Product:', event.target.value);
+
     setSelectedProduct(event.target.value);
   };
 
@@ -102,11 +104,14 @@ export const EditProductModal = ({ open, onClose, products }) => {
         rentalPrice: editedRentalPrice,
         stock: editedStock,
         status: editedStatus,
+        //characteristics: selectedCharacteristics, // Añade las características seleccionadas
       };
 
-
-      console.log('PRODUCTO EDITAD: ', editedProduct)
         // cambiar el 54 por selectedProduct
+
+        console.log('EDITED PRODUCT DEL EDIT: ', editedProduct)
+        console.log('SELECTED PRODUCT DEL EDIT: ', selectedProduct)
+        console.log('SELECTED CHARACTERISTICS: ', selectedCharacteristics)
       await productsContext.updateProduct(selectedProduct, editedProduct);
 
 
@@ -221,6 +226,31 @@ export const EditProductModal = ({ open, onClose, products }) => {
                     </MenuItem>
                   ))}
                 </Select>
+
+                <FormControl fullWidth>
+                  <InputLabel>Características</InputLabel>
+                  <Select
+                    name="characteristics"
+                    multiple
+                    value={selectedCharacteristics}
+                    onChange={(event) => {
+                      const { value } = event.target;
+                      setSelectedCharacteristics(value);
+                      setProductDetails((prevDetails) => ({
+                        ...prevDetails,
+                        characteristics: value,
+                      }));
+                    }}
+                  >
+                    {productsContext.characteristics.map((characteristic) => (
+                      <MenuItem key={characteristic.characteristicsId} value={characteristic.characteristicsId}>
+                        {characteristic.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+
                 <TextField
                     label="Precio"
                     value={editedRentalPrice || ''}

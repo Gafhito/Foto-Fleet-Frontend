@@ -3,7 +3,6 @@ import { TextField, Box, Grid, Typography, ThemeProvider, createTheme, styled,  
 
 import { Button } from '../common/button/Button';
 import { colors } from '../../utils/constants';
-import { Calendar } from '../common/calendar/Calendar';
 
 import { useProductContext } from '../../utils/ProductContext';
 import { useAuth } from '../../utils/AuthContext';

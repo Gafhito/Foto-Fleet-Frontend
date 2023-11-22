@@ -13,9 +13,6 @@ export const ProductPage = () => {
   const products = useProductContext(); // Accede a la lista de productos desde el contexto
   const [productDetails, setProductDetails] = useState(null);
 
-  console.log('Productos del productPage: ', products)
-  console.log('productId del productPage: ' + productId)
-
   // Contexto de productos
   const { getProductById } = useProductContext();
 
@@ -24,7 +21,6 @@ export const ProductPage = () => {
     const fetchProductDetails = async () => {
       try {
         const details = await getProductById(productId);
-        console.log('Detalles del producto:', details);
         // Haz algo con los detalles del producto si es necesario
         setProductDetails(details);
       } catch (error) {

@@ -16,50 +16,37 @@ import { useProductContext } from '../../utils/ProductContext';
 import { colors } from '../../utils/constants';
 import { ProductModal } from '../common/productModal/ProductModal';
 import { PaginationNumbers } from './PaginationNumbers';
-import { useAuth } from '../../utils/AuthContext';
+
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import IconButton from '@mui/material/IconButton';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
 
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+
 
 export const ProductsPagination = ({ itemsPerPage }) => {
-  const { products, currentPage, setCurrentPage, changePage, isFavorite, addToFavorites, removeFromFavorites, showSnackbar, snackbarMessage, initializeUserData } = useProductContext();
-  const { getUserData } = useAuth();
+  const { products, addToFavorites, removeFromFavorites, isFavorite, currentPage, setCurrentPage, changePage } = useProductContext();
 
   const productsContent = products.content;
 
-  const [userData, setUserData] = useState(null);
+  console.log('PRODUCTS: ', products)
 
-  const [ userFavorites, setUserFavorites ] = useState([]);
-
+  console.log('PRODUCTS CONTENT: ', productsContent)
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  {/* Compartir */}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await initializeUserData(); 
-        const userData = await getUserData();
-        setUserData(userData);
-
-        setUserFavorites(userData.favorites || []);
-      } catch (error) {
-        console.error('Error fetching user data', error);
-      }
-    };
-
-    fetchData();
-  }, [initializeUserData, getUserData]);
-
-
-  console.log('USER DATA: ', userData)
-  console.log('USER FAVORITES: ', userFavorites);
-
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedSocial, setSelectedSocial] = useState(null);
 
 
   const handleOpenModal = (product) => {
@@ -72,15 +59,35 @@ export const ProductsPagination = ({ itemsPerPage }) => {
     setIsModalOpen(false);
   };
 
-  const handleFavoriteClick = async (productId, productName) => {
-    const isCurrentlyFavorite = userFavorites.some((fav) => fav.productId === productId);
-  
-    if (isCurrentlyFavorite) {
-      await removeFromFavorites(productId, productName);
-    } else {
-      await addToFavorites(productId, productName);
-    }
+  const handleFavoriteClick = (productId) => {
+    isFavorite(productId) ? removeFromFavorites(productId) : addToFavorites(productId);
   };
+
+
+
+  const handleShare = (social, productId) => {
+    const productUrl = `${window.location.origin}/products/${productId}`;
+  
+    // Realiza la acción de compartir según la red social seleccionada
+    switch (social) {
+      case 'facebook':
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`, '_blank');
+        break;
+      case 'instagram':
+        window.open(`https://www.instagram.com/sharer.php?u=${encodeURIComponent(productUrl)}`, '_blank');
+        break;
+      case 'twitter':
+        window.open(`https://twitter.com/share?url=${encodeURIComponent(productUrl)}`, '_blank');
+        break;
+      default:
+        break;
+    }
+  
+    // Cierra el menú después de compartir
+    setAnchorEl(null);
+  };
+  
+  
 
   return (
     <Container>
@@ -89,7 +96,6 @@ export const ProductsPagination = ({ itemsPerPage }) => {
       </Typography>
       <Grid container spacing={3} sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
         {productsContent?.map((product, index) => {
-          console.log('PRODUCT ID: ', product.productId )
           return (
             <Grid item key={index} xs={12} sm={6} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Card sx={{ width: '345px', borderRadius:'.5rem', cursor:'pointer', transition:'all .3s', '&:hover': { transform:'scale(.95)' }, position:'relative', '&:hover .favorite-icon, &:hover .share-icon': { opacity: 1 }, }}>
@@ -99,7 +105,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                   title={product.name}
                   onClick={() => handleOpenModal(product)}
                 />
-                <CardContent sx={{maxHeight: '4rem'}}>
+                <CardContent sx={{maxHeight: '6.5rem'}}>
                   <Typography variant="h6" sx={{color:colors.blackColor}}>{product.name}</Typography>
                   <Typography variant="body2" color="textSecondary" sx={{
                     overflow: 'hidden',
@@ -111,21 +117,23 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                   <IconButton
                     aria-label="add to favorites"
                     className="favorite-icon"
-                    onClick={() => handleFavoriteClick(product.productId, product.name)}
+                    onClick={() => handleFavoriteClick(product.productId)}
                     sx={{
                       position: 'absolute',
                       top: '10px',
                       right: '10px',
                       opacity: 0,
                       transition: 'opacity 0.3s ease',
-                      color: userFavorites.some((fav) => fav.productId === product.productId) ? 'red' : '',
+                      color: isFavorite(product.productId) ? 'red' : '',
                     }}
                   >
                     <FavoriteIcon />
                   </IconButton>
+                 
                   <IconButton
                     aria-label="share"
                     className='share-icon'
+                    onClick={(event) => setAnchorEl(event.currentTarget)}
                     sx={{
                       position: 'absolute',
                       top: '45px',
@@ -136,7 +144,40 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                   >
                     <ShareIcon />
                   </IconButton>
-                  <Link to={`products/${product.productId}`} target='_blank'>Ver Detalles</Link>
+
+                  <Menu  sx={{
+                          '& .MuiPaper-root': {
+                            borderRadius: '8px',
+                            boxShadow:'none',
+                            
+                          },
+                        }}
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={() => setAnchorEl(null)}
+                  >
+                    <MenuItem onClick={() => handleShare('facebook', product.productId)}>
+                      <ListItemIcon>
+                        <FacebookIcon />
+                      </ListItemIcon>
+                      Facebook
+                    </MenuItem>
+                    <MenuItem onClick={() => handleShare('instagram', product.productId)}>
+                      <ListItemIcon>
+                        <InstagramIcon />
+                      </ListItemIcon>
+                      Instagram
+                    </MenuItem>
+                    <MenuItem onClick={() => handleShare('twitter', product.productId)}>
+                      <ListItemIcon>
+                        <TwitterIcon />
+                      </ListItemIcon>
+                      Twitter
+                    </MenuItem>
+                  </Menu>
+
+
+                  <Link to={`/products/${product.productId}`} target='_blank'>Ver Detalles</Link>
                 </CardContent>
               </Card>
             </Grid>
@@ -160,19 +201,6 @@ export const ProductsPagination = ({ itemsPerPage }) => {
           product={selectedProduct}
         />
       )}
-
-    <Snackbar
-      open={Boolean(snackbarMessage.open)}
-      autoHideDuration={3000}
-      onClose={() => showSnackbar('', '', false)} 
-    >
-      <Alert
-        severity={snackbarMessage.severity}
-        onClose={() => showSnackbar('', '', false)} 
-      >
-        {snackbarMessage.message}
-      </Alert>
-    </Snackbar>
     </Container>
   );
 };
