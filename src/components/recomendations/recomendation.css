@@ -1,0 +1,28 @@
+.recomendacion_img {
+    width: 100%;
+  }
+  
+  .recomendaciones_container {
+    width: 70%;
+    margin: 3rem auto;
+    display: flex;
+    justify-content: center;
+  }
+  
+  /*.recomendaciones_inner_container {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /*margin-left: 10rem !important;
+  }*/
+  .recomendaciones_inner_container{
+    width: auto !important;
+  }
+
+  
+  
+  
+  
+  
+  

@@ -7,19 +7,21 @@ FotoFleet es una aplicación web diseñada para facilitar el alquiler de equipos
 - Reserva Simplificada: Con pocos clics, reserve el equipo deseado para las fechas que lo necesite.
 - Entrega Flexibles: Opciones de entrega que se adaptan a tus necesidades y horarios.
 
+Esta descripción ofrece una visión general y concisa del proyecto, destacando sus características principales. Puede ser usada como introducción en el README.md para que los visitantes del repositorio comprendan rápidamente la finalidad y las funcionalidades de la aplicación.
+
 # Instalación:
 
-### Requisitos previos
+# Requisitos previos
 Node.js (versión 14.0 o superior)
 npm (generalmente se instala junto con Node.js)
 
-### Clonar el repositorio:
+# Clonar el repositorio:
 git clone https://github.com/Gafhito/Foto-Fleet-Frontend.git
 
-### Navegar al directorio del proyecto:
+# Navegar al directorio del proyecto:
 cd Foto-Fleet-Frontend
 
-### Instalar las dependencias:
+# Instalar las dependencias:
 npm install
 
 # Ejecución: 
