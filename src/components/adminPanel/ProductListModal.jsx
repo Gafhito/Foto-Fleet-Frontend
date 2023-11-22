@@ -30,6 +30,8 @@ export const ProductListModal = ({ open, onClose}) => {
   const productContext = useProductContext();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const MAX_DESCRIPTION_LENGTH = 80;
+  const MAX_CHARACTERISTICS_LENGTH = 80;
 
 
 
@@ -77,6 +79,20 @@ export const ProductListModal = ({ open, onClose}) => {
   }, [selectedProductId, productContext]);
 
 
+  // Función flecha para truncar las características
+  const truncateCharacteristics = (characteristics) => {
+    const truncatedChars = characteristics
+      .map(char => char.name)
+      .join(', ')
+      .slice(0, MAX_CHARACTERISTICS_LENGTH);
+
+    return characteristics.length > MAX_CHARACTERISTICS_LENGTH
+      ? `${truncatedChars}...`
+      : truncatedChars || 'N/A';
+  };
+
+
+
   return (
     <ThemeProvider theme={customModalTheme}>
         <Modal open={open} onClose={onClose}>
@@ -115,7 +131,7 @@ export const ProductListModal = ({ open, onClose}) => {
                   <th>Nombre</th>
                   <th>Descripcion</th>
                   <th>Caracteristicas</th>
-                  <th>Acciones</th>
+                  {/*<th>Acciones</th>*/}
                   <th>Eliminar Producto</th>
                 </tr>
               </thead>
@@ -124,9 +140,9 @@ export const ProductListModal = ({ open, onClose}) => {
                   <tr key={product.productId}>
                     <td>{product.productId}</td>
                     <td>{product.name}</td>
-                    <td>{product.description}</td>
-                    <td>{product.characteristics.map(char => char.name).join(', ')}</td>
-                    <td>{product.action}</td>
+                    <td>{product.description.length > MAX_DESCRIPTION_LENGTH ? `${product.description.slice(0, MAX_DESCRIPTION_LENGTH)}...` : product.description}</td>
+                    <td>{truncateCharacteristics(product.characteristics)}</td>
+                    {/*<td>{product.action}</td>*/}
                     <td>
                     <MuiButton
                         variant="outlined"

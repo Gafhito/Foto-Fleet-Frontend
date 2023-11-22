@@ -17,7 +17,7 @@ export const CategoryItem = ({ category, onDelete }) => {
     <>
       <ListItem>
         <ListItemText primary={category.name} />
-        <Button color="secondary" onClick={handleDeleteClick}>
+        <Button sx={{color:'red', '&:hover': { backgroundColor:'red', color:'black' }}} onClick={handleDeleteClick}>
           Eliminar
         </Button>
       </ListItem>

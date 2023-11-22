@@ -8,14 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import { useAuth } from '../../utils/AuthContext';
-
-export const availableIcons = [
-  { label: 'Emojis', icon: <EmojiEmotions /> },
-  { label: 'Soccer', icon: <SportsSoccer /> },
-  { label: 'Work', icon: <Work /> },
-  { label: 'Restaurant', icon: <Restaurant /> },
-];
-
+import { colors } from '../../utils/constants';
 
 // Agregar todos los iconos
 library.add(fas);
@@ -69,11 +62,12 @@ export const AddCharacteristicForm = ({ onAddCharacteristic }) => {
   };
 
   return (
-    <div>
+    <div style={{display:'flex', flexDirection:'column', justifyContent:'center'}}>
       <TextField
         label="Nombre"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        sx={{marginBottom:'1rem'}}
       />
       <TextField
         label="Descripción"
@@ -92,7 +86,7 @@ export const AddCharacteristicForm = ({ onAddCharacteristic }) => {
           </MenuItem>
         ))}
       </Select>
-      <Button onClick={handleAddCharacteristic}>Agregar Caracteristica</Button>
+      <Button sx={{backgroundColor:colors.terciaryColor, color:colors.blackColor, marginTop:'1.5rem', '&:hover': {backgroundColor:colors.terciaryColorHover }}} onClick={handleAddCharacteristic}>Agregar</Button>
     </div>
   );
 };

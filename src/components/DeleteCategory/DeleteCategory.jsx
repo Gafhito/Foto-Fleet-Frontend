@@ -76,10 +76,10 @@ export const DeleteCategory = ({ open, onClose, categoryId, onDelete }) => {
           <Typography variant="body1" sx={{ mb: 2 }}>
             ¿Estás seguro de que deseas eliminar esta categoría?
           </Typography>
-          <Button variant="outlined" color="primary" onClick={handleDelete} sx={{ mr: 2 }}>
+          <Button variant="contained" onClick={handleDelete} sx={{ mr: 2, backgroundColor:'red', color:'black', '&:hover': { backgroundColor:'white', color:'black' } }}>
             Sí, Eliminar
           </Button>
-          <Button variant="contained" color="secondary" onClick={handleClose}>
+          <Button variant="outlined" sx={{color:'blue'}}  onClick={handleClose}>
             Cancelar
           </Button>
         </Box>
