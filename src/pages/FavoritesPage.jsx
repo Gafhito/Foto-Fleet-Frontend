@@ -30,8 +30,6 @@ export const FavoritesPage = () => {
   }, [initializeUserData, favorites]); 
 
 
-  console.log('FAVORITES: ', favorites)
-
   const handleFavoriteClick = async (productId, productName) => {
     const isCurrentlyFavorite = favorites.some((fav) => fav.productId === productId);
   
@@ -55,7 +53,6 @@ export const FavoritesPage = () => {
     setSelectedProduct(null);
     setIsModalOpen(false);
   };
-  {console.log('favorites antes del return: ', favorites)}
   return (
     <Box sx={{ marginTop: '8rem' }}>
       <Typography variant="h3" sx={{ color: colors.blackColor }}>
@@ -123,18 +120,18 @@ export const FavoritesPage = () => {
         />
       )}
 
-<Snackbar
-      open={Boolean(snackbarMessage.open)}
-      autoHideDuration={3000}
-      onClose={() => showSnackbar('', '', false)} 
-    >
-      <Alert
-        severity={snackbarMessage.severity}
+      <Snackbar
+        open={Boolean(snackbarMessage.open)}
+        autoHideDuration={3000}
         onClose={() => showSnackbar('', '', false)} 
       >
-        {snackbarMessage.message}
-      </Alert>
-    </Snackbar>
+        <Alert
+          severity={snackbarMessage.severity}
+          onClose={() => showSnackbar('', '', false)} 
+        >
+          {snackbarMessage.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

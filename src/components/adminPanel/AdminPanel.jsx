@@ -119,6 +119,11 @@ export const AdminPanel = () => {
     const updatedCategories = await getCategories();
   };
 
+  const handleCategorySubmit = (categoryData) => {
+    // Manejar el envío de la categoría -- enviar los datos al servidor.
+    console.log(categoryData);
+  };
+
 
   return (
     <div>

@@ -76,7 +76,6 @@ const customTheme = createTheme({
   };
   
     const handleSearch = () => {
-      console.log('SearchQuery: ' + searchQuery + ' selectedCategory: ' + selectedCategory)
       searchProducts(searchQuery || '""', selectedCategory || '""');
     };
 
@@ -84,31 +83,31 @@ const customTheme = createTheme({
       if (!params) {
         return;
       }
-  
+    
       const { inputProps } = params;
-  
+    
       if (!inputProps) {
         return;
       }
-  
+    
       const { value } = inputProps;
-  
+    
       setSearchQuery(value);
-  
+    
       try {
-        console.log('VALUE: ' + value);
         const suggestions = await fetchProductSuggestions(value);
         setSuggestedProducts(suggestions);
-        console.log('SUGGESTIONS: ', suggestions);
       } catch (error) {
         console.error('Error fetching product suggestions', error);
       }
-    }, 450); // Adjust the delay as needed
-
-
+    }, 450);
+    
+    // Manejar el caso en que el valor del input está vacío
     const handleSelect = (event, newValue) => {
       if (newValue && newValue.label) {
         setSearchQuery(newValue.label);
+      } else {
+        setSearchQuery(''); 
       }
     };
   
