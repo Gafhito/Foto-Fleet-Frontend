@@ -413,25 +413,26 @@ export const ProductDetails = ({ product }) => {
           Precio de alquiler: US$ {rentalPrice}
         </Typography>
 
-        {/* Checkbox y enlace para aceptar términos y condiciones */}
-        <FormControlLabel
-          control={<Checkbox checked={isAgreed} onChange={handleCheckboxChange} />}
-          label={
-            <>
-              Acepto los{' '}
-              <Link
-                style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
-                to={'/politicas'}
-                target='_blank'
-              >
-                términos y condiciones
-              </Link>
-            </>
-          }
-          sx={{ marginTop: '1rem' }}
-        />
 
-        <Button label={'Reservar'} mt={'3rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />
+        <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+          <FormControlLabel
+            control={<Checkbox checked={isAgreed} onChange={handleCheckboxChange} />}
+            label={
+              <>
+                Acepto los{' '}
+                <Link
+                  style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                  to={'/politicas'}
+                  target='_blank'
+                >
+                  términos y condiciones
+                </Link>
+              </>
+            }
+            sx={{ marginTop: '1rem' }}
+          />
+          <Button label={'Reservar'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />
+        </Box>
 
       </Box>
         </Grid>
