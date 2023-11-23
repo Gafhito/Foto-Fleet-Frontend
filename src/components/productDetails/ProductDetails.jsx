@@ -17,6 +17,10 @@ import {
 } from '@mui/material';
 
 
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
+
 
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/system';
@@ -37,8 +41,6 @@ import { Button } from '../common/button/Button';
 
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
-import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 
@@ -46,25 +48,21 @@ import { Helmet } from 'react-helmet-async';
 
 export const ProductDetails = ({ product }) => {
 
+  /* detalle de producto */
   const [showAllImages, setShowAllImages] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { getProductById } = useProductContext();
-
-
-
+  /* Reservas */
   const [quantity, setQuantity] = useState(1);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
   const [rentalPrice, setRentalPrice] = useState(product.rentalPrice);
-
-  const navigate = useNavigate();
-
-
-
+  /* Snackbar */
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  /* Politicas */
+  const [isAgreed, setIsAgreed] = useState(false);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -101,7 +99,7 @@ export const ProductDetails = ({ product }) => {
   const calculateRentalPrice = (quantity, startDate, endDate) => {
    
     const basePrice = product.rentalPrice; 
-    const numberOfDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Calculate the number of days
+    const numberOfDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
     const updatedRentalPrice = basePrice * quantity * numberOfDays;
   
     return updatedRentalPrice;
@@ -171,6 +169,11 @@ export const ProductDetails = ({ product }) => {
     const updatedPrice = calculateRentalPrice(quantity, startDate, newEndDate);
     setRentalPrice(updatedPrice);
   };
+
+
+  const handleCheckboxChange = () => {
+    setIsAgreed((prevIsAgreed) => !prevIsAgreed);
+  };
   
   
 
@@ -192,6 +195,13 @@ export const ProductDetails = ({ product }) => {
 
     if (startDate > endDate) {
       setSnackbarMessage('La fecha de inicio no puede ser posterior a la fecha de fin');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return;
+    }
+
+    if (!isAgreed) {
+      setSnackbarMessage('Debes aceptar los términos y condiciones antes de reservar.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
       return;
@@ -402,6 +412,24 @@ export const ProductDetails = ({ product }) => {
          <Typography  variant="h6" textAlign={'left'} sx={{ margin: '1.5rem auto', width:'fit-content' }}>
           Precio de alquiler: US$ {rentalPrice}
         </Typography>
+
+        {/* Checkbox y enlace para aceptar términos y condiciones */}
+        <FormControlLabel
+          control={<Checkbox checked={isAgreed} onChange={handleCheckboxChange} />}
+          label={
+            <>
+              Acepto los{' '}
+              <Link
+                style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                to={'/politicas'}
+                target='_blank'
+              >
+                términos y condiciones
+              </Link>
+            </>
+          }
+          sx={{ marginTop: '1rem' }}
+        />
 
         <Button label={'Reservar'} mt={'3rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />
 
