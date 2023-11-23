@@ -17,6 +17,10 @@ import {
 } from '@mui/material';
 
 
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
+
 
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/system';
@@ -37,31 +41,28 @@ import { Button } from '../common/button/Button';
 
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { Helmet } from 'react-helmet-async';
 
-import { useNavigate } from 'react-router-dom';
 
 
 
 export const ProductDetails = ({ product }) => {
+
+  /* detalle de producto */
   const [showAllImages, setShowAllImages] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { getProductById } = useProductContext();
-
-
-
+  /* Reservas */
   const [quantity, setQuantity] = useState(1);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
   const [rentalPrice, setRentalPrice] = useState(product.rentalPrice);
-
-  const navigate = useNavigate();
-
-
-
+  /* Snackbar */
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  /* Politicas */
+  const [isAgreed, setIsAgreed] = useState(false);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -97,19 +98,9 @@ export const ProductDetails = ({ product }) => {
 
   const calculateRentalPrice = (quantity, startDate, endDate) => {
    
-
-    console.log('Calculate Rental Price - Quantity:', quantity);
-    console.log('Calculate Rental Price - Start Date:', startDate);
-    console.log('Calculate Rental Price - End Date:', endDate);
     const basePrice = product.rentalPrice; 
-    const numberOfDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Calculate the number of days
+    const numberOfDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
     const updatedRentalPrice = basePrice * quantity * numberOfDays;
-
-
-    console.log("NUmber of Days: " + numberOfDays)
-
-
-    console.log('Updated Rental Price:', updatedRentalPrice);
   
     return updatedRentalPrice;
   };
@@ -152,7 +143,7 @@ export const ProductDetails = ({ product }) => {
   };
 
   const handleStartDateChange = (newStartDate) => {
-    // Perform validation
+    // validacion
     if (newStartDate > endDate) {
       setSnackbarMessage('La fecha de inicio no puede ser posterior a la fecha de fin');
       setSnackbarSeverity('error');
@@ -166,7 +157,7 @@ export const ProductDetails = ({ product }) => {
   };
   
   const handleEndDateChange = (newEndDate) => {
-    // Perform validation
+    // validacion
     if (startDate > newEndDate) {
       setSnackbarMessage('La fecha de fin no puede ser anterior a la fecha de inicio');
       setSnackbarSeverity('error');
@@ -177,6 +168,11 @@ export const ProductDetails = ({ product }) => {
     setEndDate(newEndDate);
     const updatedPrice = calculateRentalPrice(quantity, startDate, newEndDate);
     setRentalPrice(updatedPrice);
+  };
+
+
+  const handleCheckboxChange = () => {
+    setIsAgreed((prevIsAgreed) => !prevIsAgreed);
   };
   
   
@@ -199,6 +195,13 @@ export const ProductDetails = ({ product }) => {
 
     if (startDate > endDate) {
       setSnackbarMessage('La fecha de inicio no puede ser posterior a la fecha de fin');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return;
+    }
+
+    if (!isAgreed) {
+      setSnackbarMessage('Debes aceptar los términos y condiciones antes de reservar.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
       return;
@@ -238,7 +241,6 @@ export const ProductDetails = ({ product }) => {
       }
   
       const result = await response.json();
-      console.log('reserva response:', result);
       setSnackbarMessage('Reserva exitosa');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
@@ -275,6 +277,20 @@ export const ProductDetails = ({ product }) => {
   
 
   return (
+    <>
+    
+
+      <Helmet>
+        <title>{product.name} - Foto Fleet</title>
+        <meta name="description" content={product.description} />
+
+        {/* Twitter Card meta tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={product.name} />
+        <meta name="twitter:description" content={product.description} />
+        <meta name="twitter:image" content={product.images[0]?.url || ''} />
+      </Helmet>
+
   <Box sx={{
       width: '100%',
       margin: '3.5rem 0 0 0',
@@ -397,7 +413,26 @@ export const ProductDetails = ({ product }) => {
           Precio de alquiler: US$ {rentalPrice}
         </Typography>
 
-        <Button label={'Reservar'} mt={'3rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />
+
+        <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+          <FormControlLabel
+            control={<Checkbox checked={isAgreed} onChange={handleCheckboxChange} />}
+            label={
+              <>
+                Acepto los{' '}
+                <Link
+                  style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                  to={'/politicas'}
+                  target='_blank'
+                >
+                  términos y condiciones
+                </Link>
+              </>
+            }
+            sx={{ marginTop: '1rem' }}
+          />
+          <Button label={'Reservar'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />
+        </Box>
 
       </Box>
         </Grid>
@@ -447,5 +482,7 @@ export const ProductDetails = ({ product }) => {
         )}
         {renderSnackbar()}
     </Box>
+  </>
   );
+  
 };

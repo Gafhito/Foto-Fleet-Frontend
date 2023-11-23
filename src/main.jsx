@@ -5,18 +5,23 @@ import { LoginFormProvider } from './utils/LoginFormContext.jsx';
 import { ProductProvider } from './utils/ProductContext.jsx';
 import './index.css'
 import { AuthProvider } from './utils/AuthContext.jsx';
+import { HelmetProvider } from 'react-helmet-async';
+import { RentalProvider } from './utils/RentalContext.jsx';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+
   <React.StrictMode>
-    <AuthProvider>
-
-        <ProductProvider>
-          <LoginFormProvider>
-            <App />
-          </LoginFormProvider>
-        </ProductProvider>
-
-    </AuthProvider>
+    <HelmetProvider>
+      <AuthProvider>
+          <ProductProvider>
+            <RentalProvider>
+              <LoginFormProvider>
+                <App />
+              </LoginFormProvider>
+            </RentalProvider>
+          </ProductProvider>
+      </AuthProvider>
+    </HelmetProvider>
   </React.StrictMode>,
 )

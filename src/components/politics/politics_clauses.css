@@ -1,0 +1,14 @@
+.text {
+    color: black;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.title {
+    text-align: left;
+    margin-top: 3%;
+}
+
+.points {
+    text-align: left;
+}

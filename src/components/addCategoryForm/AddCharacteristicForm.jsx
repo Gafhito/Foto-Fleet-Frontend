@@ -39,8 +39,6 @@ export const AddCharacteristicForm = ({ onAddCharacteristic }) => {
         return;
       }
 
-      console.log('Request Body Characteristic: ', requestBody)
-
       const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/characteristics', {
         method: 'POST',
         headers: {

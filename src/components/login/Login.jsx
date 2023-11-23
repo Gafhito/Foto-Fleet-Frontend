@@ -72,9 +72,6 @@ export const Login = () => {
       password: '',
   });
 
-
-  console.log('isRegisterMode: ' + isRegisterMode)
-
     const { login, registerUser, setIsLoggedIn, isLoggedIn } = useAuth();
 
     const handleToggleMode = () => {
@@ -244,12 +241,10 @@ export const Login = () => {
       
         try {
           const response = await login(userData);
-          console.log('Respuesta del inicio de sesión:', response);
+
       
           if (response && response.accessToken) {
-            console.log('isLoggedIn es: ' + isLoggedIn)
             setIsLoggedIn(true);
-            console.log('isLoggedIn establecido en true');
           } else {
             setError('Inicio de sesión fallido. Verifica tus credenciales.');
             setInputErrors((prevErrors) => ({
@@ -274,10 +269,6 @@ export const Login = () => {
         navigate('/');
       }
 
-
-
-      console.log('isLoggedIn al entrar al componente Login:', isLoggedIn);
-
       const handleRegister = async () => {
 
         const userData = {
@@ -291,13 +282,9 @@ export const Login = () => {
       
         try {
 
-            console.log('UserData enviado al registro: ', userData)
           const response = await registerUser(userData);
-
-          console.log('response: ', response)
       
           if (response) {
-            console.log('entro al IF: ', response)
             setRegistrationSuccess(true);
             setOpenDialog(true);
           } else {

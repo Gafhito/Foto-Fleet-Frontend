@@ -23,6 +23,11 @@ export const UserMenu = ({ anchorEl, onClose }) => {
       navigate('/favoritos');
       onClose();
     };
+
+    const handleNavigateToRentals = () => {
+      navigate('/user/rentals');
+      onClose();
+    };
   
     return (
       <Menu
@@ -31,7 +36,7 @@ export const UserMenu = ({ anchorEl, onClose }) => {
           onClose={onClose} // Cierra el menú cuando se hace clic en cualquier elemento del menú
       >
           <MenuItem onClick={handleNavigateToProfile}>Perfil</MenuItem> 
-          <MenuItem onClick={onClose}>Mis Reservas</MenuItem>
+          <MenuItem onClick={handleNavigateToRentals}>Mis Reservas</MenuItem>
           <MenuItem onClick={handleNavigateToFavorites}>Mis Favoritos</MenuItem>
           <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
       </Menu>
