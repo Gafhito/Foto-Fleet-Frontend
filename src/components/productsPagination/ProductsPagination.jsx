@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Typography,
@@ -17,7 +17,6 @@ import { colors } from '../../utils/constants';
 import { ProductModal } from '../common/productModal/ProductModal';
 import { PaginationNumbers } from './PaginationNumbers';
 
-
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import IconButton from '@mui/material/IconButton';
@@ -25,25 +24,25 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
-
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
+import { Helmet } from 'react-helmet-async';
 
 
 export const ProductsPagination = ({ itemsPerPage }) => {
-  const { products, addToFavorites, removeFromFavorites, isFavorite, currentPage, setCurrentPage, changePage } = useProductContext();
-
+  const { products, addToFavorites, removeFromFavorites, isFavorite, currentPage, setCurrentPage, changePage, showSnackbar, snackbarMessage, } = useProductContext();
   const productsContent = products.content;
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  {/* Compartir */}
-
+  // Compartir
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSocial, setSelectedSocial] = useState(null);
-
 
   const handleOpenModal = (product) => {
     setSelectedProduct(product);
@@ -55,65 +54,95 @@ export const ProductsPagination = ({ itemsPerPage }) => {
     setIsModalOpen(false);
   };
 
-  const handleFavoriteClick = (productId) => {
-    isFavorite(productId) ? removeFromFavorites(productId) : addToFavorites(productId);
+  const handleFavoriteClick = (productId, productName) => {
+    isFavorite(productId) ? removeFromFavorites(productId, productName) : addToFavorites(productId, productName);
   };
 
+  const generateShareUrl = (social, product) => {
+    const productUrl = `http://1023c07-grupo3.s3-website-us-east-1.amazonaws.com/products/${product.productId}`;
+    const shareText = `¡Mira este increíble producto: ${product.name} - ${product.description.substring(0, 100)}...!`;
+    const imageUrl = product.images[0]?.url || '';
 
-
-  const handleShare = (social, productId) => {
-    const productUrl = `${window.location.origin}/products/${productId}`;
+    console.log('IMAGE URL: ' , imageUrl)
   
-    // Realiza la acción de compartir según la red social seleccionada
     switch (social) {
       case 'facebook':
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`, '_blank');
-        break;
+        return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}&quote=${encodeURIComponent(shareText)}`;
       case 'instagram':
-        window.open(`https://www.instagram.com/sharer.php?u=${encodeURIComponent(productUrl)}`, '_blank');
-        break;
+        return `https://www.instagram.com/sharer.php?u=${encodeURIComponent(productUrl)}&title=${encodeURIComponent(product.name)}&summary=${encodeURIComponent(product.description)}&url=${encodeURIComponent(productUrl)}&media=${encodeURIComponent(imageUrl)}`;
       case 'twitter':
-        window.open(`https://twitter.com/share?url=${encodeURIComponent(productUrl)}`, '_blank');
-        break;
+        return `https://twitter.com/share?url=${encodeURIComponent(productUrl)}&text=${encodeURIComponent(shareText)}&media=${encodeURIComponent(imageUrl)}`;
       default:
-        break;
+        return '';
     }
-  
-    // Cierra el menú después de compartir
-    setAnchorEl(null);
   };
   
+  
+  
+
+  const handleShare = (social, productId) => {
+    const product = productsContent.find((p) => p.productId === productId);
+  
+    if (!product) {
+      return;
+    }
+  
+    const shareUrl = generateShareUrl(social, product);
+    window.open(shareUrl, '_blank');
+  
+    setAnchorEl(null);
+    setSelectedSocial(null);
+  };
   
 
   return (
     <Container>
+     <Helmet>
+        <title>{selectedProduct ? `${selectedProduct.name} - Foto Fleet` : 'Foto Fleet'}</title>
+
+        {selectedProduct && (
+          <>
+            <meta property="og:url" content={`http://1023c07-grupo3.s3-website-us-east-1.amazonaws.com/products/${selectedProduct.productId}`} />
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content={selectedProduct.name} />
+            <meta property="og:description" content={selectedProduct.description.substring(0, 100)} />
+            <meta property="og:image" content={selectedProduct.images[0]?.url || ''} />
+
+            {/* Twitter Card tags */}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={selectedProduct.name} />
+            <meta name="twitter:description" content={selectedProduct.description} />
+            <meta name="twitter:image" content={selectedProduct.images[0]?.url || ''} />
+          </>
+        )}
+      </Helmet>
       <Typography variant="h4" sx={{ marginBottom: '3rem' }}>
         Lista de Productos Aleatorios
       </Typography>
-      <Grid container spacing={3} sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+      <Grid container spacing={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {productsContent?.map((product, index) => {
           return (
             <Grid item key={index} xs={12} sm={6} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Card sx={{ width: '345px', borderRadius:'.5rem', cursor:'pointer', transition:'all .3s', '&:hover': { transform:'scale(.95)' }, position:'relative', '&:hover .favorite-icon, &:hover .share-icon': { opacity: 1 }, }}>
+              <Card sx={{ width: '345px', borderRadius: '.5rem', cursor: 'pointer', transition: 'all .3s', '&:hover': { transform: 'scale(.95)' }, position: 'relative', '&:hover .favorite-icon, &:hover .share-icon': { opacity: 1 }, }}>
                 <CardMedia
-                  sx={{ height: '170px', backgroundSize:'contain' }}
+                  sx={{ height: '170px', backgroundSize: 'contain' }}
                   image={product.images[0]?.url}
                   title={product.name}
                   onClick={() => handleOpenModal(product)}
                 />
-                <CardContent sx={{maxHeight: '6.5rem'}}>
-                  <Typography variant="h6" sx={{color:colors.blackColor}}>{product.name}</Typography>
+                <CardContent sx={{ maxHeight: '6.5rem' }}>
+                  <Typography variant="h6" sx={{ color: colors.blackColor }}>{product.name}</Typography>
                   <Typography variant="body2" color="textSecondary" sx={{
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
                   }}>
-                    {product.description}
+                    {product.description.substring(0, 100)}...
                   </Typography>
                   <IconButton
                     aria-label="add to favorites"
                     className="favorite-icon"
-                    onClick={() => handleFavoriteClick(product.productId)}
+                    onClick={() => handleFavoriteClick(product.productId, product.name)}
                     sx={{
                       position: 'absolute',
                       top: '10px',
@@ -125,11 +154,14 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                   >
                     <FavoriteIcon />
                   </IconButton>
-                 
+
                   <IconButton
                     aria-label="share"
                     className='share-icon'
-                    onClick={(event) => setAnchorEl(event.currentTarget)}
+                    onClick={(event) => {
+                      setAnchorEl(event.currentTarget);
+                      setSelectedSocial(product.productId); // Establecer el producto actual para el menú de compartir
+                    }}
                     sx={{
                       position: 'absolute',
                       top: '45px',
@@ -141,16 +173,19 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                     <ShareIcon />
                   </IconButton>
 
-                  <Menu  sx={{
-                          '& .MuiPaper-root': {
-                            borderRadius: '8px',
-                            boxShadow:'none',
-                            
-                          },
-                        }}
+                  <Menu
+                    sx={{
+                      '& .MuiPaper-root': {
+                        borderRadius: '8px',
+                        boxShadow: 'none',
+                      },
+                    }}
                     anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={() => setAnchorEl(null)}
+                    open={selectedSocial === product.productId && Boolean(anchorEl)}
+                    onClose={() => {
+                      setAnchorEl(null);
+                      setSelectedSocial(null);
+                    }}
                   >
                     <MenuItem onClick={() => handleShare('facebook', product.productId)}>
                       <ListItemIcon>
@@ -172,7 +207,6 @@ export const ProductsPagination = ({ itemsPerPage }) => {
                     </MenuItem>
                   </Menu>
 
-
                   <Link to={`/products/${product.productId}`} target='_blank'>Ver Detalles</Link>
                 </CardContent>
               </Card>
@@ -180,14 +214,14 @@ export const ProductsPagination = ({ itemsPerPage }) => {
           );
         })}
       </Grid>
-      <Box sx={{marginTop:'4rem', display:'flex', justifyContent:'center', alignItems:'center'}}>
-      <Button label={'Anterior'} backgroundColor={colors.primaryColor} colorHover={colors.primaryColorHover} color={colors.blackColor} onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
-        Anterior
-      </Button>
-      <PaginationNumbers totalPages={products.totalPages} currentPage={currentPage} changePage={setCurrentPage}/>
-      <Button label={'Siguiente'} backgroundColor={colors.primaryColor} colorHover={colors.primaryColorHover} color={colors.blackColor} onClick={() => changePage(currentPage + 1)} disabled={currentPage === products.totalPages}>
-        Siguiente
-      </Button>
+      <Box sx={{ marginTop: '4rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Button label={'Anterior'} backgroundColor={colors.primaryColor} colorHover={colors.primaryColorHover} color={colors.blackColor} onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
+          Anterior
+        </Button>
+        <PaginationNumbers totalPages={products.totalPages} currentPage={currentPage} changePage={setCurrentPage} />
+        <Button label={'Siguiente'} backgroundColor={colors.primaryColor} colorHover={colors.primaryColorHover} color={colors.blackColor} onClick={() => changePage(currentPage + 1)} disabled={currentPage === products.totalPages}>
+          Siguiente
+        </Button>
       </Box>
 
       {selectedProduct && (
@@ -197,6 +231,20 @@ export const ProductsPagination = ({ itemsPerPage }) => {
           product={selectedProduct}
         />
       )}
+
+
+        <Snackbar
+          open={Boolean(snackbarMessage.open)}
+          autoHideDuration={3000}
+          onClose={() => showSnackbar('', '', false)} 
+        >
+          <Alert
+            severity={snackbarMessage.severity}
+            onClose={() => showSnackbar('', '', false)} 
+          >
+            {snackbarMessage.message}
+          </Alert>
+      </Snackbar>
     </Container>
   );
 };

@@ -39,10 +39,13 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+
 
 
 
 export const ProductDetails = ({ product }) => {
+
   const [showAllImages, setShowAllImages] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { getProductById } = useProductContext();
@@ -264,6 +267,20 @@ export const ProductDetails = ({ product }) => {
   
 
   return (
+    <>
+    
+
+      <Helmet>
+        <title>{product.name} - Foto Fleet</title>
+        <meta name="description" content={product.description} />
+
+        {/* Twitter Card meta tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={product.name} />
+        <meta name="twitter:description" content={product.description} />
+        <meta name="twitter:image" content={product.images[0]?.url || ''} />
+      </Helmet>
+
   <Box sx={{
       width: '100%',
       margin: '3.5rem 0 0 0',
@@ -436,5 +453,7 @@ export const ProductDetails = ({ product }) => {
         )}
         {renderSnackbar()}
     </Box>
+  </>
   );
+  
 };

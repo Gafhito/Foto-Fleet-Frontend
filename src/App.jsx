@@ -10,6 +10,7 @@ import './App.css';
 import { LoginPage } from './pages/LoginPage';
 import { UserProfile } from './components/UserInfo/UserProfile';
 import { FavoritesPage } from './pages/FavoritesPage';
+import { Rentals } from './pages/RentalsPage';
 
 import { useAuth } from './utils/AuthContext';
 
@@ -30,6 +31,8 @@ export const App = () => {
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/perfil" element={<UserProfile/>} />
             <Route path="/favoritos" element={<FavoritesPage/>} />
+            <Route path='/user/rentals' element={<Rentals/>} />
+
           </Route>
         </Routes>
       </div>
