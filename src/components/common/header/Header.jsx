@@ -7,6 +7,12 @@ import { HeaderButtons } from './HeaderButtons';
 import { MobileMenuIcon } from './MobileMenuIcon';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
+import { Cart } from '../cart/Cart';
+import { useCart } from '../../../utils/CartContext';
+
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { IconButton } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import { colors , breakpoints} from '../../../utils/constants';
 
@@ -17,6 +23,10 @@ export const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null); // Almacena el ancla para el menú desplegable.
   const [drawerOpen, setDrawerOpen] = useState(false); // Indica si el drawer está abierto o cerrado.
   const [isSticky, setIsSticky] = useState(false); // Indica si el header se encuentra fijo en la parte superior de la página.
+
+  const [cartOpen, setCartOpen] = useState(false);
+  const { cartItems } = useCart();
+  const navigate = useNavigate();
 
   const toggleDrawer = (event) => {
     setAnchorEl(event.currentTarget); // Establece el ancla para el menú desplegable.
@@ -40,6 +50,12 @@ export const Header = () => {
     };
   }, []);
 
+
+  const handleCheckoutClick = () => {
+
+    navigate('/rental-confirmation', { state: { cartItems: cartItems } })
+  };
+
   return (
     <div>
       <AppBar position='fixed' sx={{ backgroundColor: colors.blackColor, top: '0', zIndex: '999', height: '64px', overflowX: 'hidden' }}>
@@ -52,9 +68,15 @@ export const Header = () => {
           <MobileMenuIcon onClick={toggleDrawer} />
           <Logo />
           <NavBar />
+          {/* Botón del carrito */}
+          <IconButton onClick={() => setCartOpen(true)}>
+            <ShoppingCartIcon sx={{color:'white'}} />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <HeaderDrawer open={drawerOpen} onClose={toggleDrawer} />
+
+      <Cart open={cartOpen} onClose={() => setCartOpen(false)} cartItems={cartItems} onCheckoutClick={handleCheckoutClick}/>
     </div>
   );
 };

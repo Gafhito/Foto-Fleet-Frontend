@@ -36,5 +36,6 @@ export const breakpoints = {
     contact: '/contacto',
     about: '/sobre-nosotros',
     administration: '/administracion',
-    politics: '/politicas'
+    politics: '/politicas',
+    rentalConfirmation: '/rental-confirmation'
   };

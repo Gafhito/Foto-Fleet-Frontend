@@ -14,10 +14,13 @@ import { Rentals } from './pages/RentalsPage';
 import { Politics } from './pages/Politics';
 
 import { useAuth } from './utils/AuthContext';
+import { RentalConfirmation } from './pages/RentalConfirmation';
+import { useCart } from './utils/CartContext';
 
 export const App = () => {
 
   const { isLoggedIn } = useAuth();
+  const { cartItems } = useCart();
 
   return (
     <Router>
@@ -35,6 +38,7 @@ export const App = () => {
             <Route path='/user/rentals' element={<Rentals/>} />
 
             <Route path="/politicas" element={<Politics/>}/>
+            <Route path="/rental-confirmation" element={<RentalConfirmation location={{ state: { cartItems: cartItems } }}/>} />
           </Route>
         </Routes>
       </div>
