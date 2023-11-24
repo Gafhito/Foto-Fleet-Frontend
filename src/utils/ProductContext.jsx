@@ -12,6 +12,7 @@ export function ProductProvider({ children }) {
   const [characteristics, setCharacteristics] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
   const [favorites, setFavorites] = useState([]);
+  const [ratings, setRatings] = useState([]);
 
   const [dataUser, setDataUser] = useState(null)
 
@@ -312,10 +313,97 @@ export function ProductProvider({ children }) {
       throw error;
     }
   };
+
+
+  const getRatingsByProductId = async (productId) => {
+    try {
+      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/ratings/${productId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        console.error('Error al obtener ratings:', response.status, response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error en la solicitud GET de ratings:', error.message);
+    }
+  };
+
+
+  const sendReview = async (productId, ratingValue, reviewText) => {
+    try {
+      const authToken = localStorage.getItem('token');
+  
+      if (!authToken) {
+        console.error('Token de autenticación no encontrado. No se puede realizar la solicitud.');
+        return;
+      }
+
+      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/ratings/${productId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          rating: ratingValue,
+          review: reviewText,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error('Error al enviar la revisión:', response.status, response.statusText);
+        showSnackbar('Error al enviar la revisión', 'error');
+        return;
+      }
+  
+
+      console.log('Calificacion enviada exitosamente');
+      showSnackbar('Calificacion enviada exitosamente', 'success');
+    } catch (error) {
+      console.error('Error en la solicitud POST de calificacion:', error.message);
+      showSnackbar('Error en la solicitud POST de calificacion', 'error');
+    }
+  };
+  
   
 
   return (
-    <ProductContext.Provider value={{snackbarMessage, showSnackbar, dataUser, initializeUserData, products, setProducts, lastUpdate, getProductById, updateProduct, handleDelete, characteristics, setCharacteristics, searchProducts, favorites, setFavorites, addToFavorites, removeFromFavorites, isFavorite, fetchProductSuggestions,  currentPage, setCurrentPage, changePage,}}>
+    <ProductContext.Provider 
+    value={{
+        snackbarMessage, 
+        showSnackbar, 
+        dataUser, 
+        initializeUserData, 
+        products, 
+        setProducts, 
+        lastUpdate,
+        getProductById, 
+        updateProduct, 
+        handleDelete, 
+        characteristics, 
+        setCharacteristics, 
+        searchProducts, 
+        favorites, 
+        setFavorites, 
+        addToFavorites, 
+        removeFromFavorites, 
+        isFavorite, 
+        fetchProductSuggestions,  
+        currentPage, 
+        setCurrentPage, 
+        changePage,
+        ratings,
+        getRatingsByProductId,
+        sendReview
+      }}>
       {children}
     </ProductContext.Provider>
   );

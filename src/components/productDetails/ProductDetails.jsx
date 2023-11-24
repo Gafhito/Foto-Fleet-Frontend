@@ -38,6 +38,7 @@ import './productDetails.css';
 import { useProductContext } from '../../utils/ProductContext';
 import { CustomCalendar } from '../common/calendar/Calendar';
 import { Button } from '../common/button/Button';
+import { ProductReviews } from '../productReviews/ProductReviews';
 
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -348,6 +349,8 @@ export const ProductDetails = ({ product }) => {
                       ))}
                     </div>
                   </div>
+
+                  <ProductReviews productId={product.productId} productName={product.name} />
                 </Box>
               </Grid>
             </Grid>
