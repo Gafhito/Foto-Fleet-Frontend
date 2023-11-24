@@ -9,9 +9,12 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Rating from '@mui/material/Rating';
+
 
 import { colors } from '../utils/constants';
 
@@ -24,6 +27,21 @@ export const Rentals = () => {
   const [reviewText, setReviewText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ratedRentals, setRatedRentals] = useState([]);
+
+  const [hover, setHover] = useState(-1);
+
+  const labels = {
+    0.5: '0.5 Estrellas',
+    1: '1 Estrella',
+    1.5: '1.5 Estrellas',
+    2: '2 Estrellas',
+    2.5: '2.5 Estrellas',
+    3: '3 Estrellas',
+    3.5: '3.5 Estrellas',
+    4: '4 Estrellas',
+    4.5: '4.5 Estrellas',
+    5: '5 Estrellas',
+  };
 
   function formatarFecha(fecha) {
     const date = new Date(fecha);
@@ -173,13 +191,18 @@ export const Rentals = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2" sx={{marginBottom:'1rem'}}>
             Puntuar Producto
           </Typography>
-          <TextField sx={{marginBottom:'1rem'}}
-            label="Calificación"
-            type="number"
-            InputProps={{ inputProps: { min: 1, max: 5 } }}
+          <Rating sx={{marginBottom:'2.5rem'}}
+            name="hover-feedback"
             value={ratingValue}
-            onChange={handleRatingChange}
+            precision={0.5}
+            onChange={(event, newValue) => {
+              setRatingValue(newValue);
+            }}
+            onChangeActive={(event, newHover) => {
+              setHover(newHover === -0.5 ? 0.5 : newHover);
+            }}
           />
+          
           <TextField sx={{marginBottom:'1rem'}}
             label="Comentario"
             multiline

@@ -98,7 +98,7 @@ export const ProductReviews = ({ productId, productName }) => {
               <Typography variant="subtitle2" sx={{fontWeight:'bold'}}>
                 {review.userDto.firstName} {review.userDto.lastName}
               </Typography>
-              <Rating value={review.rating} readOnly />
+              <Rating value={review.rating} readOnly precision={0.5} />
               <Typography variant="body1" sx={{width:'90%', textAlign:'center', margin:'auto'}}>{review.review}</Typography>
               <Typography variant="caption">{new Date(review.ratingDate).toLocaleString()}</Typography>
             </Paper>
