@@ -11,11 +11,13 @@ import { Button } from '../components/common/button/Button';
 
 import { colors } from '../utils/constants';
 import { useAuth } from '../utils/AuthContext';
+import { useCart } from '../utils/CartContext';
 
 export const RentalConfirmation = ({ location }) => {
 
     const { cartItems } = location?.state || { cartItems: [] };
     const { user, getUserData } = useAuth();
+    const { clearCart } = useCart();
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState(null);
@@ -88,7 +90,7 @@ export const RentalConfirmation = ({ location }) => {
             endDate: item.endDate,
         }));
     
-        console.log('RENTAL DATA: ', rentalData);
+        console.log('RENTAL DATA ARRAY: ', rentalData);
     
         const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/rental', {
             method: 'POST',
@@ -96,7 +98,7 @@ export const RentalConfirmation = ({ location }) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify([rentalData]),
+            body: JSON.stringify(rentalData),
         });
     
         if (!response.ok) {
@@ -113,6 +115,8 @@ export const RentalConfirmation = ({ location }) => {
         setSnackbarMessage('Reserva exitosa');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
+        clearCart();
+        navigate('/user/rentals');
         } catch (error) {
         console.error('Error al reservar:', error);
         setSnackbarMessage('API Error al reservar');

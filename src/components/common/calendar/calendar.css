@@ -1,14 +1,17 @@
 .rented-date {
 
     color:red;
+    text-decoration: line-through;
 }
 
 .weekend-date {
-    color: green;
+    color: blue;
+    font-weight: bold;
 }
   
 .available-date {
-    color: green; 
+    color: blue; 
+    font-weight: bold;
 }
 
 .Calendar {

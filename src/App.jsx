@@ -16,6 +16,8 @@ import { Politics } from './pages/Politics';
 import { useAuth } from './utils/AuthContext';
 import { RentalConfirmation } from './pages/RentalConfirmation';
 import { useCart } from './utils/CartContext';
+import { Contacto } from './pages/Contacto';
+import { AboutUs } from './pages/AboutUs';
 
 export const App = () => {
 
@@ -36,6 +38,8 @@ export const App = () => {
             <Route path="/perfil" element={<UserProfile/>} />
             <Route path="/favoritos" element={<FavoritesPage/>} />
             <Route path='/user/rentals' element={<Rentals/>} />
+            <Route path='/contacto' element={<Contacto/>} />
+            <Route path='/aboutus' element={<AboutUs/>} />
 
             <Route path="/politicas" element={<Politics/>}/>
             <Route path="/rental-confirmation" element={<RentalConfirmation location={{ state: { cartItems: cartItems } }}/>} />

@@ -68,6 +68,12 @@ export const CustomCalendar = ({ value, onChange, label, rentedDates }) => {
     }
   };
 
+  const tileDisabled = ({ date }) => {
+    // Deshabilitar fechas anteriores a hoy
+    return date < new Date();
+  };
+
+
   return (
     <div className="custom-calendar-container" style={containerStyle}>
       <Button label={label} color={colors.blackColor} backgroundColor={colors.secondaryColor} className="calendar-button" onClick={openCalendar} />
@@ -82,6 +88,7 @@ export const CustomCalendar = ({ value, onChange, label, rentedDates }) => {
           onChange={handleDateChange}
           value={selectedDate}
           tileClassName={tileClassName}
+          tileDisabled={tileDisabled}
           style={calendarStyle}
         />
       </div>

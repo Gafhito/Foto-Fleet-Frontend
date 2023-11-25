@@ -34,7 +34,7 @@ export const breakpoints = {
     home: '/',
     products: '/productos',
     contact: '/contacto',
-    about: '/sobre-nosotros',
+    about: '/aboutus',
     administration: '/administracion',
     politics: '/politicas',
     rentalConfirmation: '/rental-confirmation'
