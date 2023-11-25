@@ -3,6 +3,7 @@ import { Card, CardContent, CardMedia, Typography, Box, Container } from '@mui/m
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useTheme } from '@mui/system';
 import { useAuth } from '../../utils/AuthContext';
+import { useProductContext } from '../../utils/ProductContext';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -15,6 +16,7 @@ export const Categories = () => {
   const { getCategories } = useAuth();
   const [categoriesArr, setCategoriesArr] = useState([]);
   const theme = useTheme();
+  const { searchProducts } = useProductContext();
 
 
   const SampleNextArrow = (props) => {
@@ -91,6 +93,10 @@ const SamplePrevArrow = (props)  => {
     ],
   };
 
+  const handleCategoryClick = (categoryName) => {
+    searchProducts('""', categoryName);
+  };
+
   return (
     <Box sx={{padding:'2rem', width:'85%', margin:'auto'}}>
       <Typography variant='h3' sx={{ marginTop: '3rem' }}>Nuestras Categorias</Typography>
@@ -98,7 +104,7 @@ const SamplePrevArrow = (props)  => {
         <Slider {...settings} className='category_slider'>
           {categoriesArr.map((category, index) => (
             <div key={index} className='category_card_container'>
-              <Card className='category_card' sx={{ 
+              <Card className='category_card' onClick={() => handleCategoryClick(category.name)} sx={{ 
                 backgroundImage:`url(${category.imageUrl})`, 
                 backgroundSize:'cover', 
                 backgroundRepeat:'no-repeat', 
