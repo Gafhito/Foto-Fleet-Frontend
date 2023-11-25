@@ -11,6 +11,7 @@ export const ProductReviews = ({ productId, productName }) => {
   const { getRatingsByProductId } = useProductContext();
   const [reviews, setReviews] = useState([]);
   const [slider, setSlider] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -23,7 +24,11 @@ export const ProductReviews = ({ productId, productName }) => {
           setReviews(fetchedReviews);
         }
       } catch (error) {
-        console.error('Error al obtener reseñas:', error);
+        if (error.response && error.response.status === 404) {
+          setErrorMessage('El producto no tiene ratings aún');
+        } else {
+          setErrorMessage('Error al obtener reseñas');
+        }
       }
     };
 
@@ -91,20 +96,24 @@ export const ProductReviews = ({ productId, productName }) => {
   return (
     <Box sx={{ padding: '2rem', width: '85%', margin: 'auto' }}>
       <Typography variant='h6' sx={{ marginTop: '3rem' }}>Reseñas y Calificaciones</Typography>
-      <Container sx={{ mt: '2rem' }}>
-        <Slider {...settings} className='reviews-carousel'>
-          {reviews.map((review) => (
-            <Paper key={review.ratingId} elevation={3} className="review-card" sx={{boxShadow:'none', height:'10rem', padding:'.5rem', display:'flex', flexDirection:'columns', alignItems:'center', justifyContent:'center'}}>
-              <Typography variant="subtitle2" sx={{fontWeight:'bold'}}>
-                {review.userDto.firstName} {review.userDto.lastName}
-              </Typography>
-              <Rating value={review.rating} readOnly precision={0.5} />
-              <Typography variant="body1" sx={{width:'90%', textAlign:'center', margin:'auto'}}>{review.review}</Typography>
-              <Typography variant="caption">{new Date(review.ratingDate).toLocaleString()}</Typography>
-            </Paper>
-          ))}
-        </Slider>
-      </Container>
+      {errorMessage ? (
+        <Typography variant='body1' sx={{ marginTop: '1rem' }}>{errorMessage}</Typography>
+      ) : (
+        <Container sx={{ mt: '2rem' }}>
+          <Slider {...settings} className='reviews-carousel'>
+            {reviews?.map((review) => (
+              <Paper key={review.ratingId} elevation={3} className="review-card" sx={{boxShadow:'none', height:'10rem', padding:'.5rem', display:'flex', flexDirection:'columns', alignItems:'center', justifyContent:'center'}}>
+                <Typography variant="subtitle2" sx={{fontWeight:'bold'}}>
+                  {review.userDto.firstName} {review.userDto.lastName}
+                </Typography>
+                <Rating value={review.rating} readOnly precision={0.5} />
+                <Typography variant="body1" sx={{width:'90%', textAlign:'center', margin:'auto'}}>{review.review}</Typography>
+                <Typography variant="caption">{new Date(review.ratingDate).toLocaleString()}</Typography>
+              </Paper>
+            ))}
+          </Slider>
+        </Container>
+      )}
     </Box>
   );
 };
