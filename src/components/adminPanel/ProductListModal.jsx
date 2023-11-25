@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { createTheme, ThemeProvider, Modal, Box, Typography, Button as MuiButton } from '@mui/material';
+import { ThemeProvider, Modal, Box, Typography, Button as MuiButton } from '@mui/material';
+import { createTheme } from '@mui/system';
 import Pagination from '@mui/material/Pagination';
 
 import { useProductContext } from '../../utils/ProductContext';

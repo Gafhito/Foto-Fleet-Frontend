@@ -1,3 +1,4 @@
+import { colors } from '../../utils/constants';
 import { useState } from 'react';
 import { TextField, Button, Box, Select, MenuItem } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -8,7 +9,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import { useAuth } from '../../utils/AuthContext';
-import { colors } from '../../utils/constants';
+
 
 // Agregar todos los iconos
 library.add(fas);

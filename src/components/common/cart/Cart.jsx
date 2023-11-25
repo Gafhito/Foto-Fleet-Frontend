@@ -11,24 +11,32 @@ import {
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useCart } from '../../../utils/CartContext'; // Import the CartContext hook
+import { useCart } from '../../../utils/CartContext';
+import { colors } from '../../../utils/constants';
+import { Button } from '../button/Button';
+
 
 export const Cart = ({ cartItems, onClose, open, onCheckoutClick }) => {
+
     const { removeFromCart } = useCart();
   
     const handleRemoveItemClick = (cartItemId) => {
       removeFromCart(cartItemId);
     };
+
+    const total = cartItems.reduce(
+        (accumulator, item) => accumulator + item.rentalPrice,0
+    );
   
     return (
       <Drawer anchor="right" open={open} onClose={onClose}>
         <List>
           <ListItem>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" sx={{ flexGrow: 1, color:colors.blackColor }}>
               Carrito de Compras
             </Typography>
             <IconButton onClick={onClose}>
-              <ShoppingCartIcon />
+              <ShoppingCartIcon sx={{color:colors.blackColor}}/>
             </IconButton>
           </ListItem>
           <Divider />
@@ -37,7 +45,7 @@ export const Cart = ({ cartItems, onClose, open, onCheckoutClick }) => {
                 <img
                     src={item?.image}
                     alt={item?.name}
-                    style={{ width: '50px', height: '50px', marginRight: '10px' }}
+                    style={{ width: '50px', height: '50px', marginRight: '10px', objectFit:'contain' }}
                 />
               <ListItemText
                 primary={item?.name}
@@ -54,9 +62,16 @@ export const Cart = ({ cartItems, onClose, open, onCheckoutClick }) => {
               </ListItemSecondaryAction>
             </ListItem>
           ))}
+          {/* Mostrar el precio total */}
+            <ListItem sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="subtitle1">Total:</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                {`$${total.toFixed(2)}`} {/* dos decimales */}
+            </Typography>
+            </ListItem>
           {/* Botón "Finalizar Reserva" */}
-          <ListItem>
-            <button onClick={onCheckoutClick}>Finalizar Reserva</button>
+          <ListItem sx={{display:'flex', justifyContent:'center'}}>
+            <Button label={'Finalizar Reserva'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} color={colors.blackColor} onClick={onCheckoutClick}/>
           </ListItem>
         </List>
       </Drawer>

@@ -305,9 +305,27 @@ export const ProductDetails = ({ product }) => {
   
     // Actualizar la cantidad de elementos en el carrito
     getCartItemCount();
+
+    setSnackbarMessage('Producto agregado correctamente!');
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
   
     console.log('Cart Items:', newCartItem);
   };
+
+
+  const renderCartSnackbar = () => (
+    <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleCloseSnackbar}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    >
+      <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity={snackbarSeverity}>
+        {snackbarMessage}
+      </MuiAlert>
+    </Snackbar>
+  );
   
   
 
