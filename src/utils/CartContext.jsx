@@ -13,7 +13,7 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   const addToCart = (item) => {
-    const cartItemId = Date.now(); // Unique identifier (you can use a more robust approach)
+    const cartItemId = Date.now();
     setCartItems((prevCartItems) => [...prevCartItems, { ...item, cartItemId }]);
     console.log('ITEM del cart Context: ', item);
   };

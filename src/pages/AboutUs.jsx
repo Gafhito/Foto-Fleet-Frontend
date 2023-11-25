@@ -8,7 +8,6 @@ import {
   createTheme,
 } from '@mui/material';
 
-// Crea un tema personalizado
 const customTheme = createTheme();
 
 export const AboutUs = () => {

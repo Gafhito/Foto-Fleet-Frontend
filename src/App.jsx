@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Outlet, Navigate } from 'react-router-dom'; // Asegúrate de importar Navigate
+import { BrowserRouter as Router, Route, Routes, Outlet, Navigate } from 'react-router-dom';
 import { ProductProvider } from './utils/ProductContext';
 import { Layout } from './pages/Layout';
 import { HomePage } from './pages/HomePage';
