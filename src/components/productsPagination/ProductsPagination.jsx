@@ -28,6 +28,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
   // Compartir
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSocial, setSelectedSocial] = useState(null);
+  
 
   const handleOpenModal = (product) => {
     setSelectedProduct(product);

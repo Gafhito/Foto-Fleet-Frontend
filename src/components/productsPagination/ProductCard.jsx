@@ -28,6 +28,10 @@ export const ProductCard = ({
 }) => {
   const isMenuOpen = Boolean(anchorEl);
 
+
+  console.log('PRODUCT ID FAVORITO: ', product.productId, product.name)
+  console.log('ISFAVORITE: ', isFavorite(product.productId))
+
   return (
     <Card
       sx={{
