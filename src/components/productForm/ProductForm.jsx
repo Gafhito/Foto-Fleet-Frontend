@@ -67,107 +67,107 @@ export const ProductForm = ({ onSubmit, categories }) => {
 
 
   // mapping para setear el ID de las categorias basado en su nombre
-const mapCategoryToID = (categoryName) => {
-  switch (categoryName) {
-    case 'Lighting':
-      return 3;
-    case 'Cameras':
-      return 1;
-    case 'Toto':
-      return 6;
-    case 'Accessories':
-      return 4;
-    case 'Camaras':
-      return 5;
-    case 'Lenses':
-      return 2;
-    default:
-      return 0;
-  }
-};
+  const mapCategoryToID = (categoryName) => {
+    switch (categoryName) {
+      case 'Lighting':
+        return 3;
+      case 'Cameras':
+        return 1;
+      case 'Toto':
+        return 6;
+      case 'Accessories':
+        return 4;
+      case 'Camaras':
+        return 5;
+      case 'Lenses':
+        return 2;
+      default:
+        return 0;
+    }
+  };
 
 
 
-const handleImageChange = async (event, imageType) => {
-  const files = event.target.files;
+  const handleImageChange = async (event, imageType) => {
+    const files = event.target.files;
 
-  await setNewProduct((prevProduct) => {
-    if (imageType === 'primaryImage') {
-      return {
+    await setNewProduct((prevProduct) => {
+      if (imageType === 'primaryImage') {
+        return {
+          ...prevProduct,
+          images: [files[0], ...prevProduct.images.slice(1)],
+          primaryImage: files[0],
+        };
+      } else if (imageType === 'secondaryImages') {
+        return {
+          ...prevProduct,
+          images: [...prevProduct.images, ...files],
+          secondaryImages: [...prevProduct.secondaryImages, ...files], // Append archivos a secondaryImages array
+        };
+      }
+
+      return prevProduct;
+    });
+  };
+
+  const handleInputChange = (event) => {
+    const { value, name } = event.target;
+
+    if (name === 'categoryId') {
+      setNewProduct((prevProduct) => ({
         ...prevProduct,
-        images: [files[0], ...prevProduct.images.slice(1)],
-        primaryImage: files[0],
-      };
-    } else if (imageType === 'secondaryImages') {
-      return {
+        categoryId: value,
+      }));
+      setSelectedCategoryId(value);
+    } else if (name === 'characteristics') {
+      // Actualiza el estado de las características seleccionadas
+      setSelectedCharacteristics(value);
+      // Actualiza el estado del producto con las características seleccionadas
+      setNewProduct((prevProduct) => ({
         ...prevProduct,
-        images: [...prevProduct.images, ...files],
-        secondaryImages: [...prevProduct.secondaryImages, ...files], // Append archivos a secondaryImages array
-      };
+        characteristics: value,
+      }));
+      console.log('CHARACTERISTICA VALUE: ', value);
+    } else {
+      setNewProduct((prevProduct) => ({
+        ...prevProduct,
+        [name]: value,
+      }));
+    }
+  };
+
+
+
+
+
+  const buildImageUploadRequest = () => {
+    const imageUploadRequest = new FormData();
+
+    // Agregar primaryImage si existe
+    if (newProduct.primaryImage) {
+      imageUploadRequest.append('primaryImage', newProduct.primaryImage);
+      console.log('UE primaryImage: ', newProduct.primaryImage)
+      console.log('UE newProduct: ', newProduct)
+      console.log('imageUploadRequest dentro del 1ry: ', imageUploadRequest)
     }
 
-    return prevProduct;
-  });
-};
+    // Agregar secondaryImages si existen
+    if (newProduct.secondaryImages && newProduct.secondaryImages.length > 0) {
+      newProduct.secondaryImages.forEach((image, index) => {
+        imageUploadRequest.append(`secondaryImages`, image);
+        console.log('UE secondaryImages: ', newProduct.secondaryImages)
+        console.log('UE newProduct: ', newProduct)
+        console.log('imageUploadRequest dentro del 2dry: ', imageUploadRequest)
+      });
+    }
 
-const handleInputChange = (event) => {
-  const { value, name } = event.target;
+    console.log('FormData entries:');
+    for (const entry of imageUploadRequest.entries()) {
+      console.log(entry);
+    }
 
-  if (name === 'categoryId') {
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      categoryId: value,
-    }));
-    setSelectedCategoryId(value);
-  } else if (name === 'characteristics') {
-    // Actualiza el estado de las características seleccionadas
-    setSelectedCharacteristics(value);
-    // Actualiza el estado del producto con las características seleccionadas
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      characteristics: value,
-    }));
-    console.log('CHARACTERISTICA VALUE: ', value);
-  } else {
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
-  }
-};
-
-
-
-
-
-const buildImageUploadRequest = () => {
-  const imageUploadRequest = new FormData();
-
-  // Agregar primaryImage si existe
-  if (newProduct.primaryImage) {
-    imageUploadRequest.append('primaryImage', newProduct.primaryImage);
-    console.log('UE primaryImage: ', newProduct.primaryImage)
-    console.log('UE newProduct: ', newProduct)
-    console.log('imageUploadRequest dentro del 1ry: ', imageUploadRequest)
-  }
-
-  // Agregar secondaryImages si existen
-  if (newProduct.secondaryImages && newProduct.secondaryImages.length > 0) {
-    newProduct.secondaryImages.forEach((image, index) => {
-      imageUploadRequest.append(`secondaryImages`, image);
-      console.log('UE secondaryImages: ', newProduct.secondaryImages)
-      console.log('UE newProduct: ', newProduct)
-      console.log('imageUploadRequest dentro del 2dry: ', imageUploadRequest)
-    });
-  }
-
-  console.log('FormData entries:');
-  for (const entry of imageUploadRequest.entries()) {
-    console.log(entry);
-  }
-
-  return imageUploadRequest;
-};
+    return imageUploadRequest;
+  };
 
   const handleSubmit = async () => {
     try {
@@ -181,9 +181,9 @@ const buildImageUploadRequest = () => {
       const imageUploadRequest = buildImageUploadRequest();
 
       console.log('imageUplodRequest :');
-        for (const entry of imageUploadRequest.entries()) {
-          console.log(entry);
-        }
+      for (const entry of imageUploadRequest.entries()) {
+        console.log(entry);
+      }
 
       //  Subir imágenes
       const imageUploadResponse = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/images?productId=${productId}`, {
@@ -240,7 +240,7 @@ const buildImageUploadRequest = () => {
         console.error('Error fetching characteristics:', error);
       }
     };
-  
+
     fetchCharacteristics();
   }, [characteristics]);
 
@@ -249,7 +249,7 @@ const buildImageUploadRequest = () => {
   const textFieldStyle = {
     marginBottom: '1rem',
   };
-  
+
   return (
     <Container>
       <form>
@@ -276,24 +276,24 @@ const buildImageUploadRequest = () => {
           />
         </div>
         <div>
-        <FormControl fullWidth sx={textFieldStyle}>
-          <InputLabel>Categoría</InputLabel>
-          <Select
-            name="categoryId"
-            value={newProduct.categoryId || ''}
-            onChange={(event) => handleInputChange(event, 'categoryId')} // 'categoryId' como name
-            required
-          >
-            <MenuItem value="">
-              <em>Seleccionar categoría</em>
-            </MenuItem>
-            {categoriesList.map((category) => (
-              <MenuItem key={category.categoryId} value={category.categoryId}>
-                {category.name}
+          <FormControl fullWidth sx={textFieldStyle}>
+            <InputLabel>Categoría</InputLabel>
+            <Select
+              name="categoryId"
+              value={newProduct.categoryId || ''}
+              onChange={(event) => handleInputChange(event, 'categoryId')} // 'categoryId' como name
+              required
+            >
+              <MenuItem value="">
+                <em>Seleccionar categoría</em>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl >
+              {categoriesList.map((category) => (
+                <MenuItem key={category.categoryId} value={category.categoryId}>
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl >
         </div>
         <div>
           <FormControl fullWidth sx={textFieldStyle}>
@@ -311,14 +311,18 @@ const buildImageUploadRequest = () => {
                 }));
               }}
             >
-              {characteristics.map((characteristic) => (
-                <MenuItem key={characteristic.characteristicsId} value={characteristic.characteristicsId}>
-                  {characteristic.name}
-                </MenuItem>
-              ))}
+              {characteristics
+                .slice() 
+                .sort((a, b) => a.name.localeCompare(b.name)) 
+                .map((characteristic) => (
+                  <MenuItem key={characteristic.characteristicsId} value={characteristic.characteristicsId}>
+                    {characteristic.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </div>
+
         <div>
           <TextField
             label="Precio de Alquiler"
@@ -353,7 +357,7 @@ const buildImageUploadRequest = () => {
             sx={textFieldStyle}
           />
         </div>
-        <div style={{display:'flex', justifyContent:'center'}}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           {/* primaryImage */}
           <input
             accept="image/*"
@@ -363,7 +367,7 @@ const buildImageUploadRequest = () => {
             onChange={(event) => handleImageChange(event, 'primaryImage')}
           />
           <label htmlFor="main-image-file">
-            <Button variant="contained" component="span" sx={{backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover }}}>
+            <Button variant="contained" component="span" sx={{ backgroundColor: colors.terciaryColor, color: colors.blackColor, '&:hover': { backgroundColor: colors.terciaryColorHover } }}>
               Imagen Principal
             </Button>
           </label>
@@ -378,13 +382,13 @@ const buildImageUploadRequest = () => {
             onChange={(event) => handleImageChange(event, 'secondaryImages')}
           />
           <label htmlFor="additional-images-file">
-            <Button sx={{marginLeft:'1rem', backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover }}} variant="contained" component="span">
+            <Button sx={{ marginLeft: '1rem', backgroundColor: colors.terciaryColor, color: colors.blackColor, '&:hover': { backgroundColor: colors.terciaryColorHover } }} variant="contained" component="span">
               Imágenes Adicionales
             </Button>
           </label>
         </div>
-        <div style={{display:'flex', justifyContent:'center'}}>
-          <Button sx={{marginRight:'2rem', marginTop:'1.5rem', backgroundColor:colors.primaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.primaryColorHover }}} variant="contained" onClick={handleSubmit}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button sx={{ marginRight: '2rem', marginTop: '1.5rem', backgroundColor: colors.primaryColor, color: colors.blackColor, '&:hover': { backgroundColor: colors.primaryColorHover } }} variant="contained" onClick={handleSubmit}>
             Registrar
           </Button>
         </div>
