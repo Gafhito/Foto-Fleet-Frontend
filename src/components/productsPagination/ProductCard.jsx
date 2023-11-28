@@ -29,8 +29,8 @@ export const ProductCard = ({
   const isMenuOpen = Boolean(anchorEl);
 
 
-  console.log('PRODUCT ID FAVORITO: ', product.productId, product.name)
-  console.log('ISFAVORITE: ', isFavorite(product.productId))
+  console.log('PRODUCT PROP DEL PRODUCTCARD: ', product)
+
 
   return (
     <Card
@@ -46,7 +46,7 @@ export const ProductCard = ({
     >
       <CardMedia
         sx={{ height: '170px', backgroundSize: 'contain' }}
-        image={product.images[0]?.url}
+        image={product.images?.[0]?.url || ''}
         title={product.name}
         onClick={() => handleOpenModal(product)}
       />
@@ -65,7 +65,7 @@ export const ProductCard = ({
             whiteSpace: 'nowrap',
           }}
         >
-          {product.description.substring(0, 100)}...
+          {product.description?.substring(0, 100)}...
         </Typography>
         <IconButton
           aria-label="add to favorites"

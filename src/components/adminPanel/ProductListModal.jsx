@@ -11,7 +11,7 @@ import { colors } from '../../utils/constants';
 
 
 
-const customModalTheme = createTheme({
+{/*const customModalTheme = createTheme({
     components: {
       MuiModal: {
         styleOverrides: {
@@ -24,7 +24,7 @@ const customModalTheme = createTheme({
         },
       },
     },
-  });
+  });*/}
 
 export const ProductListModal = ({ open, onClose}) => {
 
@@ -92,7 +92,8 @@ export const ProductListModal = ({ open, onClose}) => {
 
 
   return (
-    <ThemeProvider theme={customModalTheme}>
+    <>
+
         <Modal open={open} onClose={onClose}>
           <Box sx={{
             position: 'absolute',
@@ -191,6 +192,6 @@ export const ProductListModal = ({ open, onClose}) => {
               }
             }}
           />
-      </ThemeProvider>
+        </>
   )
 }

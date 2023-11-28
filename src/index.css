@@ -14,6 +14,7 @@
 html {
   min-height: 100%;
   position: relative;
+  color: black;
 }
 
 body {
@@ -30,3 +31,4 @@ body {
 .slick-prev:before {
   content: '';
 }
+

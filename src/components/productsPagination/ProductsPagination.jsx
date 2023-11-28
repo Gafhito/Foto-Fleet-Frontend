@@ -7,6 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { ProductList } from './ProductList';
 import { Pagination } from './Pagination';
+import { MetaData } from '../../utils/MetaData';
 
 export const ProductsPagination = ({ itemsPerPage }) => {
   const {
@@ -46,17 +47,19 @@ export const ProductsPagination = ({ itemsPerPage }) => {
 
   const handleShare = (social, productId) => {
     const product = productsContent.find((p) => p.productId === productId);
-
+  
     if (!product) {
       return;
     }
-
+  
+    setSelectedProduct(product);  // Add this line to update selectedProduct
     const shareUrl = generateShareUrl(social, product);
     window.open(shareUrl, '_blank');
-
+  
     setAnchorEl(null);
     setSelectedSocial(null);
   };
+  
 
   const generateShareUrl = (social, product) => {
     const productUrl = `http://1023c07-grupo3.s3-website-us-east-1.amazonaws.com/products/${product.productId}`;
@@ -77,27 +80,11 @@ export const ProductsPagination = ({ itemsPerPage }) => {
     }
   };
 
+  console.log('PRODUCTS CONTENT DEL PRODUCTSPAGINATION: ', productsContent)
+
   return (
     <Container>
-      <Helmet>
-        <title>{selectedProduct ? `${selectedProduct.name} - Foto Fleet` : 'Foto Fleet'}</title>
-
-        {selectedProduct && (
-          <>
-            <meta property="og:url" content={`http://1023c07-grupo3.s3-website-us-east-1.amazonaws.com/products/${selectedProduct.productId}`} />
-            <meta property="og:type" content="website" />
-            <meta property="og:title" content={selectedProduct.name} />
-            <meta property="og:description" content={selectedProduct.description.substring(0, 100)} />
-            <meta property="og:image" content={selectedProduct.images[0]?.url || ''} />
-
-            {/* Twitter Card tags */}
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:title" content={selectedProduct.name} />
-            <meta name="twitter:description" content={selectedProduct.description} />
-            <meta name="twitter:image" content={selectedProduct.images[0]?.url || ''} />
-          </>
-        )}
-      </Helmet>
+      <MetaData product={productsContent} />
       <Typography variant="h4" sx={{ marginBottom: '3rem' }}>
         Lista de Productos Aleatorios
       </Typography>
