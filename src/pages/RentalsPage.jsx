@@ -137,7 +137,7 @@ export const Rentals = () => {
         <Grid container spacing={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 'auto' }}>
           {rentals.map(({ rental, productDetails }) => (
             <Grid item xs={12} sm={6} md={4} key={rental.rentalDetailId} sx={{ width: '90vw', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <RentalCard rental={rental} productDetails={productDetails} ratedRentals={ratedRentals} />
+              <RentalCard rental={rental} productDetails={productDetails} ratedRentals={ratedRentals} selectedRental={selectedRental} setSelectedRental={setSelectedRental} setIsModalOpen={setIsModalOpen}/>
             </Grid>
           ))}
         </Grid>

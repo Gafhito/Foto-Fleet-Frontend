@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Rating from '@mui/material/Rating';
 
-export const RentalCard = ({ rental, productDetails, ratedRentals }) => {
+export const RentalCard = ({ rental, productDetails, ratedRentals, selectedRental, setSelectedRental, setIsModalOpen }) => {
 
     const isRated = ratedRentals.find((ratedRental) => ratedRental.rentalId === rental.rentalDetailId)?.isRated;
 
@@ -54,7 +54,7 @@ export const RentalCard = ({ rental, productDetails, ratedRentals }) => {
             <Typography variant="body2" sx={{backgroundColor: rental.status == 'Pending' ? 'yellow' : rental.status === 'Canceled' ? 'red' : 'green', width:'fit-content', margin:' .5rem auto', color:'black', fontWeight:'bolder'}}>
                 Estado: {rental.status}
             </Typography>
-            {rental.status === 'Completed' && !ratedRentals.find((ratedRental) => ratedRental.rentalId === rental.rentalDetailId)?.isRated && (
+            {rental.status === 'Completed' && (
                 <Button variant="contained" onClick={() => handleRateButtonClick(rental)}>
                     Puntuar
                     </Button>
