@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRentalContext } from '../utils/RentalContext';
 import { useProductContext } from '../utils/ProductContext';
+import { RentalCard } from '../components/common/rentalCard/RentalCards';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -10,6 +11,10 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -17,6 +22,7 @@ import Rating from '@mui/material/Rating';
 
 
 import { colors } from '../utils/constants';
+
 
 export const Rentals = () => {
   const { rentals, loading } = useRentalContext();
@@ -29,6 +35,11 @@ export const Rentals = () => {
   const [ratedRentals, setRatedRentals] = useState([]);
 
   const [hover, setHover] = useState(-1);
+
+
+  const pendingRentals = rentalDetails.filter(({ rental }) => rental.status === 'Pending');
+  const canceledRentals = rentalDetails.filter(({ rental }) => rental.status === 'Canceled');
+  const completedRentals = rentalDetails.filter(({ rental }) => rental.status === 'Completed');
 
   const labels = {
     0.5: '0.5 Estrellas',
@@ -43,13 +54,7 @@ export const Rentals = () => {
     5: '5 Estrellas',
   };
 
-  function formatarFecha(fecha) {
-    const date = new Date(fecha);
-    const dia = date.getDate().toString().padStart(2, '0');
-    const mes = (date.getMonth() + 1).toString().padStart(2, '0');
-    const anio = date.getFullYear();
-    return `${dia}/${mes}/${anio}`;
-  }
+
 
   const MAX_DESCRIPTION_LENGTH = 50;
 
@@ -122,48 +127,31 @@ export const Rentals = () => {
     return <p>Cargando reservas...</p>;
   }
 
+
+  const renderRentalCards = (rentals, title) => (
+    <Accordion key={title} sx={{padding:'2rem', margin:'1rem auto', backgroundColor:colors.secondaryColor, boxShadow:'none'}}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ margin:'auto'}}>
+        <Typography variant="h6">{title}</Typography>
+      </AccordionSummary>
+      <AccordionDetails className='accordion-details' sx={{ margin:'auto', backgroundColor:colors.backgroundColor}}>
+        <Grid container spacing={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 'auto' }}>
+          {rentals.map(({ rental, productDetails }) => (
+            <Grid item xs={12} sm={6} md={4} key={rental.rentalDetailId} sx={{ width: '90vw', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <RentalCard rental={rental} productDetails={productDetails} ratedRentals={ratedRentals} />
+            </Grid>
+          ))}
+        </Grid>
+      </AccordionDetails>
+    </Accordion>
+  );
+
+
   return (
     <div style={{marginTop:'6rem'}}>
       <h2>Mis Reservas</h2>
-      <Grid container spacing={4} sx={{display:'flex', justifyContent:'center', alignItems:'center', margin:'3rem auto'}}>
-        {rentalDetails?.map(({ rental, productDetails }) => (
-          <Grid item xs={12} sm={6} md={4} key={rental.rentalDetailId} sx={{width:'90vw', margin:'auto',  display:'flex', justifyContent:'center', alignItems:'center' }}>
-            <Card sx={{ width: '20rem'}}>
-              <CardMedia
-                component="img"
-                height="200"
-                image={productDetails.images[0].url}
-                alt={productDetails.name}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {productDetails.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Descripción: {productDetails.description.length > MAX_DESCRIPTION_LENGTH ? `${productDetails.description.substring(0, MAX_DESCRIPTION_LENGTH)}...` : productDetails.description}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Precio: U$S {productDetails.rentalPrice}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Fecha de Inicio: {formatarFecha(rental.startDate)}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Fecha de Fin: {formatarFecha(rental.endDate)}
-                </Typography>
-                <Typography variant="body2" sx={{backgroundColor: rental.status == 'Pending' ? 'yellow' : rental.status === 'Canceled' ? 'red' : 'green', width:'fit-content', margin:' .5rem auto', color:'black', fontWeight:'bolder'}}>
-                  Estado: {rental.status}
-                </Typography>
-                {rental.status === 'Completed' && !ratedRentals.find((ratedRental) => ratedRental.rentalId === rental.rentalDetailId)?.isRated && (
-                  <Button variant="contained" onClick={() => handleRateButtonClick(rental)}>
-                    Puntuar
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      {renderRentalCards(pendingRentals, 'Pendientes')}
+      {renderRentalCards(canceledRentals, 'Canceladas')}
+      {renderRentalCards(completedRentals, 'Completadas')}
 
       {/* Modal para enviar la revisión */}
       <Modal
