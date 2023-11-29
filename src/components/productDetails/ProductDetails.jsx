@@ -38,10 +38,14 @@ import './productDetails.css';
 import { useProductContext } from '../../utils/ProductContext';
 import { CustomCalendar } from '../common/calendar/Calendar';
 import { Button } from '../common/button/Button';
+import { ProductReviews } from '../productReviews/ProductReviews';
 
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Helmet } from 'react-helmet-async';
+
+import { Cart } from '../common/cart/Cart';
+import { useCart } from '../../utils/CartContext';
 
 
 
@@ -63,6 +67,10 @@ export const ProductDetails = ({ product }) => {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   /* Politicas */
   const [isAgreed, setIsAgreed] = useState(false);
+
+
+  const [cartOpen, setCartOpen] = useState(false);
+  const { addToCart, getCartItemCount, cartItems } = useCart();
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -171,13 +179,13 @@ export const ProductDetails = ({ product }) => {
   };
 
 
-  const handleCheckboxChange = () => {
+  /*const handleCheckboxChange = () => {
     setIsAgreed((prevIsAgreed) => !prevIsAgreed);
-  };
+  };*/
   
   
 
-  const handleReserveClick = async () => {
+  /*const handleReserveClick = async () => {
 
     const jwt = localStorage.getItem('token');
 
@@ -250,7 +258,7 @@ export const ProductDetails = ({ product }) => {
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
-  };
+  };*/
 
 
   const handleCloseSnackbar = (event, reason) => {
@@ -273,6 +281,66 @@ export const ProductDetails = ({ product }) => {
       </MuiAlert>
     </Snackbar>
   );
+
+
+  const handleAddToCartClick = () => {
+    const newCartItem = {
+      productId: product.productId,
+      name: product.name,
+      quantity: quantity,
+      rentalPrice: rentalPrice,
+      startDate: startDate,
+      endDate: endDate,
+      image: product.images[0]?.url || '',
+    };
+
+    if (startDate > endDate) {
+      setSnackbarMessage('La fecha de inicio no puede ser posterior a la fecha de fin');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return;
+    }
+  
+    addToCart(newCartItem);
+  
+    // Actualizar la cantidad de elementos en el carrito
+    getCartItemCount();
+
+    setSnackbarMessage('Producto agregado correctamente!');
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
+  
+    console.log('Cart Items:', newCartItem);
+  };
+
+
+  const renderCartSnackbar = () => (
+    <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleCloseSnackbar}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    >
+      <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity={snackbarSeverity}>
+        {snackbarMessage}
+      </MuiAlert>
+    </Snackbar>
+  );
+  
+  
+
+
+  /*const handleOpenCart = () => {
+    setCartOpen(true);
+    console.log("Carrito Open");
+    console.log("Cart Items:", cartItems); // Verifica que cartItem tenga los elementos correctos
+  };
+  
+  const handleCloseCart = () => {
+    setCartOpen(false);
+  };*/
+  
+  
   
   
 
@@ -348,6 +416,8 @@ export const ProductDetails = ({ product }) => {
                       ))}
                     </div>
                   </div>
+
+                  <ProductReviews productId={product.productId} productName={product.name} />
                 </Box>
               </Grid>
             </Grid>
@@ -415,7 +485,7 @@ export const ProductDetails = ({ product }) => {
 
 
         <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-          <FormControlLabel
+          {/*<FormControlLabel
             control={<Checkbox checked={isAgreed} onChange={handleCheckboxChange} />}
             label={
               <>
@@ -430,8 +500,11 @@ export const ProductDetails = ({ product }) => {
               </>
             }
             sx={{ marginTop: '1rem' }}
-          />
-          <Button label={'Reservar'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />
+          />*/}
+
+          <Button label={'Añadir al carrito'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleAddToCartClick} />
+          {/*<Button label={'Ver carrito'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleOpenCart} />
+          <Button label={'Reservar'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />*/}
         </Box>
 
       </Box>
@@ -481,6 +554,7 @@ export const ProductDetails = ({ product }) => {
          </Box>
         )}
         {renderSnackbar()}
+        {/*<Cart cartItems={cartItems} open={cartOpen} onClose={handleCloseCart} />*/}
     </Box>
   </>
   );

@@ -16,6 +16,9 @@ import { useAuth } from '../../utils/AuthContext';
 import { useProductContext } from '../../utils/ProductContext';
 import { colors } from '../../utils/constants';
 
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
 
 
 export const ProductForm = ({ onSubmit, categories }) => {
@@ -39,8 +42,18 @@ export const ProductForm = ({ onSubmit, categories }) => {
   const [selectedCharacteristics, setSelectedCharacteristics] = useState([]);
   const { characteristics, setCharacteristics } = useProductContext();
 
-  console.log('Estado categoriesList: ', categoriesList)
-  console.log('Estado selectedCategoryID:' + selectedCategoryId)
+  const [imageThumbnails, setImageThumbnails] = useState([]);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+  
 
   // Inicializamos el valor de categoria para el primer valor
   useEffect(() => {
@@ -105,9 +118,14 @@ const handleImageChange = async (event, imageType) => {
         secondaryImages: [...prevProduct.secondaryImages, ...files], // Append archivos a secondaryImages array
       };
     }
-
     return prevProduct;
   });
+
+  if (imageType === 'primaryImage') {
+    setImageThumbnails([files[0], ...imageThumbnails.slice(1)]);
+  } else if (imageType === 'secondaryImages') {
+    setImageThumbnails([...imageThumbnails, ...files]);
+  }
 };
 
 const handleInputChange = (event) => {
@@ -127,7 +145,6 @@ const handleInputChange = (event) => {
       ...prevProduct,
       characteristics: value,
     }));
-    console.log('CHARACTERISTICA VALUE: ', value);
   } else {
     setNewProduct((prevProduct) => ({
       ...prevProduct,
@@ -146,24 +163,14 @@ const buildImageUploadRequest = () => {
   // Agregar primaryImage si existe
   if (newProduct.primaryImage) {
     imageUploadRequest.append('primaryImage', newProduct.primaryImage);
-    console.log('UE primaryImage: ', newProduct.primaryImage)
-    console.log('UE newProduct: ', newProduct)
-    console.log('imageUploadRequest dentro del 1ry: ', imageUploadRequest)
   }
 
   // Agregar secondaryImages si existen
   if (newProduct.secondaryImages && newProduct.secondaryImages.length > 0) {
     newProduct.secondaryImages.forEach((image, index) => {
       imageUploadRequest.append(`secondaryImages`, image);
-      console.log('UE secondaryImages: ', newProduct.secondaryImages)
-      console.log('UE newProduct: ', newProduct)
-      console.log('imageUploadRequest dentro del 2dry: ', imageUploadRequest)
-    });
-  }
 
-  console.log('FormData entries:');
-  for (const entry of imageUploadRequest.entries()) {
-    console.log(entry);
+    });
   }
 
   return imageUploadRequest;
@@ -174,16 +181,14 @@ const buildImageUploadRequest = () => {
       //  Crear el producto y obtener el ID
       const productId = await createProduct(newProduct, user.token);
 
-      console.log('newProduct handleSubmit: ', newProduct);
-      console.log('Subiendo IMG productID: ' + productId);
 
       //. Construir el FormData para las imágenes
       const imageUploadRequest = buildImageUploadRequest();
 
-      console.log('imageUplodRequest :');
+     { /*console.log('imageUplodRequest :');
         for (const entry of imageUploadRequest.entries()) {
           console.log(entry);
-        }
+        }*/}
 
       //  Subir imágenes
       const imageUploadResponse = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/products/images?productId=${productId}`, {
@@ -196,7 +201,6 @@ const buildImageUploadRequest = () => {
 
       //  Verificar la respuesta de la subida de imágenes
       if (imageUploadResponse.status === 201) {
-        console.log('Product and images created successfully!');
 
         //  Si hay características seleccionadas, registrarlas
         if (selectedCharacteristics.length > 0) {
@@ -214,7 +218,7 @@ const buildImageUploadRequest = () => {
           });
 
           if (characteristicsResponse.status === 200) {
-            console.log('Characteristics registered successfully!');
+            handleSnackbarOpen();
           } else {
             console.error(`Error registering characteristics: ${characteristicsResponse.status} - ${characteristicsResponse.statusText}`);
           }
@@ -251,144 +255,171 @@ const buildImageUploadRequest = () => {
   };
   
   return (
-    <Container>
-      <form>
-        <div>
-          <TextField
-            label="Nombre del Producto"
-            name="name"
-            value={newProduct.name}
-            onChange={handleInputChange}
-            fullWidth
-            required // Agregar validación de requerido
-            sx={textFieldStyle}
-          />
-        </div>
-        <div>
-          <TextField
-            label="Descripción"
-            name="description"
-            value={newProduct.description}
-            onChange={handleInputChange}
-            fullWidth
-            required // Agregar validación de requerido
-            sx={textFieldStyle}
-          />
-        </div>
-        <div>
-        <FormControl fullWidth sx={textFieldStyle}>
-          <InputLabel>Categoría</InputLabel>
-          <Select
-            name="categoryId"
-            value={newProduct.categoryId || ''}
-            onChange={(event) => handleInputChange(event, 'categoryId')} // 'categoryId' como name
-            required
-          >
-            <MenuItem value="">
-              <em>Seleccionar categoría</em>
-            </MenuItem>
-            {categoriesList.map((category) => (
-              <MenuItem key={category.categoryId} value={category.categoryId}>
-                {category.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl >
-        </div>
-        <div>
+    <>
+      <Container>
+        <form>
+          <div>
+            <TextField
+              label="Nombre del Producto"
+              name="name"
+              value={newProduct.name}
+              onChange={handleInputChange}
+              fullWidth
+              required // Agregar validación de requerido
+              sx={textFieldStyle}
+            />
+          </div>
+          <div>
+            <TextField
+              label="Descripción"
+              name="description"
+              value={newProduct.description}
+              onChange={handleInputChange}
+              fullWidth
+              required // Agregar validación de requerido
+              sx={textFieldStyle}
+            />
+          </div>
+          <div>
           <FormControl fullWidth sx={textFieldStyle}>
-            <InputLabel>Características</InputLabel>
+            <InputLabel>Categoría</InputLabel>
             <Select
-              name="characteristics"
-              multiple
-              value={selectedCharacteristics}
-              onChange={(event) => {
-                const { value } = event.target;
-                setSelectedCharacteristics(value);
-                setNewProduct((prevProduct) => ({
-                  ...prevProduct,
-                  characteristics: value,
-                }));
-              }}
+              name="categoryId"
+              value={newProduct.categoryId || ''}
+              onChange={(event) => handleInputChange(event, 'categoryId')} // 'categoryId' como name
+              required
             >
-              {characteristics.map((characteristic) => (
-                <MenuItem key={characteristic.characteristicsId} value={characteristic.characteristicsId}>
-                  {characteristic.name}
+              <MenuItem value="">
+                <em>Seleccionar categoría</em>
+              </MenuItem>
+              {categoriesList.map((category) => (
+                <MenuItem key={category.categoryId} value={category.categoryId}>
+                  {category.name}
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
-        </div>
-        <div>
-          <TextField
-            label="Precio de Alquiler"
-            name="rentalPrice"
-            type="number"
-            value={newProduct.rentalPrice}
-            onChange={handleInputChange}
-            fullWidth
-            required
-            sx={textFieldStyle}
-          />
-        </div>
-        <div>
-          <TextField
-            label="Stock"
-            name="stock"
-            type="number"
-            value={newProduct.stock}
-            onChange={handleInputChange}
-            fullWidth
-            required
-            sx={textFieldStyle}
-          />
-        </div>
-        <div>
-          <TextField
-            label="Estado"
-            name="status"
-            value={newProduct.status}
-            onChange={handleInputChange}
-            fullWidth
-            sx={textFieldStyle}
-          />
-        </div>
-        <div style={{display:'flex', justifyContent:'center'}}>
-          {/* primaryImage */}
-          <input
-            accept="image/*"
-            id="main-image-file"
-            type="file"
-            style={{ display: 'none' }}
-            onChange={(event) => handleImageChange(event, 'primaryImage')}
-          />
-          <label htmlFor="main-image-file">
-            <Button variant="contained" component="span" sx={{backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover }}}>
-              Imagen Principal
-            </Button>
-          </label>
+          </FormControl >
+          </div>
+          <div>
+            <FormControl fullWidth sx={textFieldStyle}>
+              <InputLabel>Características</InputLabel>
+              <Select
+                name="characteristics"
+                multiple
+                value={selectedCharacteristics}
+                onChange={(event) => {
+                  const { value } = event.target;
+                  setSelectedCharacteristics(value);
+                  setNewProduct((prevProduct) => ({
+                    ...prevProduct,
+                    characteristics: value,
+                  }));
+                }}
+              >
+                {characteristics.map((characteristic) => (
+                  <MenuItem key={characteristic.characteristicsId} value={characteristic.characteristicsId}>
+                    {characteristic.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div>
+            <TextField
+              label="Precio de Alquiler"
+              name="rentalPrice"
+              type="number"
+              value={newProduct.rentalPrice}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              sx={textFieldStyle}
+            />
+          </div>
+          <div>
+            <TextField
+              label="Stock"
+              name="stock"
+              type="number"
+              value={newProduct.stock}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              sx={textFieldStyle}
+            />
+          </div>
+          <div>
+            <TextField
+              label="Estado"
+              name="status"
+              value={newProduct.status}
+              onChange={handleInputChange}
+              fullWidth
+              sx={textFieldStyle}
+            />
+          </div>
+          <div style={{display:'flex', justifyContent:'center'}}>
+            {/* primaryImage */}
+            <input
+              accept="image/*"
+              id="main-image-file"
+              type="file"
+              style={{ display: 'none' }}
+              onChange={(event) => handleImageChange(event, 'primaryImage')}
+            />
+            <label htmlFor="main-image-file">
+              <Button variant="contained" component="span" sx={{backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover }}}>
+                Imagen Principal
+              </Button>
+            </label>
 
-          {/* secondaryImages */}
-          <input
-            accept="image/*"
-            id="additional-images-file"
-            type="file"
-            multiple
-            style={{ display: 'none' }}
-            onChange={(event) => handleImageChange(event, 'secondaryImages')}
-          />
-          <label htmlFor="additional-images-file">
-            <Button sx={{marginLeft:'1rem', backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover }}} variant="contained" component="span">
-              Imágenes Adicionales
+            {/* secondaryImages */}
+            <input
+              accept="image/*"
+              id="additional-images-file"
+              type="file"
+              multiple
+              style={{ display: 'none' }}
+              onChange={(event) => handleImageChange(event, 'secondaryImages')}
+            />
+            <label htmlFor="additional-images-file">
+              <Button sx={{marginLeft:'1rem', backgroundColor:colors.terciaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.terciaryColorHover }}} variant="contained" component="span">
+                Imágenes Adicionales
+              </Button>
+            </label>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+            {imageThumbnails.map((thumbnail, index) => (
+              <img
+                key={index}
+                src={URL.createObjectURL(thumbnail)}
+                alt={`Thumbnail ${index + 1}`}
+                style={{ width: '50px', height: '50px', marginRight: '10px' }}
+              />
+            ))}
+          </div>
+          <div style={{display:'flex', justifyContent:'center'}}>
+            <Button sx={{marginRight:'2rem', marginTop:'1.5rem', backgroundColor:colors.primaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.primaryColorHover }}} variant="contained" onClick={handleSubmit}>
+              Registrar
             </Button>
-          </label>
-        </div>
-        <div style={{display:'flex', justifyContent:'center'}}>
-          <Button sx={{marginRight:'2rem', marginTop:'1.5rem', backgroundColor:colors.primaryColor, color:colors.blackColor, '&:hover': { backgroundColor:colors.primaryColorHover }}} variant="contained" onClick={handleSubmit}>
-            Registrar
-          </Button>
-        </div>
-      </form>
-    </Container>
+          </div>
+        </form>
+      </Container>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleSnackbarClose}
+          severity="success"
+        >
+          ¡Producto registrado exitosamente!
+        </MuiAlert>
+      </Snackbar>
+   </>
   );
 };

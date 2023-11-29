@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Outlet, Navigate } from 'react-router-dom'; // Asegúrate de importar Navigate
+import { BrowserRouter as Router, Route, Routes, Outlet, Navigate } from 'react-router-dom';
 import { ProductProvider } from './utils/ProductContext';
 import { Layout } from './pages/Layout';
 import { HomePage } from './pages/HomePage';
@@ -14,10 +14,15 @@ import { Rentals } from './pages/RentalsPage';
 import { Politics } from './pages/Politics';
 
 import { useAuth } from './utils/AuthContext';
+import { RentalConfirmation } from './pages/RentalConfirmation';
+import { useCart } from './utils/CartContext';
+import { Contacto } from './pages/Contacto';
+import { AboutUs } from './pages/AboutUs';
 
 export const App = () => {
 
   const { isLoggedIn } = useAuth();
+  const { cartItems } = useCart();
 
   return (
     <Router>
@@ -33,8 +38,11 @@ export const App = () => {
             <Route path="/perfil" element={<UserProfile/>} />
             <Route path="/favoritos" element={<FavoritesPage/>} />
             <Route path='/user/rentals' element={<Rentals/>} />
+            <Route path='/contacto' element={<Contacto/>} />
+            <Route path='/aboutus' element={<AboutUs/>} />
 
             <Route path="/politicas" element={<Politics/>}/>
+            <Route path="/rental-confirmation" element={<RentalConfirmation location={{ state: { cartItems: cartItems } }}/>} />
           </Route>
         </Routes>
       </div>

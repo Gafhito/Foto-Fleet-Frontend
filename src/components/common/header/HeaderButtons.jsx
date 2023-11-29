@@ -6,6 +6,7 @@ import { useLoginForm } from '../../../utils/LoginFormContext';
 import { colorsHeader, colors } from '../../../utils/constants';
 
 
+
 export const HeaderButtons = () => {
   const { openLoginForm, setRegisterMode, setLoginMode, isRegisterMode } = useLoginForm();
 
@@ -13,6 +14,7 @@ export const HeaderButtons = () => {
     setRegisterMode();
     openLoginForm();
   };
+
 
   const buttonStyles = {
     variant: "contained",
@@ -53,7 +55,7 @@ export const HeaderButtons = () => {
           Iniciar Sesión
         </Button>
       </Link>
-      <Box sx={{ marginLeft: '16px' }}> {/* Agrega un espacio entre los botones */}
+      <Box sx={{ marginLeft: '16px' }}>
         <Link to="/auth/login" style={{ textDecoration: 'none' }}>
           <Button
             {...buttonStylesCreateAccount}
