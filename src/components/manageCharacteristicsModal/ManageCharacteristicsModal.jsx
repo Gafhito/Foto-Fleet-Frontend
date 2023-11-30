@@ -168,7 +168,7 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {characteristics?.map((characteristic) => (
+            {characteristics?.sort((a, b) => a.name.localeCompare(b.name)).map((characteristic) => (
               <TableRow key={characteristic.characteristicsId}>
                 <TableCell>
                   {selectedCharacteristic === characteristic &&
