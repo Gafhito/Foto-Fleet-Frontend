@@ -100,8 +100,10 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
 
   const handleAddCharacteristic = (newCharacteristic) => {
     setCharacteristics([...characteristics, newCharacteristic]);
-    setIsAddCategoryFormOpen(false);
-    clearForm();
+    setTimeout(() => {
+      setIsAddCategoryFormOpen(false);
+      clearForm();
+    }, 3000);
   };
 
   const handleSaveCategory = async () => {
