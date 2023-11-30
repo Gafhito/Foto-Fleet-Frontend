@@ -23,6 +23,7 @@ import { CustomTextField } from './CustomTextField';
 import { colors } from '../../utils/constants';
 
 import './login.css';
+import LoginMessage from './LoginMessage'; 
 
 //const label = { inputProps: { 'label': 'Checkbox demo' } };
 
