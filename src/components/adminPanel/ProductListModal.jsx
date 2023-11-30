@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { createTheme, ThemeProvider, Modal, Box, Typography, Button as MuiButton } from '@mui/material';
+import { ThemeProvider, Modal, Box, Typography, Button as MuiButton } from '@mui/material';
+import { createTheme } from '@mui/system';
 import Pagination from '@mui/material/Pagination';
 
 import { useProductContext } from '../../utils/ProductContext';
@@ -10,7 +11,7 @@ import { colors } from '../../utils/constants';
 
 
 
-const customModalTheme = createTheme({
+{/*const customModalTheme = createTheme({
     components: {
       MuiModal: {
         styleOverrides: {
@@ -23,7 +24,7 @@ const customModalTheme = createTheme({
         },
       },
     },
-  });
+  });*/}
 
 export const ProductListModal = ({ open, onClose}) => {
 
@@ -91,7 +92,8 @@ export const ProductListModal = ({ open, onClose}) => {
 
 
   return (
-    <ThemeProvider theme={customModalTheme}>
+    <>
+
         <Modal open={open} onClose={onClose}>
           <Box sx={{
             position: 'absolute',
@@ -190,6 +192,6 @@ export const ProductListModal = ({ open, onClose}) => {
               }
             }}
           />
-      </ThemeProvider>
+        </>
   )
 }

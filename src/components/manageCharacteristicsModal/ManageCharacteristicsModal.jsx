@@ -100,8 +100,10 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
 
   const handleAddCharacteristic = (newCharacteristic) => {
     setCharacteristics([...characteristics, newCharacteristic]);
-    setIsAddCategoryFormOpen(false);
-    clearForm();
+    setTimeout(() => {
+      setIsAddCategoryFormOpen(false);
+      clearForm();
+    }, 3000);
   };
 
   const handleSaveCategory = async () => {
@@ -166,7 +168,7 @@ export const ManageCharacteristicsModal = ({ open, onClose }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {characteristics?.map((characteristic) => (
+            {characteristics?.sort((a, b) => a.name.localeCompare(b.name)).map((characteristic) => (
               <TableRow key={characteristic.characteristicsId}>
                 <TableCell>
                   {selectedCharacteristic === characteristic &&

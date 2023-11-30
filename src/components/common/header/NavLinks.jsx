@@ -12,9 +12,6 @@ export const NavLinks = () => {
             <Link to={routes.home} className='nav_link'>
                 <span className="desktop-link">Home</span>
             </Link>
-            <Link to={routes.products} className='nav_link'>
-                <span className="desktop-link">Productos</span>
-            </Link>
             <Link to={routes.contact} className='nav_link'>
                 <span className="desktop-link">Contacto</span>
             </Link>

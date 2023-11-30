@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Outlet, Navigate } from 'react-router-dom';
 import { ProductProvider } from './utils/ProductContext';
 import { Layout } from './pages/Layout';
 import { HomePage } from './pages/HomePage';
@@ -14,32 +14,14 @@ import { Rentals } from './pages/RentalsPage';
 import { Politics } from './pages/Politics';
 
 import { useAuth } from './utils/AuthContext';
+import { RentalConfirmation } from './pages/RentalConfirmation';
+import { useCart } from './utils/CartContext';
+import { Contacto } from './pages/Contacto';
+import { AboutUs } from './pages/AboutUs';
 
 export const App = () => {
   const { isLoggedIn } = useAuth();
-
-  useEffect(() => {
-    const checkScrollbar = () => {
-      // Check if the document height exceeds the viewport height
-      if (document.documentElement.scrollHeight > window.innerHeight) {
-        document.body.classList.add('max-width-scrollbar');
-      } else {
-        document.body.classList.remove('max-width-scrollbar');
-      }
-    };
-
-    // Initial check
-    checkScrollbar();
-
-    // Event listener for changes in the content (in case of dynamic content updates)
-    document.addEventListener('DOMSubtreeModified', checkScrollbar);
-
-    // Cleanup function to remove the class and event listener when the component unmounts
-    return () => {
-      document.body.classList.remove('max-width-scrollbar');
-      document.removeEventListener('DOMSubtreeModified', checkScrollbar);
-    };
-  }, []);
+  const { cartItems } = useCart();
 
   return (
     <Router>
@@ -53,11 +35,13 @@ export const App = () => {
             />
             <Route path="/products/:productId" element={<ProductPage />} />
             <Route path="/auth/login" element={<LoginPage />} />
-            <Route path="/perfil" element={<UserProfile />} />
-            <Route path="/favoritos" element={<FavoritesPage />} />
-            <Route path="/user/rentals" element={<Rentals />} />
+            <Route path="/perfil" element={<UserProfile/>} />
+            <Route path="/favoritos" element={<FavoritesPage/>} />
+            <Route path='/user/rentals' element={<Rentals/>} />
+            <Route path='/contacto' element={<Contacto/>} />
+            <Route path='/aboutus' element={<AboutUs/>} />
 
-            <Route path="/politicas" element={<Politics />} />
+            <Route path="/politicas" element={<Politics/>}/>
           </Route>
         </Routes>
       </div>

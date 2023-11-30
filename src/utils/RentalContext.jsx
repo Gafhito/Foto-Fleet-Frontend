@@ -16,8 +16,6 @@ export const RentalProvider = ({ children }) => {
       try {
         const userData = await getUserData();
 
-        console.log('USER RENTAL DATA: ', userData)
-        console.log('USER: ', user)
         const token = user ? user.token : null;
 
         if (!token) {

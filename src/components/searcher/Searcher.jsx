@@ -161,10 +161,7 @@ const customTheme = createTheme({
                 <Calendar label={'Fecha Desde'}/>
                 <Calendar label={'Fecha Hasta'}/>
               </Box>*/}
-
-                <Button label={'Buscar'} backgroundColor={colors.blackColor} backgroundColorHover={colors.secondaryColorHover} color={'#ffffff'} mt={'1rem'} minWidth={'100px'} onClick={handleSearch}/>
-
-          </Box>
+                <Button label={'Buscar'} backgroundColor={colors.blackColor} backgroundColorHover={colors.secondaryColorHover} color={'#ffffff'} mt={'1rem'} minWidth={'100px'} onClick={handleSearch}/>          </Box>
         </Grid>
       </ThemeProvider>     
     );
