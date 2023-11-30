@@ -32,6 +32,7 @@ import { CustomTextField } from './CustomTextField';
 import { colors } from '../../utils/constants';
 
 import './login.css';
+import LoginMessage from './LoginMessage'; 
 
 const label = { inputProps: { 'label': 'Checkbox demo' } };
 
@@ -325,6 +326,7 @@ export const Login = () => {
 
   return (
     <div className='form_container'>
+            <LoginMessage />
             <Paper elevation={6} className='paper_login_form' 
                 sx={{ 
                     width: { xs: '95vw', sm: '29rem', md: '29rem', lg: '29rem', xl: '29rem' },

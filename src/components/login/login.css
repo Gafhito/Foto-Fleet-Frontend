@@ -78,7 +78,13 @@
     margin: .8rem 0; 
 }
 
-
+.login-message {
+    background-color: #ffcccc;
+    border: 3px solid #ff0000;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+}
 
 
 @media (max-width: 900px) {
@@ -108,6 +114,6 @@
 
 @media (min-width:900px) and (max-width:1023px){
     .form_container{
-        margin: 0;
+        margin: 50;
     }
   }
