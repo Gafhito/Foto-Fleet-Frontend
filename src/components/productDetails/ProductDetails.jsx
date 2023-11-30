@@ -25,6 +25,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/system';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colors } from '../../utils/constants';
@@ -71,6 +72,8 @@ export const ProductDetails = ({ product }) => {
 
   const [cartOpen, setCartOpen] = useState(false);
   const { addToCart, getCartItemCount, cartItems } = useCart();
+
+  const navigate = useNavigate();
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -284,6 +287,11 @@ export const ProductDetails = ({ product }) => {
 
 
   const handleAddToCartClick = () => {
+
+    const token = localStorage.getItem('token');
+
+    console.log('token: ', token)
+
     const newCartItem = {
       productId: product.productId,
       name: product.name,
@@ -300,6 +308,20 @@ export const ProductDetails = ({ product }) => {
       setSnackbarOpen(true);
       return;
     }
+
+    if(!token){
+      setSnackbarMessage('Necesitas estar loggeado para poder reservar')
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
+
+      setTimeout(() => {
+        navigate('/auth/login');
+      }, 2000);
+
+      return;
+    }
+
+    
   
     addToCart(newCartItem);
   
