@@ -37,6 +37,7 @@ export const HeaderButtons = () => {
     sx: {
       ...buttonStyles.sx,
       color:'#000000',
+      marginLeft:'1rem',
       backgroundColor: colors.terciaryColor, //colorsHeader.primaryColor,
       '&:hover': {
         backgroundColor: colors.terciaryColorHover,
