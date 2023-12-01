@@ -21,10 +21,9 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { CustomTextField } from './CustomTextField';
 import { colors } from '../../utils/constants';
+import { LoginMessage } from './LoginMessage';
 
 import './login.css';
-import LoginMessage from './LoginMessage'; 
-
 //const label = { inputProps: { 'label': 'Checkbox demo' } };
 
 const Login = () => {
@@ -292,6 +291,7 @@ const Login = () => {
         <div>
           <div>
             <h2 style={{ color: '#ffffff' }}>Bienvenido a FotoFleet!</h2>
+            <LoginMessage />
           </div>
         </div>
         <form action="/" className={'login_form'}>

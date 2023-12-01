@@ -40,6 +40,8 @@ export const App = () => {
             <Route path='/user/rentals' element={<Rentals/>} />
             <Route path='/contacto' element={<Contacto/>} />
             <Route path='/aboutus' element={<AboutUs/>} />
+            <Route path="/rental-confirmation" element={<RentalConfirmation location={{ state: { cartItems: cartItems } }}/>} />
+            
 
             <Route path="/politicas" element={<Politics/>}/>
           </Route>
