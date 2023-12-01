@@ -52,7 +52,7 @@ import { useCart } from '../../utils/CartContext';
 
 
 export const ProductDetails = ({ product }) => {
-
+  console.log(product.images[0]?.url)
   /* detalle de producto */
   const [showAllImages, setShowAllImages] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -370,15 +370,21 @@ export const ProductDetails = ({ product }) => {
     <>
     
 
-      <Helmet>
+    <Helmet>
         <title>{product.name} - Foto Fleet</title>
         <meta name="description" content={product.description} />
+        <meta property="og:title" content={product.name} />
+        <meta property="og:description" content={product.description} />
+        {/* Lo dejo en imagen 3 porque es la de menor peso, para generar la preview image debe ser menor a 300kb */}
+        <meta property="og:image" content={product.images[3]?.url || ''} /> 
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`http://1023c07-grupo3.s3-website-us-east-1.amazonaws.com/products/${product.productId}`} />
 
         {/* Twitter Card meta tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={product.name} />
         <meta name="twitter:description" content={product.description} />
-        <meta name="twitter:image" content={product.images[0]?.url || ''} />
+        <meta name="twitter:image" content={product.images[3]?.url || ''} />
       </Helmet>
 
   <Box sx={{

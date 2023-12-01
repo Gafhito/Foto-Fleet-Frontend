@@ -13,6 +13,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp'; 
 import { colors } from '../../utils/constants';
 import { Link } from 'react-router-dom';
 
@@ -135,6 +136,12 @@ export const ProductCard = ({
             </ListItemIcon>
             Twitter
           </MenuItem>
+          <MenuItem onClick={() => handleShare('whatsapp', product.productId)}>
+          <ListItemIcon>
+            <WhatsAppIcon />
+          </ListItemIcon>
+          WhatsApp
+        </MenuItem>
         </Menu>
 
         <Link to={`/products/${product.productId}`} target="_blank">
