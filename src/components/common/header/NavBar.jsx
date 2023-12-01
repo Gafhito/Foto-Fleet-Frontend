@@ -20,8 +20,6 @@ export const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
-  console.log("Item COUNT: ", getCartItemCount)
-
   const [cartOpen, setCartOpen] = useState(false);
   const { cartItems } = useCart();
 

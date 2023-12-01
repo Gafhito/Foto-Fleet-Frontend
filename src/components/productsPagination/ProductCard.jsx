@@ -26,11 +26,10 @@ export const ProductCard = ({
   anchorEl,
   setAnchorEl,
   setSelectedSocial,
+  setSelectedProduct
 }) => {
   const isMenuOpen = Boolean(anchorEl);
 
-
-  console.log('PRODUCT PROP DEL PRODUCTCARD: ', product)
 
 
   return (
@@ -92,6 +91,7 @@ export const ProductCard = ({
           onClick={(event) => {
             setAnchorEl(event.currentTarget);
             setSelectedSocial(product.productId);
+            setSelectedProduct(product)
           }}
           sx={{
             position: 'absolute',
@@ -116,6 +116,7 @@ export const ProductCard = ({
           onClose={() => {
             setAnchorEl(null);
             setSelectedSocial(null);
+            
           }}
         >
           <MenuItem onClick={() => handleShare('facebook', product.productId)}>

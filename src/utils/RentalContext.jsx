@@ -19,7 +19,6 @@ export const RentalProvider = ({ children }) => {
         const token = user ? user.token : null;
 
         if (!token) {
-          console.log('No hay token');
           setLoading(false);
           return;
         }

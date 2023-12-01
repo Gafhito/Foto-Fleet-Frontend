@@ -32,6 +32,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
 
 
   const handleOpenModal = (product) => {
+    console.log('PRODUCTO SELECCIONADO EN HANDLEOPENMODAL: ', product);
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
@@ -51,8 +52,8 @@ export const ProductsPagination = ({ itemsPerPage }) => {
     if (!product) {
       return;
     }
-
-    setSelectedProduct(product);  // Add this line to update selectedProduct
+  
+    setSelectedProduct(product);  
     const shareUrl = generateShareUrl(social, product);
     window.open(shareUrl, '_blank');
 
@@ -62,6 +63,8 @@ export const ProductsPagination = ({ itemsPerPage }) => {
 
 
   const generateShareUrl = (social, product) => {
+
+    console.log('PRODUCT ID EN EL GENERATESHAREURL: ', product.productId);
     const productUrl = `http://1023c07-grupo3.s3-website-us-east-1.amazonaws.com/products/${product.productId}`;
     const shareText = `¡Mira este increíble producto: ${product.name} - ${product.description.substring(0, 100)}...!`;
     const imageUrl = product.images[0]?.url || '';
@@ -81,7 +84,9 @@ export const ProductsPagination = ({ itemsPerPage }) => {
     }
   };
 
-  console.log('PRODUCTS CONTENT DEL PRODUCTSPAGINATION: ', productsContent)
+
+
+  console.log('SELECTED PRODUCT: ', selectedProduct)
 
   return (
     <Container>
@@ -98,6 +103,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
         setSelectedSocial={setSelectedSocial}
+        setSelectedProduct={setSelectedProduct}
       />
       <Pagination currentPage={currentPage} changePage={changePage} totalPages={products.totalPages} />
 
