@@ -98,26 +98,22 @@ const SamplePrevArrow = (props)  => {
     ],
   };
 
-  const handleCategoryClick = async (categoryName) => {
-    try {
-      const response = await searchProducts('""', categoryName);
-      setCategoryProducts(response);
-    } catch (error) {
-      console.error('Error al buscar productos por categoría:', error);
-    }
+  const handleCategoryClick = (categoryName) => {
+    searchProducts('""', categoryName);
   };
+
 
   const handleCategoryHover = async (categoryName) => {
     try {
       const response = await searchProducts('""', categoryName);
-      console.log('CATEGORY NAME: ', categoryName)
-      console.log('RESPONSE: ', response)
+      console.log('CATEGORY NAME: ', categoryName);
+      console.log('RESPONSE: ', response);
       setHoveredCategoryInfo(response);
-
     } catch (error) {
       console.error('Error al buscar productos por categoría:', error);
     }
   };
+  
   
   
 
@@ -166,12 +162,12 @@ const SamplePrevArrow = (props)  => {
                     justifyContent:'center'
                   }}>
                     {category.name}
-                    {hoveredCategoryInfo && hoveredCategoryInfo.totalElements && (
+                    {hoveredCategoryInfo && (
                       <>
                         <br />
-                        Productos: {hoveredCategoryInfo.totalElements}
+                        {`[${hoveredCategoryInfo.totalElements || 0}]`}
                       </>
-                    )}    
+                    )}  
                   </Typography>
               </Card>
             </div>
