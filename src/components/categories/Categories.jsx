@@ -18,6 +18,11 @@ export const Categories = () => {
   const theme = useTheme();
   const { searchProducts } = useProductContext();
 
+  const [hoveredCategoryInfo, setHoveredCategoryInfo] = useState(null);
+  const [hoveredCategoryProducts, setHoveredCategoryProducts] = useState({
+    totalElements: 0,
+  });
+
 
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
@@ -97,6 +102,21 @@ const SamplePrevArrow = (props)  => {
     searchProducts('""', categoryName);
   };
 
+
+  const handleCategoryHover = async (categoryName) => {
+    try {
+      const response = await searchProducts('""', categoryName);
+      console.log('CATEGORY NAME: ', categoryName);
+      console.log('RESPONSE: ', response);
+      setHoveredCategoryInfo(response);
+    } catch (error) {
+      console.error('Error al buscar productos por categoría:', error);
+    }
+  };
+  
+  
+  
+
   return (
     <Box sx={{padding:'2rem', width:'85%', margin:'auto'}}>
       <Typography variant='h3' sx={{ marginTop: '3rem' }}>Nuestras Categorias</Typography>
@@ -104,7 +124,10 @@ const SamplePrevArrow = (props)  => {
         <Slider {...settings} className='category_slider'>
           {categoriesArr.map((category, index) => (
             <div key={index} className='category_card_container'>
-              <Card className='category_card' onClick={() => handleCategoryClick(category.name)} sx={{ 
+              <Card className='category_card' 
+                onClick={() => handleCategoryClick(category.name)} 
+                onMouseEnter={() => handleCategoryHover(category.name)}
+                sx={{ 
                 backgroundImage:`url(${category.imageUrl})`, 
                 backgroundSize:'cover', 
                 backgroundRepeat:'no-repeat', 
@@ -139,6 +162,12 @@ const SamplePrevArrow = (props)  => {
                     justifyContent:'center'
                   }}>
                     {category.name}
+                    {hoveredCategoryInfo && (
+                      <>
+                        <br />
+                        {`[${hoveredCategoryInfo.totalElements || 0}]`}
+                      </>
+                    )}  
                   </Typography>
               </Card>
             </div>
