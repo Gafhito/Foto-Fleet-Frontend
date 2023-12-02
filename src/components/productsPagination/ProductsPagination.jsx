@@ -54,7 +54,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
     }
   
     setSelectedProduct(product);  
-    const shareUrl = generateShareUrl(social, product);
+    const shareUrl = generateShareUrl(social, selectedProduct);
     window.open(shareUrl, '_blank');
 
     setAnchorEl(null);
