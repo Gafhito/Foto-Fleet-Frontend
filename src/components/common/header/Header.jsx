@@ -58,12 +58,14 @@ const navigate = useNavigate();*/}
 
   return (
     <div>
-      <AppBar position='fixed' sx={{ backgroundColor: colors.blackColor, top: '0', zIndex: '999', height: '64px', overflowX: 'hidden' }}>
+      <AppBar position='fixed' sx={{ backgroundColor: colors.blackColor, top: '10', zIndex: '999', height: '65px', overflowX: 'hidden' }}>
         <Toolbar sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent:"space-between",
+          alignItems: 'center',
           flex: 1,
-          maxWidth: '100%', 
+          maxWidth: '93%', 
+          
         }}>
           <MobileMenuIcon onClick={toggleDrawer} />
           <Logo />

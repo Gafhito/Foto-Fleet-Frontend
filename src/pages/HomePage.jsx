@@ -12,7 +12,7 @@ export const HomePage = () => {
       <Searcher />
       <Categories />
       <Recomendations />
-      <ProductsPagination itemsPerPage={10}/>
+      <ProductsPagination itemsPerPage={6}/>
     </>
   )
 }

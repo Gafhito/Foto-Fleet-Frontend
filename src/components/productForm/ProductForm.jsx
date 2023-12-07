@@ -80,29 +80,29 @@ export const ProductForm = ({ onSubmit, categories }) => {
 
 
   // mapping para setear el ID de las categorias basado en su nombre
-const mapCategoryToID = (categoryName) => {
-  switch (categoryName) {
-    case 'Lighting':
-      return 3;
-    case 'Cameras':
-      return 1;
-    case 'Toto':
-      return 6;
-    case 'Accessories':
-      return 4;
-    case 'Camaras':
-      return 5;
-    case 'Lenses':
-      return 2;
-    default:
-      return 0;
-  }
-};
+  const mapCategoryToID = (categoryName) => {
+    switch (categoryName) {
+      case 'Lighting':
+        return 3;
+      case 'Cameras':
+        return 1;
+      case 'Toto':
+        return 6;
+      case 'Accessories':
+        return 4;
+      case 'Camaras':
+        return 5;
+      case 'Lenses':
+        return 2;
+      default:
+        return 0;
+    }
+  };
 
 
 
-const handleImageChange = async (event, imageType) => {
-  const files = event.target.files;
+  const handleImageChange = async (event, imageType) => {
+    const files = event.target.files;
 
   await setNewProduct((prevProduct) => {
     if (imageType === 'primaryImage') {
@@ -128,8 +128,8 @@ const handleImageChange = async (event, imageType) => {
   }
 };
 
-const handleInputChange = (event) => {
-  const { value, name } = event.target;
+  const handleInputChange = (event) => {
+    const { value, name } = event.target;
 
   if (name === 'categoryId') {
     setNewProduct((prevProduct) => ({
@@ -157,8 +157,8 @@ const handleInputChange = (event) => {
 
 
 
-const buildImageUploadRequest = () => {
-  const imageUploadRequest = new FormData();
+  const buildImageUploadRequest = () => {
+    const imageUploadRequest = new FormData();
 
   // Agregar primaryImage si existe
   if (newProduct.primaryImage) {
@@ -173,8 +173,8 @@ const buildImageUploadRequest = () => {
     });
   }
 
-  return imageUploadRequest;
-};
+    return imageUploadRequest;
+  };
 
   const handleSubmit = async () => {
     try {
@@ -244,7 +244,7 @@ const buildImageUploadRequest = () => {
         console.error('Error fetching characteristics:', error);
       }
     };
-  
+
     fetchCharacteristics();
   }, [characteristics]);
 
@@ -253,7 +253,7 @@ const buildImageUploadRequest = () => {
   const textFieldStyle = {
     marginBottom: '1rem',
   };
-  
+
   return (
     <>
       <Container>
@@ -316,7 +316,10 @@ const buildImageUploadRequest = () => {
                   }));
                 }}
               >
-                {characteristics.map((characteristic) => (
+                {characteristics
+                .slice() 
+                .sort((a, b) => a.name.localeCompare(b.name)) 
+                .map((characteristic) => (
                   <MenuItem key={characteristic.characteristicsId} value={characteristic.characteristicsId}>
                     {characteristic.name}
                   </MenuItem>

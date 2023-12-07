@@ -18,4 +18,3 @@ export const CustomTextField = ({ label, value, onChange, onFocus, onBlur, error
                     />
   )
 }
-

@@ -37,6 +37,7 @@ export const HeaderButtons = () => {
     sx: {
       ...buttonStyles.sx,
       color:'#000000',
+      marginLeft:'1rem',
       backgroundColor: colors.terciaryColor, //colorsHeader.primaryColor,
       '&:hover': {
         backgroundColor: colors.terciaryColorHover,
@@ -46,7 +47,7 @@ export const HeaderButtons = () => {
   };
 
   return (
-    <Box display="flex" alignItems="center" sx={{ flexWrap: 'nowrap' }}>
+    <Box display="flex" alignItems="center" sx={{ flexWrap: 'wrap' }}>
       <Link to="/auth/login" style={{ textDecoration: 'none' }}>
         <Button
           {...buttonStyles}
@@ -55,7 +56,7 @@ export const HeaderButtons = () => {
           Iniciar Sesión
         </Button>
       </Link>
-      <Box sx={{ marginLeft: '16px' }}>
+      <Box sx={{ marginLeft: '1px' }}>
         <Link to="/auth/login" style={{ textDecoration: 'none' }}>
           <Button
             {...buttonStylesCreateAccount}

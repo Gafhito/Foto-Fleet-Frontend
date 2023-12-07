@@ -2,8 +2,6 @@ import { Helmet } from 'react-helmet-async';
 
 export const MetaData = ({ product }) => {
 
-
-    console.log('PRODUCT DEL MD: ', product)
   return (
     <Helmet>
       <title>{'Foto Fleet'}</title>

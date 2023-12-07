@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, Button as MuiButton, Grid, CardMedia, FormControlLabel, Checkbox, Paper, Divider, Box } from '@mui/material';
+import { Card, CardContent, Typography, Button as MuiButton, Grid, CardMedia, FormControlLabel, Checkbox, Paper, Divider, Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -27,6 +27,11 @@ export const RentalConfirmation = ({ location }) => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+    /* Modal confirmacion */
+    const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
+    const [userEmail, setUserEmail] = useState('');
+
 
     const handleBackToCart = () => {
         navigate(-1);
@@ -112,11 +117,12 @@ export const RentalConfirmation = ({ location }) => {
         }
     
         const result = await response.json();
+        setUserEmail(userData ? userData.email : '');
         setSnackbarMessage('Reserva exitosa');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
         clearCart();
-        navigate('/user/rentals');
+        setConfirmationModalOpen(true);
         } catch (error) {
         console.error('Error al reservar:', error);
         setSnackbarMessage('API Error al reservar');
@@ -155,6 +161,12 @@ export const RentalConfirmation = ({ location }) => {
     const total = cartItems.reduce(
         (accumulator, item) => accumulator + item.rentalPrice,0
     );
+
+    const handleCloseConfirmationModal = () => {
+      setConfirmationModalOpen(false);
+      navigate('/user/rentals');
+    };
+    
 
 
   return (
@@ -232,7 +244,27 @@ export const RentalConfirmation = ({ location }) => {
             />
         <Button label={'Reservar'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />
       </Box>
+
       {renderSnackbar()}
+
+      <Dialog open={isConfirmationModalOpen} onClose={handleCloseConfirmationModal}>
+        <DialogTitle>Reserva Exitosa</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">
+            La reserva se ha registrado con éxito. Por favor, dirígete al local más cercano con el siguiente email:
+          </Typography>
+          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+            {userEmail}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button label={'Mis Reservas'} backgroundColor={colors.secondaryColor} backgroundColorHover={colors.secondaryColorHover} onClick={handleCloseConfirmationModal}>
+            Ver mis reservas
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
     </Box>
   );
 };

@@ -29,9 +29,10 @@ export const ProductsPagination = ({ itemsPerPage }) => {
   // Compartir
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSocial, setSelectedSocial] = useState(null);
-  
+
 
   const handleOpenModal = (product) => {
+    console.log('PRODUCTO SELECCIONADO EN HANDLEOPENMODAL: ', product);
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
@@ -47,26 +48,26 @@ export const ProductsPagination = ({ itemsPerPage }) => {
 
   const handleShare = (social, productId) => {
     const product = productsContent.find((p) => p.productId === productId);
-  
+
     if (!product) {
       return;
     }
   
-    setSelectedProduct(product);  // Add this line to update selectedProduct
-    const shareUrl = generateShareUrl(social, product);
+    setSelectedProduct(product);  
+    const shareUrl = generateShareUrl(social, selectedProduct);
     window.open(shareUrl, '_blank');
-  
+
     setAnchorEl(null);
     setSelectedSocial(null);
   };
-  
+
 
   const generateShareUrl = (social, product) => {
+
+    console.log('PRODUCT ID EN EL GENERATESHAREURL: ', product.productId);
     const productUrl = `http://1023c07-grupo3.s3-website-us-east-1.amazonaws.com/products/${product.productId}`;
     const shareText = `¡Mira este increíble producto: ${product.name} - ${product.description.substring(0, 100)}...!`;
     const imageUrl = product.images[0]?.url || '';
-
-    console.log('IMAGE URL: ' , imageUrl)
 
     switch (social) {
       case 'facebook':
@@ -75,12 +76,17 @@ export const ProductsPagination = ({ itemsPerPage }) => {
         return `https://www.instagram.com/sharer.php?u=${encodeURIComponent(productUrl)}&title=${encodeURIComponent(product.name)}&summary=${encodeURIComponent(product.description)}&url=${encodeURIComponent(productUrl)}&media=${encodeURIComponent(imageUrl)}`;
       case 'twitter':
         return `https://twitter.com/share?url=${encodeURIComponent(productUrl)}&text=${encodeURIComponent(shareText)}&media=${encodeURIComponent(imageUrl)}`;
+      case 'whatsapp':
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + " " + productUrl)}`;
+        return window.innerWidth <= 768 ? whatsappUrl : whatsappUrl.replace('api.whatsapp.com', 'web.whatsapp.com');
       default:
         return '';
     }
   };
 
-  console.log('PRODUCTS CONTENT DEL PRODUCTSPAGINATION: ', productsContent)
+
+
+  console.log('SELECTED PRODUCT: ', selectedProduct)
 
   return (
     <Container>
@@ -97,6 +103,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
         setSelectedSocial={setSelectedSocial}
+        setSelectedProduct={setSelectedProduct}
       />
       <Pagination currentPage={currentPage} changePage={changePage} totalPages={products.totalPages} />
 

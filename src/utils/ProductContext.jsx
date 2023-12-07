@@ -279,6 +279,7 @@ export function ProductProvider({ children }) {
 
       const data = await response.json();
       setProducts(data);
+      return data;
     } catch (error) {
       console.error('Error searching for products', error);
     }

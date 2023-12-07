@@ -10,9 +10,11 @@ export const ProductList = ({
   anchorEl,
   setAnchorEl,
   setSelectedSocial,
+  setSelectedProduct
 }) => {
 
-  console.log('PRODUCTS PROP DEL PRODUCTLIST: ', products)
+  console.log('SET SELECTED PRODUCT LIST: ', setSelectedProduct)
+
   return (
     <Grid container spacing={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       {products?.map((prod, index) => (
@@ -26,6 +28,7 @@ export const ProductList = ({
             anchorEl={anchorEl}
             setAnchorEl={setAnchorEl}
             setSelectedSocial={setSelectedSocial}
+            setSelectedProduct={setSelectedProduct}
           />
         </Grid>
       ))}

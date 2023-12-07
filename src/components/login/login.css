@@ -1,10 +1,12 @@
-.form_container{
-    margin: 5rem;
+
+.form_container {
+    margin: 10vh 0px;
+    width:100%;
     position: absolute;
     z-index: 10;
 }
 
-.paper_login_form{
+.paper_login_form {
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -12,21 +14,21 @@
     align-items: center;
     border-radius: 12px;
     background-color: transparent;
-   background: rgba(0, 0, 0, 0.5)  !important;
+    background: rgba(0, 0, 0, 0.5) !important;
     backdrop-filter: blur(3px) !important;
     position: relative;
 }
 
-.login_form{
+.login_form {
 
     display: flex;
     flex-direction: column;
     width: 22.625rem;
     margin: 1.5rem;
-    
+
 }
 
-.form_login_options{
+.form_login_options {
 
     display: flex;
     align-items: center;
@@ -41,28 +43,28 @@
     margin: '0 0 2rem 0';
 }
 
-.form_options{
+.form_options {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.custom_chkbx [data-testid="CheckBoxOutlineBlankIcon"], .custom_chkbx [data-testid="CheckBoxIcon"]{
+.custom_chkbx [data-testid="CheckBoxOutlineBlankIcon"],
+.custom_chkbx [data-testid="CheckBoxIcon"] {
     fill: #ffffff;
 }
 
-#filled-basic{
-    padding: .5rem 0 0 .5rem;
+#filled-basic {
+    padding: 0.5rem 0 0 .5rem;
     height: 2.47rem;
 }
 
-
-.MuiInputBase-input .MuiFilledInput-input .MuiInputBase-inputAdornedEnd .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input:focus{
+.MuiInputBase-input .MuiFilledInput-input .MuiInputBase-inputAdornedEnd .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input:focus {
     outline: none !important;
 
 }
 
-.Mui-focused{
+.Mui-focused {
     color: #230C0F !important;
 }
 
@@ -70,15 +72,16 @@
     border-color: #230C0F;
 }
 
-
 .divider {
-    width: 100%; 
+    width: 100%;
     height: 1px;
-    background-color: #ccc; 
-    margin: .8rem 0; 
+    background-color: #ccc;
+    margin: .8rem 0;
 }
 
-
+.login-message {
+    color: red;
+}
 
 
 @media (max-width: 900px) {
@@ -108,6 +111,6 @@
 
 @media (min-width:900px) and (max-width:1023px){
     .form_container{
-        margin: 0;
+        margin: 50;
     }
   }

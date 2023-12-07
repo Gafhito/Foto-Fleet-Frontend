@@ -12,7 +12,7 @@ export const Logo = () => {
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <img src={logo} alt="Logo" style={{ width: '3rem' }} />
         {isSmScreen ? null : (
-          <Typography variant="h6" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginLeft: '1.5rem', letterSpacing: '.3rem', color: '#fff', textDecoration: 'none' }}>
+          <Typography variant="h7" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginLeft: '1.5rem', letterSpacing: '.3rem', color: '#fff', textDecoration: 'none' }}>
             Captura el momento
           </Typography>
         )}

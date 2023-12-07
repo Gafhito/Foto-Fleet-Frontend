@@ -85,7 +85,6 @@ export function AuthProvider({ children }) {
     const token = user ? user.token : null;
 
     if (!token) {
-      console.log('No hay token');
       return null;
     }
 
@@ -151,7 +150,7 @@ export function AuthProvider({ children }) {
     }
   
     try {
-      const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/auth/update', {
+      const response = await fetch('http://ec2-52-91-182-42.compute-1.amazonaws.com/api/auth/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

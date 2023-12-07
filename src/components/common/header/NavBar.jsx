@@ -20,8 +20,6 @@ export const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
-  console.log("Item COUNT: ", getCartItemCount)
-
   const [cartOpen, setCartOpen] = useState(false);
   const { cartItems } = useCart();
 
@@ -48,7 +46,7 @@ export const NavBar = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: { sm: 'space-between', md: 'space-around' }, width: { lg: '65%', sm: '85%' } }}>
+    <Box sx={{ display: 'flex', alignItems: "center", justifyContent: { sm:"space-between", md: "space-around" }, width: { lg: '65%', sm: '85%' } }}>
       <NavLinks />
       <Box sx={{ display: 'flex' }}>
         {user ? (

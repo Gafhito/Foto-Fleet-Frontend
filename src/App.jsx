@@ -20,7 +20,6 @@ import { Contacto } from './pages/Contacto';
 import { AboutUs } from './pages/AboutUs';
 
 export const App = () => {
-
   const { isLoggedIn } = useAuth();
   const { cartItems } = useCart();
 
@@ -30,8 +29,9 @@ export const App = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            {/* Protegemos ruta /administracion */}
-            <Route path="/administracion" element={ isLoggedIn ? <AdminPage /> : <Navigate to="/" />}
+            <Route
+              path="/administracion"
+              element={isLoggedIn ? <AdminPage /> : <Navigate to="/" />}
             />
             <Route path="/products/:productId" element={<ProductPage />} />
             <Route path="/auth/login" element={<LoginPage />} />
@@ -40,9 +40,10 @@ export const App = () => {
             <Route path='/user/rentals' element={<Rentals/>} />
             <Route path='/contacto' element={<Contacto/>} />
             <Route path='/aboutus' element={<AboutUs/>} />
+            <Route path="/rental-confirmation" element={<RentalConfirmation location={{ state: { cartItems: cartItems } }}/>} />
+            
 
             <Route path="/politicas" element={<Politics/>}/>
-            <Route path="/rental-confirmation" element={<RentalConfirmation location={{ state: { cartItems: cartItems } }}/>} />
           </Route>
         </Routes>
       </div>

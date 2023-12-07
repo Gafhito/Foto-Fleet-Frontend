@@ -13,6 +13,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp'; 
 import { colors } from '../../utils/constants';
 import { Link } from 'react-router-dom';
 
@@ -25,11 +26,10 @@ export const ProductCard = ({
   anchorEl,
   setAnchorEl,
   setSelectedSocial,
+  setSelectedProduct
 }) => {
   const isMenuOpen = Boolean(anchorEl);
 
-
-  console.log('PRODUCT PROP DEL PRODUCTCARD: ', product)
 
 
   return (
@@ -91,6 +91,7 @@ export const ProductCard = ({
           onClick={(event) => {
             setAnchorEl(event.currentTarget);
             setSelectedSocial(product.productId);
+            setSelectedProduct(product)
           }}
           sx={{
             position: 'absolute',
@@ -115,6 +116,7 @@ export const ProductCard = ({
           onClose={() => {
             setAnchorEl(null);
             setSelectedSocial(null);
+            
           }}
         >
           <MenuItem onClick={() => handleShare('facebook', product.productId)}>
@@ -135,6 +137,12 @@ export const ProductCard = ({
             </ListItemIcon>
             Twitter
           </MenuItem>
+          <MenuItem onClick={() => handleShare('whatsapp', product.productId)}>
+          <ListItemIcon>
+            <WhatsAppIcon />
+          </ListItemIcon>
+          WhatsApp
+        </MenuItem>
         </Menu>
 
         <Link to={`/products/${product.productId}`} target="_blank">
