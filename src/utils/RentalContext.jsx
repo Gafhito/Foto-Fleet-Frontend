@@ -11,6 +11,68 @@ export const RentalProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const { getUserData, user } = useAuth(); 
 
+
+
+
+
+  const cancelRental = async (rentalId) => {
+    try {
+      const token = user ? user.token : null;
+
+      if (!token) {
+        console.error('Usuario no autenticado');
+        return;
+      }
+
+      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/rental/canceled?rentalId=${rentalId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const updatedRentals = rentals.map((rental) =>
+          rental.rentalDetailId === rentalId ? { ...rental, status: 'Canceled' } : rental
+        );
+        setRentals(updatedRentals);
+      } else {
+        console.error('Error al cancelar la reserva:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Error al cancelar la reserva:', error);
+    }
+  };
+
+
+  const getPendingRentalsByEmail = async (email) => {
+    try {
+      const token = user ? user.token : null;
+
+      if (!token) {
+        console.error('Usuario no autenticado');
+        return;
+      }
+
+      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/rental/pending?email=${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        return data;
+      } else {
+        console.error('Error al obtener las reservas pendientes:', response.status, response.statusText);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error al obtener las reservas pendientes:', error);
+      return [];
+    }
+  };
+
   useEffect(() => {
     const fetchRentals = async () => {
       try {
@@ -47,7 +109,7 @@ export const RentalProvider = ({ children }) => {
   }, [getUserData]);
 
   return (
-    <RentalContext.Provider value={{ rentals, loading }}>
+    <RentalContext.Provider value={{ rentals, loading, cancelRental, getPendingRentalsByEmail }}>
       {children}
     </RentalContext.Provider>
   );

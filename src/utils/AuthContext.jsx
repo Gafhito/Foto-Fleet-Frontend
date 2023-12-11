@@ -155,7 +155,6 @@ export function AuthProvider({ children }) {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
-          'Access-Control-Allow-Origin': '*',
         },
         body: JSON.stringify({
           email,
