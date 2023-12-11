@@ -25,7 +25,7 @@ import { colors } from '../utils/constants';
 
 
 export const Rentals = () => {
-  const { rentals, loading } = useRentalContext();
+  const { rentals, loading, cancelRental } = useRentalContext();
   const { getProductById, getRatingsByProductId, sendReview,  showSnackbar, snackbarMessage, } = useProductContext();
   const [rentalDetails, setRentalDetails] = useState([]);
   const [selectedRental, setSelectedRental] = useState(null);
@@ -33,6 +33,13 @@ export const Rentals = () => {
   const [reviewText, setReviewText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ratedRentals, setRatedRentals] = useState([]);
+
+
+  const [forceRender, setForceRender] = useState(false);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessagee, setSnackbarMessagee] = useState('');
+
 
   const [hover, setHover] = useState(-1);
 
@@ -53,6 +60,9 @@ export const Rentals = () => {
     4.5: '4.5 Estrellas',
     5: '5 Estrellas',
   };
+
+
+  const forceRerender = () => setForceRender((prev) => !prev);
 
 
 
@@ -105,6 +115,22 @@ export const Rentals = () => {
     setSelectedRental(rental);
     setIsModalOpen(true);
   };
+  
+
+  const handleCancelRental = async (rentalId) => {
+
+    console.log('Rental ID: ', rentalId)
+    try {
+        await cancelRental(rentalId);
+
+        setSnackbarMessagee('Reserva cancelada exitosamente');
+        setSnackbarOpen(true);
+
+        window.location.reload();
+    } catch (error) {
+        console.error('Error al cancelar la reserva:', error);
+    }
+};
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -123,6 +149,22 @@ export const Rentals = () => {
     setIsModalOpen(false);
   };
 
+
+  const fetchRentalDetails = async () => {
+    try {
+        const details = await Promise.all(
+            rentals.map(async (rental) => {
+                const productDetails = await getProductById(rental.productId);
+                return { rental, productDetails };
+            })
+        );
+        setRentalDetails(details);
+    } catch (error) {
+        console.error('Error al obtener detalles de reservas:', error);
+    }
+};
+
+
   if (loading) {
     return <p>Cargando reservas...</p>;
   }
@@ -137,7 +179,7 @@ export const Rentals = () => {
         <Grid container spacing={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 'auto' }}>
           {rentals.map(({ rental, productDetails }) => (
             <Grid item xs={12} sm={6} md={4} key={rental.rentalDetailId} sx={{ width: '90vw', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <RentalCard rental={rental} productDetails={productDetails} ratedRentals={ratedRentals} selectedRental={selectedRental} setSelectedRental={setSelectedRental} setIsModalOpen={setIsModalOpen}/>
+              <RentalCard rental={rental} productDetails={productDetails} ratedRentals={ratedRentals} selectedRental={selectedRental} setSelectedRental={setSelectedRental} setIsModalOpen={setIsModalOpen} onCancelRental={() => handleCancelRental(rental.rentalId)}/>
             </Grid>
           ))}
         </Grid>
@@ -218,6 +260,21 @@ export const Rentals = () => {
             {snackbarMessage.message}
           </Alert>
       </Snackbar>
+
+
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+    >
+        <Alert
+            onClose={() => setSnackbarOpen(false)}
+            severity="success"
+        >
+            {snackbarMessagee}
+        </Alert>
+    </Snackbar>
     </div>
   );
 };
