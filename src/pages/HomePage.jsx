@@ -11,7 +11,7 @@ export const HomePage = () => {
     <>
       <Searcher />
       <Categories />
-      <Recomendations />
+      {/*<Recomendations />*/}
       <ProductsPagination itemsPerPage={6}/>
     </>
   )
