@@ -92,7 +92,7 @@ export const ProductsPagination = ({ itemsPerPage }) => {
     <Container>
       <MetaData product={productsContent} />
       <Typography variant="h4" sx={{ marginBottom: '3rem' }}>
-        Lista de Productos Aleatorios
+        Nuestros Productos
       </Typography>
       <ProductList
         products={productsContent}
