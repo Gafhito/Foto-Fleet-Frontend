@@ -11,6 +11,8 @@ import { EditProductModal } from '../editProductModal/EditProductModal';
 import { ManageRolesModal } from '../manageRoleModal/ManageRolesModal';
 
 import { useProductContext } from '../../utils/ProductContext';
+import { useRentalContext } from '../../utils/RentalContext';
+import { PendingReservationsModal } from './PendingReservationModal';
 import { colors } from '../../utils/constants';
 import { useAuth } from '../../utils/AuthContext';
 
@@ -30,7 +32,8 @@ export const AdminPanel = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const { getCategories } = useAuth();
+  const { getCategories, user } = useAuth();
+  const { rentals } = useRentalContext();
 
   // Abrir modales
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
@@ -41,6 +44,7 @@ export const AdminPanel = () => {
   const [isCharacteristicsModalOpen, setCharacteristicsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRolesModalOpen, setIsRolesModalOpen] = useState(false);
+  const [isPendingReservationsModalOpen, setIsPendingReservationsModalOpen] = useState(false);
 
 
   /*useEffect(() => {
@@ -153,6 +157,7 @@ export const AdminPanel = () => {
             <Button label={'Administrar Caracteristicas'} onClick={openCharacteristicsModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
             <Button label={'Editar Producto'} onClick={openEditModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} />
             <Button label={'Administrar Roles'} onClick={openRolesModal} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor}/>
+            <Button label={'Mostrar Reservas'} backgroundColor={colors.terciaryColor} mt={'1rem'} backgroundColorHover={colors.secondaryColor} onClick={() => setIsPendingReservationsModalOpen(true)}/>
           </Box>
         </div>
       )}
@@ -160,6 +165,7 @@ export const AdminPanel = () => {
       <ProductListModal open={isListModalOpen} onClose={closeModal} />
       <RegisterProductModal open={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} />
       <RegisterCategory open={isCategoryModalOpen} onClose={closeCategoryModal} onCategorySubmit={handleCategorySubmit} />
+      <PendingReservationsModal isOpen={isPendingReservationsModalOpen} onClose={() => setIsPendingReservationsModalOpen(false)} />
 
       {isDeleteCategoryModalOpen && (
         <DeleteCategoryList

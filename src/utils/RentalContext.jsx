@@ -44,6 +44,35 @@ export const RentalProvider = ({ children }) => {
     }
   };
 
+
+  const getPendingRentalsByEmail = async (email) => {
+    try {
+      const token = user ? user.token : null;
+
+      if (!token) {
+        console.error('Usuario no autenticado');
+        return;
+      }
+
+      const response = await fetch(`http://ec2-52-91-182-42.compute-1.amazonaws.com/api/rental/pending?email=${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        return data;
+      } else {
+        console.error('Error al obtener las reservas pendientes:', response.status, response.statusText);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error al obtener las reservas pendientes:', error);
+      return [];
+    }
+  };
+
   useEffect(() => {
     const fetchRentals = async () => {
       try {
@@ -80,7 +109,7 @@ export const RentalProvider = ({ children }) => {
   }, [getUserData]);
 
   return (
-    <RentalContext.Provider value={{ rentals, loading, cancelRental, setRentals }}>
+    <RentalContext.Provider value={{ rentals, loading, cancelRental, getPendingRentalsByEmail }}>
       {children}
     </RentalContext.Provider>
   );
