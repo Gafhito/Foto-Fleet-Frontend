@@ -397,7 +397,6 @@ export const ProductDetails = ({ product }) => {
       <Paper
         elevation={0}
         sx={{
-          width: '100%',
           padding: {xs: '0', sm:'1rem', md:'3rem'},
           height: {xs:'5rem', sm:'auto'},
           marginBottom: '1rem',
@@ -513,26 +512,7 @@ export const ProductDetails = ({ product }) => {
 
 
         <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-          {/*<FormControlLabel
-            control={<Checkbox checked={isAgreed} onChange={handleCheckboxChange} />}
-            label={
-              <>
-                Acepto los{' '}
-                <Link
-                  style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
-                  to={'/politicas'}
-                  target='_blank'
-                >
-                  términos y condiciones
-                </Link>
-              </>
-            }
-            sx={{ marginTop: '1rem' }}
-          />*/}
-
           <Button label={'Añadir al carrito'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleAddToCartClick} />
-          {/*<Button label={'Ver carrito'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleOpenCart} />
-          <Button label={'Reservar'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleReserveClick} />*/}
         </Box>
 
       </Box>
@@ -571,18 +551,40 @@ export const ProductDetails = ({ product }) => {
                           <FontAwesomeIcon icon={characteristic.urlIcono.replace(/\s/g, '-').toLowerCase()} style={{marginRight:'.5rem'}}/>
                           <div>
                             <Typography variant="subtitle2">{characteristic.name}</Typography>
-                            {/*<Typography variant="body2">{characteristic.description}</Typography>*/}
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
               </Box>
+
+              <Box sx={{display:'flex', flexDirection:'column', marginTop:'2rem', alignItems:'center', justifyContent:'center'}}>
+
+                <Box sx={{display:'flex', marginTop:'2rem'}}>
+                  <CustomCalendar
+                    label={'Fecha Desde'}
+                    value={startDate}
+                    onChange={handleStartDateChange}
+                    rentedDates={product.rentalDate}
+                  />
+                  <CustomCalendar
+                    label={'Fecha Hasta'}
+                    value={endDate}
+                    onChange={handleEndDateChange}
+                    rentedDates={product.rentalDate}
+                  />
+                </Box>
+                <Typography  variant="h6" textAlign={'left'} sx={{ margin: '1.5rem auto', width:'fit-content' }}>
+                  Precio de alquiler: US$ {rentalPrice}
+                </Typography>
+                <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                  <Button label={'Añadir al carrito'} mt={'1.5rem'} backgroundColor={colors.primaryColor} backgroundColorHover={colors.primaryColorHover} variant="contained" onClick={handleAddToCartClick} />
+                </Box>
+              </Box>
            </Grid>
          </Box>
         )}
         {renderSnackbar()}
-        {/*<Cart cartItems={cartItems} open={cartOpen} onClose={handleCloseCart} />*/}
     </Box>
   </>
   );
