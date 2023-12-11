@@ -15,17 +15,17 @@ export const AboutUs = () => {
     <ThemeProvider theme={customTheme}>
       <Container sx={{ marginTop: '7rem' }}>
         <Typography variant="h2" sx={{ marginBottom: '2rem' }}>
-          Bienvenidos a nuestro Proyecto: Sistema de Reservas Fotográficas
+          Bienvenidos a nuestro Proyecto: Sistema de Reservas de Productos Fotográficos
         </Typography>
 
         <Typography variant="body1" sx={{ marginBottom: '2rem' }}>
           Nos complace presentarles nuestro proyecto final para la carrera
-          Certified Tech Developer de Digital House. Este proyecto representa
-          la culminación de nuestros esfuerzos durante cuatro sprints de dos
-          semanas cada uno. Nuestro equipo, compuesto por Nelson Pataquiva,
-          Gonzalo Ferrari, Tomas Conesa, Erick Ramirez, Marcelo Fullana, Joel,
-          Michael Armesto, y Ailén, ha trabajado arduamente para desarrollar
-          una plataforma web dedicada a la reserva de equipos fotográficos y
+          Certified Tech Developer de Digital House. Este representa
+          la culminación de nuestros esfuerzos, que dimos comienzo en el año 2021 y actualmente durante cuatro sprints de dos
+          semanas cada uno logramos reflejarlos. Nuestro equipo, compuesto por Nelson Pataquiva,
+          Gonzalo Ferrari, Tomas Conesa, Erick Ramirez, Marcelo Fullana, Joel Rincon,
+          Michael Armesto, y Ailén Gonzalez, ha trabajado arduamente para desarrollar
+          una plataforma web dedicada especialmente a la reserva de equipos fotográficos y
           accesorios.
         </Typography>
 
@@ -62,9 +62,9 @@ export const AboutUs = () => {
         <Typography variant="body1" sx={{ marginTop: '5rem' }}>
           Agradecemos la oportunidad de haber participado en este desafiante
           proyecto y esperamos que nuestra plataforma satisfaga las necesidades
-          de los usuarios que buscan equipos fotográficos de alta calidad. Si
-          tienes alguna pregunta o sugerencia, no dudes en ponerte en contacto
-          con nosotros. ¡Esperamos que disfrutes de la experiencia de reserva en
+          de cada uno de los usuarios que buscan equipos fotográficos de alta calidad. Si
+          tienes alguna consulta o sugerencia, no dudes en ponerte en contacto
+          con nosotros. ¡Disfruta de la experiencia de reserva en
           nuestro sitio web!
         </Typography>
       </Container>
